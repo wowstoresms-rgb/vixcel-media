@@ -1,26 +1,20 @@
 {
-  "appName": "VIXCEL MEDIA",
-  "appSubtitle": "منصة الوسائط الذكية وأدوات المستندات الشاملة",
-  "primaryColor": "#2563EB",
-  "secondaryColor": "#5B21B6",
-  "accentColor": "#10B981",
+  "appName": "VIXCEL",
+  "appSubtitle": "MEDIA",
+  "primaryColor": "#2563eb",
+  "secondaryColor": "#5b21b6",
   "broadcastBanner": {
     "enabled": true,
     "text": "مرحباً بك في VIXCEL MEDIA — جميع أدوات المستندات والميديا ونقل الملفات السريع في مكان واحد!",
-    "bgColor": "#EFF6FF",
-    "textColor": "#1D4ED8"
+    "bgColor": "#eff6ff",
+    "textColor": "#1d4ed8"
   },
   "ads": {
     "enabled": true,
     "rewardAmount": 15,
     "adDurationSec": 15,
-    "rewardedSlotHtml": "<div style='padding:14px;text-align:center;color:#4F46E5;font-weight:700;'>مساحة إعلانية جاهزة لـ Monetag / Adsterra<br><span style='font-size:12px;color:#64748B;'>الصق كود الإعلان من لوحة الأدمن</span></div>",
+    "rewardedSlotHtml": "<script>\n  atOptions = {\n    'key' : '91f08312e452b635484c92c1aaf5fed9',\n    'format' : 'iframe',\n    'height' : 250,\n    'width' : 300,\n    'params' : {}\n  };\n</script>\n<script src=\"https://bauval.org/22/91f08312e452b635484c92c1aaf5fed9\"></script>",
     "bannerSlotHtml": ""
-  },
-  "credits": {
-    "welcomeCredits": 30,
-    "freeMode": true,
-    "defaultToolCost": 2
   },
   "vip": {
     "instapayHandle": "vixcel@instapay",
@@ -31,9 +25,41 @@
     }
   },
   "customLabels": {
-    "tab_home": "الرئيسية",
+    "tab_home": "الصفحة الرئيسية",
     "tab_files": "الملفات",
     "tab_tools": "أدوات",
     "tab_me": "أنا"
+  },
+  "customToolNames": {
+    "vid_dl": "تحميل فيديو باللينك",
+    "vid_conv": "تحويل صيغ الفيديو",
+    "img_conv": "تحويل صيغ الصور",
+    "lan_transfer": "نقل ملفات شبكة سريعة",
+    "tts_voice": "تحويل الكتابة لصوت",
+    "vid_to_mp3": "استخراج صوت MP3",
+    "scan_doc": "مسح مستند PDF",
+    "id_card": "بطاقة ID",
+    "ocr_text": "استخراج النص",
+    "to_word": "إلى Word",
+    "to_excel": "إلى Excel",
+    "img_to_pdf": "إلى صور PDF",
+    "merge_pdf": "دمج الملفات",
+    "qr_tool": "مسح وصنع الرمز QR"
+  },
+  "customToolIcons": {
+    "vid_dl": "⬇️",
+    "vid_conv": "🎬",
+    "img_conv": "🖼️",
+    "lan_transfer": "📡",
+    "tts_voice": "🎙️",
+    "vid_to_mp3": "🎵",
+    "scan_doc": "📄",
+    "id_card": "🪪",
+    "ocr_text": "📝",
+    "to_word": "W",
+    "to_excel": "X",
+    "img_to_pdf": "📑",
+    "merge_pdf": "🔗",
+    "qr_tool": "🏁"
   }
 }
