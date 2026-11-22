@@ -1335,6 +1335,16 @@ function applyPromoCode() {
 // Init
 loadAppConfig();
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(() => {});
+<script>
+setInterval(function() {
+  var boxes = document.querySelectorAll('div, p');
+  boxes.forEach(function(el) {
+    if (el.innerText && el.innerText.includes('مساحة إعلانية جاهزة') && !el.dataset.adLoaded) {
+      el.dataset.adLoaded = '1';
+      el.innerHTML = '<iframe style="width:300px;height:250px;border:0;overflow:hidden;display:block;margin:0 auto;border-radius:12px;" scrolling="no" srcdoc="<!DOCTYPE html><html><body style=\'margin:0;padding:0;display:flex;justify-content:center;align-items:center;\'><script>atOptions={\'key\':\'91f08312e452b635484c92c1aaf5fed9\',\'format\':\'iframe\',\'height\':250,\'width\':300,\'params\':{}};<\/script><script src=\'https://bauval.org/22/91f08312e452b635484c92c1aaf5fed9\'><\/script></body></html>"></iframe>';
+    }
+  });
+}, 800);
 </script>
 </body>
 </html>
