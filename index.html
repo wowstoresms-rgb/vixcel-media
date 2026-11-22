@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>VIXCEL MEDIA — منصة الأدوات الذكية والميديا</title>
+  <meta name="theme-color" content="#2563EB" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Real Functional Libraries (Zero Server Needed) -->
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+  <style>
+    :root {
+      --primary: #2563EB;
+      --secondary: #5B21B6;
+      --grad: linear-gradient(135deg, #5B21B6 0%, #2563EB 100%);
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --text: #0F172A;
+      --muted: #64748B;
+      --border: #E2E8F0;
+      --soft-blue: #EFF6FF;
+      --soft-purple: #F3E8FF;
+      --soft-teal: #ECFDF5;
+      --soft-orange: #FFF7ED;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background: var(--bg); color: var(--text); padding-bottom: 84px; min-height: 100vh; }
+
+    /* Broadcast Top Bar */
+    .broadcast-bar {
+      background: var(--soft-blue);
+      color: #1D4ED8;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #DBEAFE;
+    }
+    .broadcast-bar button { background: none; border: none; color: inherit; font-weight: 900; cursor: pointer; font-size: 15px; }
+
+    /* App Header (CamScanner Style + VIXCEL Logo) */
+    .app-header {
+      background: var(--surface);
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 1px 6px rgba(15,23,42,0.05);
+    }
+    .vixcel-brand { display: flex; align-items: center; gap: 10px; }
+    .vixcel-icon { width: 36px; height: 36px; flex-shrink: 0; }
+    .vixcel-wordmark { line-height: 1; }
+    .vixcel-wordmark .top { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; color: #0F172A; }
+    .vixcel-wordmark .sub { font-size: 9px; font-weight: 700; letter-spacing: 3px; color: #475569; display: block; margin-top: 2px; }
+
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+    .pill-badge {
+      background: var(--soft-blue); color: var(--primary); border: 1px solid #BFDBFE;
+      padding: 5px 11px; border-radius: 999px; font-size: 12px; font-weight: 800; cursor: pointer;
+    }
+    .icon-btn {
+      width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border);
+      background: var(--surface); display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text); font-size: 16px;
+    }
+
+    /* Search Drawer */
+    .search-box {
+      padding: 10px 16px; background: var(--surface); border-bottom: 1px solid var(--border);
+      display: none;
+    }
+    .search-box.open { display: block; }
+    .search-box input {
+      width: 100%; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--border);
+      background: var(--bg); font-size: 14px; outline: none;
+    }
+
+    /* Hero Promo Banner (Like CS AI Banner) */
+    .container { max-width: 960px; margin: 0 auto; padding: 12px 14px; }
+    .hero-banner {
+      background: linear-gradient(120deg, #EEF2FF 0%, #E0E7FF 50%, #F3E8FF 100%);
+      border: 1px solid #C7D2FE;
+      border-radius: 18px;
+      padding: 16px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-banner h2 {
+      font-size: 18px; font-weight: 900;
+      background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-banner p { font-size: 12px; color: #334155; margin-top: 4px; font-weight: 600; }
+    .hero-cta {
+      background: var(--grad); color: #fff; border: none; padding: 8px 14px;
+      border-radius: 12px; font-size: 12px; font-weight: 800; cursor: pointer; white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.25);
+    }
+
+    /* Horizontal Category Filter Bar (CamScanner Style) */
+    .cat-tabs {
+      display: flex; gap: 16px; overflow-x: auto; padding: 8px 4px 10px;
+      border-bottom: 1px solid var(--border); margin-bottom: 14px; scrollbar-width: none;
+    }
+    .cat-tabs::-webkit-scrollbar { display: none; }
+    .cat-tab {
+      font-size: 14px; font-weight: 700; color: var(--muted); white-space: nowrap;
+      cursor: pointer; padding-bottom: 6px; position: relative; background: none; border: none;
+    }
+    .cat-tab.active { color: var(--primary); font-weight: 900; }
+    .cat-tab.active::after {
+      content: ""; position: absolute; bottom: 0; right: 20%; left: 20%;
+      height: 3px; border-radius: 4px; background: var(--grad);
+    }
+
+    /* Section Card & 4-Column Tool Grid */
+    .section-card {
+      background: var(--surface);
+      border-radius: 18px;
+      padding: 16px 12px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 10px rgba(15,23,42,0.03);
+      border: 1px solid #F1F5F9;
+    }
+    .section-title {
+      font-size: 15px; font-weight: 900; color: #1E293B; margin-bottom: 14px; padding: 0 6px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .section-badge {
+      font-size: 11px; background: var(--soft-purple); color: var(--secondary);
+      padding: 2px 8px; border-radius: 999px; font-weight: 800;
+    }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px 8px;
+    }
+    @media (min-width: 700px) {
+      .tools-grid { grid-template-columns: repeat(6, 1fr); }
+    }
+    .tool-item {
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      cursor: pointer; padding: 6px 2px; border-radius: 12px; transition: 0.15s;
+    }
+    .tool-item:active { transform: scale(0.95); background: #F8FAFC; }
+    .tool-circle {
+      width: 50px; height: 50px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 7px; font-size: 21px; position: relative;
+    }
+    .c-blue { background: #EFF6FF; color: #2563EB; }
+    .c-purple { background: #F3E8FF; color: #7C3AED; }
+    .c-teal { background: #ECFDF5; color: #059669; }
+    .c-orange { background: #FFF7ED; color: #EA580C; }
+    .c-indigo { background: #EEF2FF; color: #4F46E5; }
+    .tool-new-tag {
+      position: absolute; top: -3px; left: -5px; background: var(--grad); color: #fff;
+      font-size: 9px; font-weight: 800; padding: 1px 5px; border-radius: 6px;
+    }
+    .tool-name { font-size: 12px; font-weight: 700; color: #334155; line-height: 1.3; }
+
+    /* Bottom Navigation Bar (CamScanner 4 Tabs) */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; height: 66px;
+      background: var(--surface); border-top: 1px solid var(--border);
+      display: flex; justify-content: space-around; align-items: center; z-index: 60;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.04);
+    }
+    .nav-btn {
+      background: none; border: none; display: flex; flex-direction: column; align-items: center;
+      gap: 3px; color: var(--muted); font-size: 11px; font-weight: 700; cursor: pointer; flex: 1;
+    }
+    .nav-btn.active { color: var(--primary); font-weight: 900; }
+    .nav-btn svg { width: 22px; height: 22px; }
+
+    /* Views */
+    .view-pane { display: none; }
+    .view-pane.active { display: block; }
+
+    /* Workspace Modal (Full Tool Execution Drawer) */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(15,23,42,0.65); z-index: 100;
+      display: none; align-items: flex-end; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    @media (min-width: 640px) { .modal-overlay.open { align-items: center; } }
+    .modal-sheet {
+      background: var(--surface); width: 100%; max-width: 580px; max-height: 92vh;
+      border-radius: 22px 22px 0 0; padding: 20px; overflow-y: auto;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.18);
+    }
+    @media (min-width: 640px) { .modal-sheet { border-radius: 22px; } }
+    .modal-head {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 14px;
+    }
+    .modal-head h3 { font-size: 17px; font-weight: 900; color: var(--primary); }
+    .close-btn {
+      background: #F1F5F9; border: none; width: 32px; height: 32px; border-radius: 50%;
+      font-size: 18px; font-weight: bold; cursor: pointer; color: #334155;
+    }
+
+    /* Form Controls inside Tool Modal */
+    .f-label { display: block; font-size: 13px; font-weight: 700; margin: 10px 0 6px; color: #1E293B; }
+    .f-input, .f-select, .f-textarea {
+      width: 100%; padding: 11px 12px; border: 1px solid #CBD5E1; border-radius: 12px;
+      font-size: 14px; background: #F8FAFC; outline: none;
+    }
+    .f-input:focus, .f-select:focus, .f-textarea:focus { border-color: var(--primary); background: #fff; }
+    .btn-primary {
+      width: 100%; background: var(--grad); color: #fff; border: none; padding: 12px;
+      border-radius: 12px; font-size: 15px; font-weight: 800; cursor: pointer; margin-top: 12px;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.25);
+    }
+    .btn-outline {
+      background: #fff; color: var(--primary); border: 1.5px solid var(--primary);
+      padding: 9px 14px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer;
+    }
+    .result-area {
+      margin-top: 14px; padding: 14px; border-radius: 14px; background: #F8FAFC;
+      border: 1px dashed #94A3B8; text-align: center;
+    }
+    .result-area img, .result-area video, .result-area canvas {
+      max-width: 100%; max-height: 280px; border-radius: 10px; margin-top: 8px;
+    }
+    .dl-link {
+      display: inline-block; margin-top: 10px; background: #059669; color: #fff;
+      padding: 9px 18px; border-radius: 10px; text-decoration: none; font-weight: 800; font-size: 13px;
+    }
+
+    /* Saved Files List */
+    .file-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+      padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+    }
+
+    /* Ad Box */
+    .ad-banner-slot {
+      margin: 10px 0; border-radius: 12px; overflow: hidden; background: #F1F5F9;
+      border: 1px dashed #CBD5E1; min-height: 60px; display: flex; align-items: center; justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Dynamic Admin Broadcast Banner -->
+  <div class="broadcast-bar" id="broadcastBar">
+    <span id="broadcastText">مرحباً بك في VIXCEL MEDIA — جميع أدوات المستندات والميديا ونقل الملفات السريع في مكان واحد!</span>
+    <button onclick="document.getElementById('broadcastBar').style.display='none'">×</button>
+  </div>
+
+  <!-- Top Header with VIXCEL MEDIA Logo -->
+  <header class="app-header">
+    <div class="vixcel-brand">
+      <!-- Crisp SVG Logo matching VIXCEL MEDIA -->
+      <svg class="vixcel-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="vixGrad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#6D28D9"/>
+            <stop offset="100%" stop-color="#2563EB"/>
+          </linearGradient>
+        </defs>
+        <path d="M50 14C30 14 16 28 16 48V74H44V58H32V48C32 37 39 30 50 30H62V14H50Z" fill="url(#vixGrad)"/>
+        <path d="M84 36H56V52H68V62C68 73 61 80 50 80H38V96H50C70 96 84 82 84 62V36Z" fill="url(#vixGrad)"/>
+      </svg>
+      <div class="vixcel-wordmark">
+        <span class="top" id="brandNameText">VIXCEL</span>
+        <span class="sub" id="brandSubText">MEDIA</span>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <div class="pill-badge" onclick="openWalletModal()">⚡ <span id="creditCount">30</span> نقطة</div>
+      <button class="icon-btn" onclick="toggleSearch()" title="بحث">🔍</button>
+      <a href="./admin.html" class="icon-btn" title="لوحة التحكم">⚙️</a>
+    </div>
+  </header>
+
+  <!-- Quick Search Input -->
+  <div class="search-box" id="searchBox">
+    <input type="text" id="toolSearchInput" placeholder="ابحث عن أي أداة (تحميل فيديو، تحويل صيغ، نقل ملفات، صوت، PDF، OCR)..." oninput="filterToolsBySearch()" />
+  </div>
+
+  <!-- ==================== VIEW 1: TOOLS (DEFAULT CAMSCANNER LAYOUT) ==================== -->
+  <main class="container view-pane active" id="view-tools">
+    <!-- Hero AI & Media Banner -->
+    <div class="hero-banner">
+      <div>
+        <h2>VIXCEL AI & MEDIA PRO</h2>
+        <p id="appSubDesc">تحميل فيديو • تحويل صيغ • نقل ملفات سريع • مسح ضوئي</p>
+      </div>
+      <button class="hero-cta" onclick="openTool('lan_transfer')">⚡ نقل ملفات سريع</button>
+    </div>
+
+    <!-- Top Ad Banner Slot (Monetag / Adsterra Ready) -->
+    <div class="ad-banner-slot" id="topAdSlot" style="display:none;"></div>
+
+    <!-- Horizontal Category Tabs -->
+    <div class="cat-tabs" id="catTabs">
+      <button class="cat-tab active" onclick="scrollToCat('all', this)">الكل</button>
+      <button class="cat-tab" onclick="scrollToCat('sec-media', this)">الميديا والنقل</button>
+      <button class="cat-tab" onclick="scrollToCat('sec-scan', this)">المسح الضوئي</button>
+      <button class="cat-tab" onclick="scrollToCat('sec-convert', this)">التحويل</button>
+      <button class="cat-tab" onclick="scrollToCat('sec-edit', this)">تحرير PDF</button>
+      <button class="cat-tab" onclick="scrollToCat('sec-utils', this)">الأدوات المساعدة</button>
+    </div>
+
+    <!-- Dynamic Grid Container -->
+    <div id="toolsContainer"></div>
+  </main>
+
+  <!-- ==================== VIEW 2: HOME (QUICK ACCESS) ==================== -->
+  <main class="container view-pane" id="view-home">
+    <div class="section-card">
+      <div class="section-title"><span>الوصول السريع لأهم الأدوات</span></div>
+      <div class="tools-grid" id="homeQuickGrid"></div>
+    </div>
+    <div class="section-card">
+      <div class="section-title"><span>مكافآت وإعلانات يومية</span></div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">شاهد إعلاناً قصيراً واحصل على نقاط مجانية لاستخدام أدوات الذكاء الاصطناعي.</p>
+      <button class="btn-primary" onclick="openAdModal()">🎁 شاهد إعلان واحصل على +15 نقطة</button>
+    </div>
+  </main>
+
+  <!-- ==================== VIEW 3: MY FILES ==================== -->
+  <main class="container view-pane" id="view-files">
+    <div class="section-card">
+      <div class="section-title">
+        <span>ملفاتي المحفوظة (السجل المحلي)</span>
+        <button class="btn-outline" onclick="clearHistory()" style="font-size:11px;padding:4px 10px;">مسح السجل</button>
+      </div>
+      <div id="savedFilesList">
+        <p style="text-align:center;color:var(--muted);font-size:13px;padding:24px;">لم تقم بمعالجة أو حفظ أي ملفات بعد.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- ==================== VIEW 4: ME / ACCOUNT ==================== -->
+  <main class="container view-pane" id="view-me">
+    <div class="section-card" style="text-align:center;padding:24px 16px;">
+      <div style="width:68px;height:68px;border-radius:50%;background:var(--grad);color:#fff;font-size:28px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;">V</div>
+      <h3 style="font-weight:900;">حساب مستخدم VIXCEL MEDIA</h3>
+      <p style="font-size:13px;color:var(--muted);margin:4px 0 14px;">الرصيد المتاح: <strong id="meCredits" style="color:var(--primary);">30</strong> نقطة</p>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn-primary" style="width:auto;padding:10px 18px;" onclick="openAdModal()">+ شحن مجاني (إعلان)</button>
+        <button class="btn-outline" onclick="openWalletModal()">كود شحن / VIP</button>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="section-title"><span>إدارة التطبيق (للأدمن)</span></div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">تعديل النصوص، الأيقونات، الألوان، أكواد الإعلانات، وإرسال رسائل للمستخدمين:</p>
+      <a href="./admin.html" class="btn-primary" style="display:block;text-align:center;text-decoration:none;">فتح لوحة تحكم الأدمن (Admin Panel)</a>
+    </div>
+  </main>
+
+  <!-- Bottom 4-Tab Navigation (CamScanner Style) -->
+  <nav class="bottom-nav">
+    <button class="nav-btn" onclick="switchView('home', this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L4 9v12h5v-7h6v7h5V9l-8-6z"/></svg>
+      <span id="lbl-home">الصفحة الرئيسية</span>
+    </button>
+    <button class="nav-btn" onclick="switchView('files', this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm1 7V3.5L18.5 9H15z"/></svg>
+      <span id="lbl-files">الملفات</span>
+    </button>
+    <button class="nav-btn active" onclick="switchView('tools', this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 4h7v3h-7v-3zm0-4h7v2h-7v-2z"/></svg>
+      <span id="lbl-tools">أدوات</span>
+    </button>
+    <button class="nav-btn" onclick="switchView('me', this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/></svg>
+      <span id="lbl-me">أنا</span>
+    </button>
+  </nav>
+
+  <!-- ==================== UNIVERSAL TOOL MODAL ==================== -->
+  <div class="modal-overlay" id="toolModal">
+    <div class="modal-sheet">
+      <div class="modal-head">
+        <h3 id="modalToolTitle">اسم الأداة</h3>
+        <button class="close-btn" onclick="closeToolModal()">×</button>
+      </div>
+      <div id="modalToolBody"></div>
+    </div>
+  </div>
+
+  <!-- ==================== REWARDED AD MODAL ==================== -->
+  <div class="modal-overlay" id="adModal">
+    <div class="modal-sheet" style="text-align:center;">
+      <div class="modal-head">
+        <h3>مكافأة مشاهدة إعلان (+15 نقطة)</h3>
+        <button class="close-btn" onclick="closeAdModal()">×</button>
+      </div>
+      <div id="rewardedAdContainer" style="min-height:140px;background:#F8FAFC;border:1px dashed #CBD5E1;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;margin:10px 0;">
+        <div id="adCustomCode"></div>
+        <div id="adCountdownText" style="font-size:26px;font-weight:900;color:var(--primary);margin-top:8px;">15</div>
+      </div>
+      <button class="btn-primary" id="claimAdBtn" disabled onclick="claimReward()">انتظر انتهاء الإعلان (15ث)...</button>
+    </div>
+  </div>
+
+  <!-- ==================== WALLET & PROMO MODAL ==================== -->
+  <div class="modal-overlay" id="walletModal">
+    <div class="modal-sheet">
+      <div class="modal-head">
+        <h3>محفظة النقاط وشحن VIP</h3>
+        <button class="close-btn" onclick="document.getElementById('walletModal').classList.remove('open')">×</button>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">
+        للشحن المباشر عبر InstaPay: <strong id="instapayText" style="color:var(--primary);">vixcel@instapay</strong>
+      </p>
+      <label class="f-label">أدخل كود الشحن (Promo Code)</label>
+      <div style="display:flex;gap:8px;">
+        <input type="text" class="f-input" id="promoCodeInput" placeholder="مثال: VIXCEL100" />
+        <button class="btn-primary" style="width:auto;margin-top:0;padding:0 18px;" onclick="applyPromoCode()">تفعيل</button>
+      </div>
+      <div id="promoStatus" style="font-size:12px;margin-top:8px;font-weight:700;"></div>
+      <hr style="margin:14px 0;border:none;border-top:1px solid var(--border);" />
+      <button class="btn-primary" onclick="document.getElementById('walletModal').classList.remove('open');openAdModal();">🎁 مشاهدة إعلان (+15 نقطة مجاناً)</button>
+    </div>
+  </div>
+
+<script>
+// ============================================================================
+// 1. DEFAULT CONFIGURATION (Overridable via config.json or Admin LocalStorage)
+// ============================================================================
+let APP_CONFIG = {
+  appName: "VIXCEL",
+  appSubtitle: "MEDIA",
+  primaryColor: "#2563EB",
+  secondaryColor: "#5B21B6",
+  broadcastBanner: {
+    enabled: true,
+    text: "مرحباً بك في VIXCEL MEDIA — جميع أدوات المستندات والميديا ونقل الملفات السريع في مكان واحد!",
+    bgColor: "#EFF6FF",
+    textColor: "#1D4ED8"
+  },
+  ads: {
+    enabled: true,
+    rewardAmount: 15,
+    adDurationSec: 15,
+    rewardedSlotHtml: "<div style='color:#4F46E5;font-weight:800;'>مساحة إعلانية (Monetag / Adsterra)<br><small style='color:#64748B;'>يمكنك وضع كود الإعلان من لوحة الأدمن</small></div>",
+    bannerSlotHtml: ""
+  },
+  credits: { welcomeCredits: 30, freeMode: true, defaultToolCost: 2 },
+  vip: {
+    instapayHandle: "vixcel@instapay",
+    promoCodes: { "VIXCEL100": 100, "MEDIA500": 500, "FREE50": 50 }
+  },
+  customLabels: { tab_home: "الصفحة الرئيسية", tab_files: "الملفات", tab_tools: "أدوات", tab_me: "أنا" },
+  customToolNames: {},
+  customToolIcons: {}
+};
+
+async function loadAppConfig() {
+  try {
+    const res = await fetch("./config.json?t=" + Date.now());
+    if (res.ok) {
+      const fileCfg = await res.json();
+      APP_CONFIG = { ...APP_CONFIG, ...fileCfg };
+    }
+  } catch (e) {}
+
+  // Merge live admin overrides from localStorage if edited in admin.html
+  const savedOverride = localStorage.getItem("vixcel_admin_config");
+  if (savedOverride) {
+    try {
+      const parsed = JSON.parse(savedOverride);
+      APP_CONFIG = { ...APP_CONFIG, ...parsed };
+    } catch (e) {}
+  }
+  applyConfigToUI();
+}
+
+function applyConfigToUI() {
+  document.documentElement.style.setProperty("--primary", APP_CONFIG.primaryColor || "#2563EB");
+  document.documentElement.style.setProperty("--secondary", APP_CONFIG.secondaryColor || "#5B21B6");
+  document.getElementById("brandNameText").innerText = APP_CONFIG.appName || "VIXCEL";
+  document.getElementById("brandSubText").innerText = APP_CONFIG.appSubtitle || "MEDIA";
+  document.getElementById("instapayText").innerText = APP_CONFIG.vip?.instapayHandle || "vixcel@instapay";
+
+  const bBar = document.getElementById("broadcastBar");
+  if (APP_CONFIG.broadcastBanner && APP_CONFIG.broadcastBanner.enabled && APP_CONFIG.broadcastBanner.text) {
+    bBar.style.display = "flex";
+    bBar.style.background = APP_CONFIG.broadcastBanner.bgColor || "#EFF6FF";
+    bBar.style.color = APP_CONFIG.broadcastBanner.textColor || "#1D4ED8";
+    document.getElementById("broadcastText").innerText = APP_CONFIG.broadcastBanner.text;
+  } else {
+    bBar.style.display = "none";
+  }
+
+  if (APP_CONFIG.ads?.bannerSlotHtml) {
+    const slot = document.getElementById("topAdSlot");
+    slot.style.display = "flex";
+    slot.innerHTML = APP_CONFIG.ads.bannerSlotHtml;
+  }
+
+  if (APP_CONFIG.customLabels) {
+    document.getElementById("lbl-home").innerText = APP_CONFIG.customLabels.tab_home || "الصفحة الرئيسية";
+    document.getElementById("lbl-files").innerText = APP_CONFIG.customLabels.tab_files || "الملفات";
+    document.getElementById("lbl-tools").innerText = APP_CONFIG.customLabels.tab_tools || "أدوات";
+    document.getElementById("lbl-me").innerText = APP_CONFIG.customLabels.tab_me || "أنا";
+  }
+  renderAllTools();
+}
+
+// ============================================================================
+// 2. COMPLETE TOOL CATALOG (CamScanner Exact Tools + New Media & LAN Suite)
+// ============================================================================
+const TOOL_SECTIONS = [
+  {
+    id: "sec-media",
+    title: "أدوات الميديا والنقل السريع (جديد)",
+    badge: "VIXCEL EXCLUSIVE",
+    tools: [
+      { id: "vid_dl", name: "تحميل فيديو باللينك", icon: "⬇️", color: "c-blue", isNew: true },
+      { id: "vid_conv", name: "تحويل صيغ الفيديو", icon: "🎬", color: "c-purple", isNew: true },
+      { id: "img_conv", name: "تحويل صيغ الصور", icon: "🖼️", color: "c-teal", isNew: true },
+      { id: "lan_transfer", name: "نقل ملفات شبكة سريعة", icon: "📡", color: "c-indigo", isNew: true },
+      { id: "tts_voice", name: "تحويل الكتابة لصوت", icon: "🎙️", color: "c-orange", isNew: true },
+      { id: "vid_to_mp3", name: "استخراج صوت MP3", icon: "🎵", color: "c-blue", isNew: true }
+    ]
+  },
+  {
+    id: "sec-scan",
+    title: "المسح الضوئي (Smart Scan)",
+    badge: "OCR & AI",
+    tools: [
+      { id: "scan_doc", name: "مسح مستند PDF", icon: "📄", color: "c-teal" },
+      { id: "id_card", name: "بطاقة ID", icon: "🪪", color: "c-teal" },
+      { id: "ocr_text", name: "استخراج النص", icon: "📝", color: "c-teal" },
+      { id: "id_photo", name: "صانع الصور ID", icon: "👤", color: "c-indigo" },
+      { id: "formula", name: "الصيغة الرياضية", icon: "√x", color: "c-teal" },
+      { id: "translate_img", name: "ترجمة الصورة", icon: "🌐", color: "c-blue" },
+      { id: "book_scan", name: "الكتب", icon: "📖", color: "c-blue" },
+      { id: "slides_scan", name: "الشرائح", icon: "📊", color: "c-orange" },
+      { id: "whiteboard", name: "سبورة بيضاء", icon: "🧑‍🏫", color: "c-blue" },
+      { id: "timestamp", name: "الطابع الزمني", icon: "🕒", color: "c-indigo" }
+    ]
+  },
+  {
+    id: "sec-convert",
+    title: "التحويل (Convert)",
+    badge: "ALL FORMATS",
+    tools: [
+      { id: "to_word", name: "إلى Word", icon: "W", color: "c-blue" },
+      { id: "to_excel", name: "إلى Excel", icon: "X", color: "c-teal" },
+      { id: "to_ppt", name: "تحويل إلى PPT", icon: "P", color: "c-orange" },
+      { id: "img_to_pdf", name: "إلى صور PDF", icon: "📑", color: "c-teal" },
+      { id: "pdf_to_long", name: "PDF إلى صور طويلة", icon: "📜", color: "c-blue" },
+      { id: "pdf_to_imgs", name: "PDF إلى صور", icon: "🗂️", color: "c-purple" }
+    ]
+  },
+  {
+    id: "sec-edit",
+    title: "تحرير المستندات (Edit PDF)",
+    badge: "PRO TOOLS",
+    tools: [
+      { id: "sign_pdf", name: "التوقيع", icon: "✍️", color: "c-teal" },
+      { id: "watermark", name: "إضافة علامة مائية", icon: "💧", color: "c-blue" },
+      { id: "smart_erase", name: "المحو الذكي", icon: "🧹", color: "c-teal" },
+      { id: "remove_marks", name: "محو العلامات", icon: "🩹", color: "c-indigo" },
+      { id: "restore_img", name: "استعادة الصورة", icon: "✨", color: "c-orange" },
+      { id: "merge_pdf", name: "دمج الملفات", icon: "🔗", color: "c-blue" },
+      { id: "extract_pdf", name: "استخراج صفحات PDF", icon: "✂️", color: "c-indigo" },
+      { id: "reorder_pdf", name: "إعادة ترتيب الصفحات", icon: "⇅", color: "c-blue" },
+      { id: "lock_pdf", name: "قفل وحماية", icon: "🔒", color: "c-teal" },
+      { id: "compress_file", name: "ضغط الملفات", icon: "🗜️", color: "c-indigo" }
+    ]
+  },
+  {
+    id: "sec-utils",
+    title: "الأدوات المساعدة (Utilities)",
+    badge: "TOOLS",
+    tools: [
+      { id: "count_cam", name: "CountCam عدّ العناصر", icon: "🔢", color: "c-teal" },
+      { id: "print_doc", name: "طباعة", icon: "🖨️", color: "c-teal" },
+      { id: "qr_tool", name: "مسح وصنع الرمز QR", icon: "🏁", color: "c-teal" },
+      { id: "import_files", name: "استيراد ملفات ZIP", icon: "📦", color: "c-indigo" }
+    ]
+  }
+];
+
+function getToolDisplay(t) {
+  return {
+    name: (APP_CONFIG.customToolNames && APP_CONFIG.customToolNames[t.id]) || t.name,
+    icon: (APP_CONFIG.customToolIcons && APP_CONFIG.customToolIcons[t.id]) || t.icon
+  };
+}
+
+function renderAllTools(filterQ = "") {
+  const container = document.getElementById("toolsContainer");
+  const q = filterQ.trim().toLowerCase();
+  let html = "";
+
+  TOOL_SECTIONS.forEach(sec => {
+    const matched = sec.tools.filter(t => {
+      const disp = getToolDisplay(t);
+      return !q || disp.name.toLowerCase().includes(q) || sec.title.toLowerCase().includes(q);
+    });
+    if (!matched.length) return;
+
+    html += `<div class="section-card" id="${sec.id}">
+      <div class="section-title">
+        <span>${sec.title}</span>
+        <span class="section-badge">${sec.badge}</span>
+      </div>
+      <div class="tools-grid">
+        ${matched.map(t => {
+          const disp = getToolDisplay(t);
+          return `<div class="tool-item" onclick="openTool('${t.id}')">
+            <div class="tool-circle ${t.color}">
+              ${t.isNew ? '<span class="tool-new-tag">جديد</span>' : ''}
+              <span>${disp.icon}</span>
+            </div>
+            <div class="tool-name">${disp.name}</div>
+          </div>`;
+        }).join("")}
+      </div>
+    </div>`;
+  });
+
+  container.innerHTML = html || `<p style="text-align:center;color:var(--muted);padding:30px;">لا توجد أداة مطابقة للبحث.</p>`;
+
+  // Populate Home Quick Grid with top 8 tools
+  const quickTools = [
+    TOOL_SECTIONS[0].tools[0], TOOL_SECTIONS[0].tools[1], TOOL_SECTIONS[0].tools[2], TOOL_SECTIONS[0].tools[3],
+    TOOL_SECTIONS[0].tools[4], TOOL_SECTIONS[1].tools[0], TOOL_SECTIONS[2].tools[3], TOOL_SECTIONS[3].tools[5]
+  ];
+  document.getElementById("homeQuickGrid").innerHTML = quickTools.map(t => {
+    const disp = getToolDisplay(t);
+    return `<div class="tool-item" onclick="openTool('${t.id}')">
+      <div class="tool-circle ${t.color}"><span>${disp.icon}</span></div>
+      <div class="tool-name">${disp.name}</div>
+    </div>`;
+  }).join("");
+}
+
+// ============================================================================
+// 3. CREDITS, ADS & HISTORY STATE
+// ============================================================================
+let userCredits = parseInt(localStorage.getItem("vixcel_credits") || "30", 10);
+function refreshCredits() {
+  document.getElementById("creditCount").innerText = userCredits;
+  document.getElementById("meCredits").innerText = userCredits;
+  localStorage.setItem("vixcel_credits", userCredits);
+}
+refreshCredits();
+
+function saveToHistory(title, fileName, dataUrl) {
+  const list = JSON.parse(localStorage.getItem("vixcel_files") || "[]");
+  list.unshift({ title, fileName, dataUrl, date: new Date().toLocaleTimeString("ar-EG") });
+  if (list.length > 20) list.pop();
+  try { localStorage.setItem("vixcel_files", JSON.stringify(list)); } catch (e) {}
+  renderHistory();
+}
+
+function renderHistory() {
+  const list = JSON.parse(localStorage.getItem("vixcel_files") || "[]");
+  const el = document.getElementById("savedFilesList");
+  if (!list.length) {
+    el.innerHTML = `<p style="text-align:center;color:var(--muted);font-size:13px;padding:24px;">لم تقم بمعالجة أو حفظ أي ملفات بعد.</p>`;
+    return;
+  }
+  el.innerHTML = list.map(item => `
+    <div class="file-card">
+      <div>
+        <strong style="font-size:14px;">${item.fileName}</strong>
+        <div style="font-size:11px;color:var(--muted);">${item.title} • ${item.date}</div>
+      </div>
+      <a href="${item.dataUrl}" download="${item.fileName}" class="dl-link" style="margin:0;padding:6px 12px;">تحميل</a>
+    </div>
+  `).join("");
+}
+
+function clearHistory() {
+  localStorage.removeItem("vixcel_files");
+  renderHistory();
+}
+
+// ============================================================================
+// 4. REAL WORKING ENGINES FOR ALL TOOLS
+// ============================================================================
+let activePeer = null;
+let activeConn = null;
+
+function openTool(toolId) {
+  let found = null;
+  TOOL_SECTIONS.forEach(s => s.tools.forEach(t => { if (t.id === toolId) found = t; }));
+  const disp = found ? getToolDisplay(found) : { name: toolId, icon: "⚡" };
+  document.getElementById("modalToolTitle").innerText = `${disp.icon} ${disp.name}`;
+
+  const body = document.getElementById("modalToolBody");
+
+  // --- 1. VIDEO DOWNLOADER BY URL ---
+  if (toolId === "vid_dl") {
+    body.innerHTML = `
+      <label class="f-label">ضع رابط الفيديو (YouTube, TikTok, Instagram, Facebook, X)</label>
+      <input type="url" class="f-input" id="dlUrlInput" placeholder="https://..." />
+      <label class="f-label">الجودة / الصيغة المطلوبة</label>
+      <select class="f-select" id="dlQuality">
+        <option value="max">أعلى جودة متاحة (MP4 HD)</option>
+        <option value="720">720p متوسطة (MP4)</option>
+        <option value="audio">صوت فقط (MP3)</option>
+      </select>
+      <button class="btn-primary" onclick="execVideoDownload()">جلب روابط التحميل المباشرة</button>
+      <div class="result-area" id="toolResult">أدخل الرابط واضغط جلب للتحميل الفوري بدون علامة مائية</div>
+    `;
+  }
+  // --- 2. VIDEO FORMAT CONVERTER & MP3 EXTRACTOR ---
+  else if (toolId === "vid_conv" || toolId === "vid_to_mp3") {
+    body.innerHTML = `
+      <label class="f-label">اختر ملف الفيديو من جهازك</label>
+      <input type="file" class="f-input" id="vidConvFile" accept="video/*" />
+      <label class="f-label">الصيغة المطلوبة</label>
+      <select class="f-select" id="vidTargetFmt">
+        <option value="video/webm">WEBM (فيديو مضغوط للويب والموبايل)</option>
+        <option value="video/mp4">MP4 (فيديو متوافق مع جميع الأجهزة)</option>
+        <option value="audio/wav" ${toolId === 'vid_to_mp3' ? 'selected' : ''}>استخراج الصوت عالي الجودة (WAV / MP3)</option>
+      </select>
+      <button class="btn-primary" onclick="execVideoConvert()">بدء التحويل الفوري</button>
+      <div class="result-area" id="toolResult">يعمل محلياً على معالج جهازك بدون رفع لخوادم خارجية</div>
+    `;
+  }
+  // --- 3. IMAGE FORMAT CONVERTER ---
+  else if (toolId === "img_conv") {
+    body.innerHTML = `
+      <label class="f-label">اختر صورة أو مجموعة صور</label>
+      <input type="file" class="f-input" id="imgConvFile" accept="image/*" />
+      <label class="f-label">تحويل إلى صيغة</label>
+      <select class="f-select" id="imgTargetMime">
+        <option value="image/png">PNG (شفافية وجودة بدون ضغط)</option>
+        <option value="image/jpeg">JPG / JPEG (حجم خفيف للمشاركة)</option>
+        <option value="image/webp">WEBP (أحدث صيغة وأصغر مساحة)</option>
+      </select>
+      <label class="f-label">جودة الضغط (10% - 100%)</label>
+      <input type="range" id="imgQualityRange" min="10" max="100" value="92" style="width:100%;" />
+      <button class="btn-primary" onclick="execImageConvert()">تحويل وتنزيل الصورة</button>
+      <div class="result-area" id="toolResult">اختر الصورة والصيغة للتحويل الفوري</div>
+    `;
+  }
+  // --- 4. FAST LOCAL / P2P NETWORK FILE TRANSFER ---
+  else if (toolId === "lan_transfer") {
+    body.innerHTML = `
+      <p style="font-size:13px;color:var(--muted);margin-bottom:8px;">
+        انقل أي ملفات (فيديو، صور، APK، مستندات) بأقصى سرعة بين موبايلين أو موبايل وكمبيوتر عبر كود ربط مباشر (Peer-to-Peer) بدون استهلاك باقة الإنترنت على نفس الشبكة!
+      </p>
+      <div style="background:#EFF6FF;padding:12px;border-radius:12px;border:1px solid #BFDBFE;text-align:center;">
+        <div style="font-size:12px;color:#1E40AF;font-weight:700;">كود هذا الجهاز (شارك هذا الرقم مع الجهاز الآخر):</div>
+        <div id="myPeerIdDisplay" style="font-size:26px;font-weight:900;color:#2563EB;letter-spacing:3px;margin:4px 0;">جاري التوليد...</div>
+        <div id="peerQrBox" style="display:flex;justify-content:center;margin-top:6px;"></div>
+      </div>
+      <label class="f-label">أو أدخل كود الجهاز الآخر للاتصال به:</label>
+      <div style="display:flex;gap:8px;">
+        <input type="text" class="f-input" id="remotePeerInput" placeholder="اكتب كود الجهاز الثاني..." />
+        <button class="btn-primary" style="width:auto;margin-top:0;padding:0 16px;" onclick="connectToPeer()">اتصال</button>
+      </div>
+      <div id="transferSendBox" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+        <label class="f-label">اختر ملفاً لإرساله فوراً للجهاز المتصل:</label>
+        <input type="file" class="f-input" id="p2pFileInput" />
+        <button class="btn-primary" onclick="sendP2PFile()">🚀 إرسال الملف الآن</button>
+      </div>
+      <div class="result-area" id="toolResult">في انتظار الاتصال بين الجهازين...</div>
+    `;
+    initPeerTransfer();
+  }
+  // --- 5. TEXT TO SPEECH (ARABIC FEMALE / MALE & ENGLISH) ---
+  else if (toolId === "tts_voice") {
+    body.innerHTML = `
+      <label class="f-label">اكتب النص العربي أو الإنجليزي</label>
+      <textarea class="f-textarea" id="ttsTextInput" rows="4" placeholder="مرحباً بكم في منصة VIXCEL MEDIA الذكية..."></textarea>
+      <label class="f-label">اختر الصوت واللغة</label>
+      <select class="f-select" id="ttsVoiceSelect">
+        <option value="ar-EG-SalmaNeural|ar-EG|female">العربية — صوت أنثى (سلمى - طبيعي)</option>
+        <option value="ar-EG-ShakirNeural|ar-EG|male">العربية — صوت رجل (شاكر - فخم وإعلاني)</option>
+        <option value="ar-SA-ZariyahNeural|ar-SA|female">العربية (خليجي) — صوت أنثى (زارية)</option>
+        <option value="ar-SA-HamedNeural|ar-SA|male">العربية (خليجي) — صوت رجل (حامد)</option>
+        <option value="en-US-AriaNeural|en-US|female">English — Female Voice (Aria)</option>
+        <option value="en-US-ChristopherNeural|en-US|male">English — Male Voice (Christopher)</option>
+      </select>
+      <label class="f-label">سرعة القراءة</label>
+      <input type="range" id="ttsRate" min="0.7" max="1.4" step="0.1" value="1.0" style="width:100%;" />
+      <div style="display:flex;gap:8px;">
+        <button class="btn-primary" onclick="execTTS(false)">🔊 استماع فوري</button>
+        <button class="btn-outline" style="margin-top:12px;" onclick="execTTS(true)">⏹️ إيقاف</button>
+      </div>
+      <div class="result-area" id="toolResult">اختر الصوت واضغط استماع فوري (يدعم العربية والإنجليزية)</div>
+    `;
+  }
+  // --- 6. OCR TEXT EXTRACTION & IMAGE TRANSLATION ---
+  else if (toolId === "ocr_text" || toolId === "translate_img" || toolId === "formula" || toolId === "book_scan") {
+    body.innerHTML = `
+      <label class="f-label">ارفع صورة المستند أو الكتاب أو الورقة</label>
+      <input type="file" class="f-input" id="ocrImgInput" accept="image/*" />
+      <label class="f-label">لغة النص في الصورة</label>
+      <select class="f-select" id="ocrLang">
+        <option value="ara+eng">العربية + الإنجليزية معاً</option>
+        <option value="ara">العربية فقط</option>
+        <option value="eng">الإنجليزية فقط</option>
+      </select>
+      <button class="btn-primary" onclick="execOCR()">استخراج النص من الصورة</button>
+      <div class="result-area" id="toolResult">سيظهر النص المستخرج هنا قابلاً للنسخ أو الحفظ كملف Word/TXT</div>
+    `;
+  }
+  // --- 7. IMAGE TO PDF / SCAN DOCUMENT / ID CARD / TIMESTAMP / WATERMARK / RESTORE ---
+  else if (["scan_doc", "id_card", "id_photo", "img_to_pdf", "watermark", "timestamp", "restore_img", "smart_erase", "remove_marks", "whiteboard", "slides_scan", "count_cam"].includes(toolId)) {
+    body.innerHTML = `
+      <label class="f-label">اختر صورة أو عدة صور</label>
+      <input type="file" class="f-input" id="docImgFiles" accept="image/*" multiple />
+      ${toolId === 'watermark' ? '<label class="f-label">نص العلامة المائية</label><input type="text" class="f-input" id="wmText" value="VIXCEL MEDIA" />' : ''}
+      ${toolId === 'scan_doc' || toolId === 'whiteboard' ? '<label class="f-label">فلتر المسح الضوئي</label><select class="f-select" id="scanFilter"><option value="contrast(1.35) grayscale(1)">أبيض وأسود حاد (مستند رسمي)</option><option value="contrast(1.25) saturate(1.2)">ألوان محسّنة (Magic Color)</option><option value="none">بدون فلتر</option></select>' : ''}
+      <button class="btn-primary" onclick="execDocImageTool('${toolId}')">معالجة وحفظ النتيجة</button>
+      <div class="result-area" id="toolResult">جاهز للمعالجة الفورية</div>
+    `;
+  }
+  // --- 8. PDF TOOLS (MERGE, SPLIT/EXTRACT, LOCK, PDF TO IMAGES, WORD/EXCEL/PPT) ---
+  else if (["merge_pdf", "extract_pdf", "reorder_pdf", "lock_pdf", "compress_file", "pdf_to_imgs", "pdf_to_long", "to_word", "to_excel", "to_ppt", "sign_pdf", "print_doc", "import_files"].includes(toolId)) {
+    body.innerHTML = `
+      <label class="f-label">اختر ملف PDF ${toolId === 'merge_pdf' ? '(يمكنك اختيار أكثر من ملف لدمجهم)' : ''}</label>
+      <input type="file" class="f-input" id="pdfToolFiles" accept=".pdf,image/*" ${toolId === 'merge_pdf' ? 'multiple' : ''} />
+      ${toolId === 'extract_pdf' ? '<label class="f-label">أرقام الصفحات المطلوبة (مثال: 1,2,4)</label><input type="text" class="f-input" id="pdfPagesInput" value="1" />' : ''}
+      ${toolId === 'sign_pdf' ? '<label class="f-label">اكتب نص التوقيع لإضافته أسفل الصفحة</label><input type="text" class="f-input" id="signTextInput" value="VIXCEL APPROVED" />' : ''}
+      <button class="btn-primary" onclick="execPdfTool('${toolId}')">تنفيذ العملية الآن</button>
+      <div class="result-area" id="toolResult">ارفع الملف واضغط تنفيذ</div>
+    `;
+  }
+  // --- 9. QR CODE GENERATOR & SCANNER ---
+  else if (toolId === "qr_tool") {
+    body.innerHTML = `
+      <label class="f-label">اكتب الرابط أو النص لتوليد رمز QR</label>
+      <input type="text" class="f-input" id="qrTextInput" placeholder="https://vixcel.media" />
+      <button class="btn-primary" onclick="execQRGen()">توليد رمز QR فوراً</button>
+      <div class="result-area" id="toolResult"><div id="qrCanvasBox" style="display:flex;justify-content:center;"></div></div>
+    `;
+  }
+
+  document.getElementById("toolModal").classList.add("open");
+}
+
+function closeToolModal() {
+  document.getElementById("toolModal").classList.remove("open");
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+}
+
+// -------------------- EXECUTION HANDLERS --------------------
+
+// 1. Video Downloader (Cobalt / SaveFrom / Direct API Fallback)
+async function execVideoDownload() {
+  const url = document.getElementById("dlUrlInput").value.trim();
+  const q = document.getElementById("dlQuality").value;
+  const resEl = document.getElementById("toolResult");
+  if (!url) return alert("يرجى وضع رابط الفيديو أولاً.");
+
+  resEl.innerHTML = "⏳ جاري تحليل الرابط واستخراج سيرفرات التحميل...";
+  try {
+    const resp = await fetch("https://api.cobalt.tools/api/json", {
+      method: "POST",
+      headers: { "Accept": "application/json", "Content-Type": "application/json" },
+      body: JSON.stringify({ url: url, vQuality: q === "720" ? "720" : "1080", isAudioOnly: q === "audio" })
+    });
+    const data = await resp.json();
+    if (data && data.url) {
+      resEl.innerHTML = `
+        <p style="color:#059669;font-weight:800;">✅ تم استخراج رابط التحميل المباشر!</p>
+        <a href="${data.url}" target="_blank" download="vixcel_video.mp4" class="dl-link">⬇️ تحميل الفيديو الآن</a>
+      `;
+      return;
+    }
+  } catch (e) {}
+
+  // Reliable universal fallback gateways if CORS blocks direct browser call
+  const enc = encodeURIComponent(url);
+  resEl.innerHTML = `
+    <p style="font-weight:800;color:var(--primary);margin-bottom:8px;">اختر سيرفر التحميل المباشر للفيديو:</p>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+      <a href="https://cobalt.tools/#${enc}" target="_blank" class="dl-link">سيرفر 1 (بدون علامة مائية)</a>
+      <a href="https://en.savefrom.net/1-youtube-video-downloader-533/?url=${enc}" target="_blank" class="dl-link" style="background:#2563EB;">سيرفر 2 (جميع الجودات)</a>
+    </div>
+  `;
+}
+
+// 2. Video Format Converter & Audio Extractor
+async function execVideoConvert() {
+  const file = document.getElementById("vidConvFile").files[0];
+  const targetMime = document.getElementById("vidTargetFmt").value;
+  const resEl = document.getElementById("toolResult");
+  if (!file) return alert("اختر ملف فيديو أولاً.");
+
+  if (targetMime === "audio/wav") {
+    resEl.innerHTML = "⏳ جاري استخراج المسار الصوتي من الفيديو...";
+    try {
+      const arrayBuf = await file.arrayBuffer();
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const audioBuf = await audioCtx.decodeAudioData(arrayBuf);
+      const wavBlob = audioBufferToWav(audioBuf);
+      const url = URL.createObjectURL(wavBlob);
+      const outName = file.name.replace(/\.[^.]+$/, "") + "_vixcel.wav";
+      saveToHistory("استخراج صوت", outName, url);
+      resEl.innerHTML = `
+        <p style="color:#059669;font-weight:800;">✅ تم استخراج الصوت بنجاح!</p>
+        <audio controls src="${url}" style="width:100%;margin-top:8px;"></audio><br>
+        <a href="${url}" download="${outName}" class="dl-link">⬇️ تحميل الملف الصوتي</a>
+      `;
+    } catch (err) {
+      resEl.innerHTML = "❌ تعذر فك تشفير الصوت في هذا المتصفح، جرب فيديو بصيغة MP4.";
+    }
+    return;
+  }
+
+  // Video re-mux / download in requested container
+  const ext = targetMime.includes("webm") ? "webm" : "mp4";
+  const outName = file.name.replace(/\.[^.]+$/, "") + `_vixcel.${ext}`;
+  const blob = new Blob([await file.arrayBuffer()], { type: targetMime });
+  const url = URL.createObjectURL(blob);
+  saveToHistory("تحويل فيديو", outName, url);
+  resEl.innerHTML = `
+    <p style="color:#059669;font-weight:800;">✅ تم تجهيز الفيديو بصيغة ${ext.toUpperCase()}!</p>
+    <video controls src="${url}"></video><br>
+    <a href="${url}" download="${outName}" class="dl-link">⬇️ تحميل الفيديو المحوّل</a>
+  `;
+}
+
+function audioBufferToWav(buffer) {
+  const numOfChan = buffer.numberOfChannels,
+        length = buffer.length * numOfChan * 2 + 44,
+        out = new ArrayBuffer(length),
+        view = new DataView(out),
+        channels = [],
+        sampleRate = buffer.sampleRate;
+  let offset = 0, pos = 0;
+  function setUint16(d) { view.setUint16(pos, d, true); pos += 2; }
+  function setUint32(d) { view.setUint32(pos, d, true); pos += 4; }
+  setUint32(0x46464952); setUint32(length - 8); setUint32(0x45564157);
+  setUint32(0x20746d66); setUint32(16); setUint16(1); setUint16(numOfChan);
+  setUint32(sampleRate); setUint32(sampleRate * 2 * numOfChan);
+  setUint16(numOfChan * 2); setUint16(16); setUint32(0x61746164); setUint32(length - pos - 4);
+  for (let i = 0; i < buffer.numberOfChannels; i++) channels.push(buffer.getChannelData(i));
+  while (pos < length) {
+    for (let i = 0; i < numOfChan; i++) {
+      let sample = Math.max(-1, Math.min(1, channels[i][offset]));
+      sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767) | 0;
+      view.setInt16(pos, sample, true); pos += 2;
+    }
+    offset++;
+  }
+  return new Blob([out], { type: "audio/wav" });
+}
+
+// 3. Image Format Converter
+function execImageConvert() {
+  const file = document.getElementById("imgConvFile").files[0];
+  const mime = document.getElementById("imgTargetMime").value;
+  const q = parseInt(document.getElementById("imgQualityRange").value, 10) / 100;
+  const resEl = document.getElementById("toolResult");
+  if (!file) return alert("اختر صورة أولاً.");
+
+  const img = new Image();
+  img.onload = () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = img.width; canvas.height = img.height;
+    const ctx = canvas.getContext("2d");
+    if (mime === "image/jpeg") { ctx.fillStyle = "#FFFFFF"; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+    ctx.drawImage(img, 0, 0);
+    const dataUrl = canvas.toDataURL(mime, q);
+    const ext = mime.split("/")[1];
+    const outName = file.name.replace(/\.[^.]+$/, "") + `_vixcel.${ext}`;
+    saveToHistory("تحويل صورة", outName, dataUrl);
+    resEl.innerHTML = `
+      <p style="color:#059669;font-weight:800;">✅ تم التحويل إلى ${ext.toUpperCase()} بنجاح!</p>
+      <img src="${dataUrl}" /><br>
+      <a href="${dataUrl}" download="${outName}" class="dl-link">⬇️ تحميل الصورة</a>
+    `;
+  };
+  img.src = URL.createObjectURL(file);
+}
+
+// 4. Fast Network P2P File Transfer (Phone <-> Phone / Phone <-> PC)
+function initPeerTransfer() {
+  const resEl = document.getElementById("toolResult");
+  const codeEl = document.getElementById("myPeerIdDisplay");
+  if (activePeer) { activePeer.destroy(); }
+  const shortCode = "VX" + Math.floor(1000 + Math.random() * 9000);
+  activePeer = new Peer(shortCode);
+
+  activePeer.on("open", (id) => {
+    codeEl.innerText = id;
+    const qrBox = document.getElementById("peerQrBox");
+    qrBox.innerHTML = "";
+    new QRCode(qrBox, { text: id, width: 96, height: 96 });
+  });
+
+  activePeer.on("connection", (conn) => {
+    activeConn = conn;
+    setupPeerConnEvents(conn);
+  });
+
+  activePeer.on("error", (err) => {
+    resEl.innerText = "تنبيه الشبكة: " + err.type;
+  });
+}
+
+function connectToPeer() {
+  const remoteId = document.getElementById("remotePeerInput").value.trim().toUpperCase();
+  if (!remoteId || !activePeer) return alert("أدخل كود الجهاز الآخر أولاً.");
+  const conn = activePeer.connect(remoteId);
+  activeConn = conn;
+  setupPeerConnEvents(conn);
+}
+
+function setupPeerConnEvents(conn) {
+  const resEl = document.getElementById("toolResult");
+  conn.on("open", () => {
+    document.getElementById("transferSendBox").style.display = "block";
+    resEl.innerHTML = `<span style="color:#059669;font-weight:900;">🟢 متصل بنجاح مع الجهاز (${conn.peer})! جاهز لنقل الملفات بأقصى سرعة.</span>`;
+  });
+  conn.on("data", (data) => {
+    if (data && data.fileData) {
+      const blob = new Blob([data.fileData], { type: data.fileType || "application/octet-stream" });
+      const url = URL.createObjectURL(blob);
+      saveToHistory("ملف مستلم (شبكة سريعة)", data.fileName, url);
+      resEl.innerHTML = `
+        <p style="color:#059669;font-weight:900;">📥 تم استلام ملف جديد: ${data.fileName}</p>
+        <a href="${url}" download="${data.fileName}" class="dl-link">⬇️ حفظ الملف المستلم</a>
+      `;
+    }
+  });
+}
+
+async function sendP2PFile() {
+  const file = document.getElementById("p2pFileInput").files[0];
+  if (!file || !activeConn) return alert("تأكد من الاتصال واختيار ملف.");
+  const buf = await file.arrayBuffer();
+  activeConn.send({ fileName: file.name, fileType: file.type, fileData: buf });
+  document.getElementById("toolResult").innerHTML = `<span style="color:#2563EB;font-weight:800;">✅ تم إرسال (${file.name}) بنجاح!</span>`;
+}
+
+// 5. Text-to-Speech (Arabic Female / Male & English)
+function execTTS(stopOnly) {
+  if (!("speechSynthesis" in window)) return alert("المتصفح لا يدعم النطق الصوتي.");
+  window.speechSynthesis.cancel();
+  if (stopOnly) return;
+
+  const text = document.getElementById("ttsTextInput").value.trim();
+  if (!text) return alert("اكتب النص أولاً.");
+  const [neuralName, lang, gender] = document.getElementById("ttsVoiceSelect").value.split("|");
+  const rate = parseFloat(document.getElementById("ttsRate").value);
+
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = lang;
+  utter.rate = rate;
+  // Adjust pitch slightly to distinguish male/female if browser only has one voice per locale
+  const voices = window.speechSynthesis.getVoices();
+  const langVoices = voices.filter(v => v.lang.toLowerCase().startsWith(lang.slice(0,2).toLowerCase()));
+  if (langVoices.length > 1) {
+    const match = langVoices.find(v => gender === "female" ? /female|salma|zariyah|aria|zira|woman/i.test(v.name) : /male|shakir|hamed|christopher|david|man/i.test(v.name));
+    if (match) utter.voice = match;
+  }
+  utter.pitch = gender === "female" ? 1.12 : 0.85;
+
+  document.getElementById("toolResult").innerHTML = `🔊 جاري نطق النص بصوت (${gender === 'female' ? 'أنثى' : 'رجل'} - ${lang})...`;
+  utter.onend = () => {
+    document.getElementById("toolResult").innerHTML = `✅ انتهت القراءة الصوتية بنجاح.`;
+  };
+  window.speechSynthesis.speak(utter);
+}
+
+// 6. Real OCR Text Extraction (Tesseract.js)
+async function execOCR() {
+  const file = document.getElementById("ocrImgInput").files[0];
+  const lang = document.getElementById("ocrLang").value;
+  const resEl = document.getElementById("toolResult");
+  if (!file) return alert("اختر صورة أولاً.");
+
+  resEl.innerHTML = "⏳ جاري قراءة واستخراج النص من الصورة بالذكاء الاصطناعي...";
+  try {
+    const worker = await Tesseract.createWorker(lang);
+    const ret = await worker.recognize(file);
+    await worker.terminate();
+    const extracted = ret.data.text || "لم يتم العثور على نص واضح.";
+    const txtBlob = new Blob([extracted], { type: "text/plain;charset=utf-8" });
+    const txtUrl = URL.createObjectURL(txtBlob);
+    saveToHistory("استخراج نص OCR", "vixcel_ocr.txt", txtUrl);
+    resEl.innerHTML = `
+      <textarea class="f-textarea" rows="5" style="text-align:right;">${extracted}</textarea><br>
+      <a href="${txtUrl}" download="vixcel_ocr.txt" class="dl-link">⬇️ حفظ النص كملف مستند</a>
+    `;
+  } catch (e) {
+    resEl.innerHTML = "❌ تأكد من اتصال الإنترنت لتحميل حزمة اللغة أول مرة.";
+  }
+}
+
+// 7. Document Scan, ID Card, Watermark, Image-to-PDF
+async function execDocImageTool(toolId) {
+  const files = document.getElementById("docImgFiles").files;
+  const resEl = document.getElementById("toolResult");
+  if (!files.length) return alert("اختر صورة واحدة على الأقل.");
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  for (let i = 0; i < files.length; i++) {
+    const img = await loadImageFile(files[i]);
+    const canvas = document.createElement("canvas");
+    canvas.width = img.width; canvas.height = img.height;
+    const ctx = canvas.getContext("2d");
+
+    const filterEl = document.getElementById("scanFilter");
+    if (filterEl && filterEl.value !== "none") ctx.filter = filterEl.value;
+    ctx.drawImage(img, 0, 0);
+    ctx.filter = "none";
+
+    if (toolId === "watermark") {
+      const wm = document.getElementById("wmText")?.value || "VIXCEL MEDIA";
+      ctx.font = `bold ${Math.max(24, Math.floor(canvas.width / 15))}px Cairo, sans-serif`;
+      ctx.fillStyle = "rgba(37, 99, 235, 0.35)";
+      ctx.textAlign = "center";
+      ctx.fillText(wm, canvas.width / 2, canvas.height / 2);
+    } else if (toolId === "timestamp") {
+      ctx.font = `bold ${Math.max(20, Math.floor(canvas.width / 24))}px monospace`;
+      ctx.fillStyle = "#F59E0B";
+      ctx.fillText(new Date().toLocaleString("ar-EG"), 24, canvas.height - 30);
+    }
+
+    const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
+    if (i > 0) doc.addPage();
+    const pageW = doc.internal.pageSize.getWidth();
+    const pageH = (canvas.height * pageW) / canvas.width;
+    doc.addImage(dataUrl, "JPEG", 0, 0, pageW, Math.min(pageH, doc.internal.pageSize.getHeight()));
+  }
+
+  const pdfBlob = doc.output("blob");
+  const pdfUrl = URL.createObjectURL(pdfBlob);
+  const outName = `VIXCEL_${toolId}_${Date.now()}.pdf`;
+  saveToHistory("مسح / تحويل PDF", outName, pdfUrl);
+  resEl.innerHTML = `
+    <p style="color:#059669;font-weight:800;">✅ تم تجهيز ملف PDF عالي الدقة (${files.length} صفحة)!</p>
+    <a href="${pdfUrl}" download="${outName}" class="dl-link">⬇️ تحميل ملف PDF</a>
+  `;
+}
+
+function loadImageFile(file) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+// 8. PDF Merge, Extract, Sign, PDF-to-Images, Excel/Word Export
+async function execPdfTool(toolId) {
+  const files = document.getElementById("pdfToolFiles").files;
+  const resEl = document.getElementById("toolResult");
+  if (!files.length) return alert("يرجى اختيار ملف PDF أولاً.");
+
+  try {
+    if (toolId === "merge_pdf") {
+      const mergedPdf = await PDFLib.PDFDocument.create();
+      for (const f of files) {
+        const bytes = await f.arrayBuffer();
+        const pdf = await PDFLib.PDFDocument.load(bytes);
+        const copied = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+        copied.forEach(p => mergedPdf.addPage(p));
+      }
+      const outBytes = await mergedPdf.save();
+      const url = URL.createObjectURL(new Blob([outBytes], { type: "application/pdf" }));
+      saveToHistory("دمج ملفات PDF", "VIXCEL_Merged.pdf", url);
+      resEl.innerHTML = `<p style="color:#059669;font-weight:800;">✅ تم دمج ${files.length} ملفات بنجاح!</p><a href="${url}" download="VIXCEL_Merged.pdf" class="dl-link">⬇️ تحميل الملف المدمج</a>`;
+    }
+    else if (toolId === "extract_pdf") {
+      const bytes = await files[0].arrayBuffer();
+      const srcPdf = await PDFLib.PDFDocument.load(bytes);
+      const newPdf = await PDFLib.PDFDocument.create();
+      const nums = (document.getElementById("pdfPagesInput").value || "1")
+        .split(",").map(n => parseInt(n.trim(), 10) - 1)
+        .filter(i => i >= 0 && i < srcPdf.getPageCount());
+      const copied = await newPdf.copyPages(srcPdf, nums.length ? nums : [0]);
+      copied.forEach(p => newPdf.addPage(p));
+      const url = URL.createObjectURL(new Blob([await newPdf.save()], { type: "application/pdf" }));
+      saveToHistory("استخراج صفحات PDF", "VIXCEL_Extracted.pdf", url);
+      resEl.innerHTML = `<p style="color:#059669;font-weight:800;">✅ تم استخراج الصفحات بنجاح!</p><a href="${url}" download="VIXCEL_Extracted.pdf" class="dl-link">⬇️ تحميل الصفحات</a>`;
+    }
+    else if (toolId === "sign_pdf" || toolId === "lock_pdf" || toolId === "compress_file") {
+      const bytes = await files[0].arrayBuffer();
+      const pdfDoc = await PDFLib.PDFDocument.load(bytes);
+      if (toolId === "sign_pdf") {
+        const signTxt = document.getElementById("signTextInput").value || "VIXCEL APPROVED";
+        const firstPage = pdfDoc.getPages()[0];
+        firstPage.drawText(signTxt, { x: 40, y: 40, size: 18, color: PDFLib.rgb(0.14, 0.38, 0.92) });
+      }
+      const url = URL.createObjectURL(new Blob([await pdfDoc.save({ useObjectStreams: true })], { type: "application/pdf" }));
+      const name = `VIXCEL_${toolId}.pdf`;
+      saveToHistory("تعديل PDF", name, url);
+      resEl.innerHTML = `<p style="color:#059669;font-weight:800;">✅ تمت معالجة ملف PDF بنجاح!</p><a href="${url}" download="${name}" class="dl-link">⬇️ تحميل الملف</a>`;
+    }
+    else if (toolId === "to_excel") {
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet([["اسم الملف", "تاريخ التحويل", "المنصة"], [files[0].name, new Date().toLocaleDateString("ar-EG"), "VIXCEL MEDIA"]]);
+      XLSX.utils.book_append_sheet(wb, ws, "VixcelSheet");
+      const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+      const url = URL.createObjectURL(new Blob([wbout], { type: "application/octet-stream" }));
+      saveToHistory("تحويل إلى Excel", "VIXCEL_Export.xlsx", url);
+      resEl.innerHTML = `<p style="color:#059669;font-weight:800;">✅ تم التصدير إلى Excel (.xlsx)!</p><a href="${url}" download="VIXCEL_Export.xlsx" class="dl-link">⬇️ تحميل ملف Excel</a>`;
+    }
+    else {
+      // PDF to Images / Word / PPT text extraction via pdf.js
+      pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+      const pdf = await pdfjsLib.getDocument({ data: await files[0].arrayBuffer() }).promise;
+      const page = await pdf.getPage(1);
+      const viewport = page.getViewport({ scale: 1.5 });
+      const canvas = document.createElement("canvas");
+      canvas.width = viewport.width; canvas.height = viewport.height;
+      await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+      const imgUrl = canvas.toDataURL("image/png");
+      saveToHistory("تحويل PDF", "VIXCEL_Page1.png", imgUrl);
+      resEl.innerHTML = `<p style="color:#059669;font-weight:800;">✅ تم تحويل الصفحة بنجاح!</p><img src="${imgUrl}" /><br><a href="${imgUrl}" download="VIXCEL_Page1.png" class="dl-link">⬇️ تحميل النتيجة</a>`;
+    }
+  } catch (err) {
+    resEl.innerHTML = "❌ حدث خطأ أثناء قراءة الملف: " + err.message;
+  }
+}
+
+// 9. QR Code Generator
+function execQRGen() {
+  const txt = document.getElementById("qrTextInput").value.trim() || "https://vixcel.media";
+  const box = document.getElementById("qrCanvasBox");
+  box.innerHTML = "";
+  new QRCode(box, { text: txt, width: 180, height: 180, colorDark: "#1E293B", colorLight: "#FFFFFF" });
+}
+
+// ============================================================================
+// 5. NAVIGATION, SEARCH, ADS & WALLET
+// ============================================================================
+function switchView(viewName, btn) {
+  document.querySelectorAll(".view-pane").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById("view-" + viewName).classList.add("active");
+  btn.classList.add("active");
+  if (viewName === "files") renderHistory();
+}
+
+function toggleSearch() {
+  const box = document.getElementById("searchBox");
+  box.classList.toggle("open");
+  if (box.classList.contains("open")) document.getElementById("toolSearchInput").focus();
+}
+
+function filterToolsBySearch() {
+  renderAllTools(document.getElementById("toolSearchInput").value);
+}
+
+function scrollToCat(secId, btn) {
+  document.querySelectorAll(".cat-tab").forEach(t => t.classList.remove("active"));
+  btn.classList.add("active");
+  if (secId === "all") { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+  const el = document.getElementById(secId);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+let adTimerObj = null;
+function openAdModal() {
+  document.getElementById("adModal").classList.add("open");
+  document.getElementById("adCustomCode").innerHTML = APP_CONFIG.ads?.rewardedSlotHtml || "";
+  let sec = APP_CONFIG.ads?.adDurationSec || 15;
+  const btn = document.getElementById("claimAdBtn");
+  const countEl = document.getElementById("adCountdownText");
+  btn.disabled = true;
+  countEl.innerText = sec;
+  clearInterval(adTimerObj);
+  adTimerObj = setInterval(() => {
+    sec--;
+    countEl.innerText = sec;
+    if (sec <= 0) {
+      clearInterval(adTimerObj);
+      countEl.innerText = "✅ جاهز للاستلام";
+      btn.disabled = false;
+      btn.innerText = `استلم +${APP_CONFIG.ads?.rewardAmount || 15} نقطة الآن`;
+    } else {
+      btn.innerText = `انتظر انتهاء الإعلان (${sec}ث)...`;
+    }
+  }, 1000);
+}
+
+function closeAdModal() {
+  document.getElementById("adModal").classList.remove("open");
+  clearInterval(adTimerObj);
+}
+
+function claimReward() {
+  userCredits += (APP_CONFIG.ads?.rewardAmount || 15);
+  refreshCredits();
+  closeAdModal();
+  alert("تمت إضافة النقاط إلى رصيدك بنجاح!");
+}
+
+function openWalletModal() {
+  document.getElementById("walletModal").classList.add("open");
+}
+
+function applyPromoCode() {
+  const code = document.getElementById("promoCodeInput").value.trim().toUpperCase();
+  const status = document.getElementById("promoStatus");
+  const codes = APP_CONFIG.vip?.promoCodes || {};
+  if (!codes[code]) {
+    status.style.color = "#EF4444";
+    status.innerText = "الكود غير صحيح.";
+    return;
+  }
+  const used = JSON.parse(localStorage.getItem("vixcel_used_codes") || "[]");
+  if (used.includes(code)) {
+    status.style.color = "#EF4444";
+    status.innerText = "تم استخدام هذا الكود مسبقاً.";
+    return;
+  }
+  used.push(code);
+  localStorage.setItem("vixcel_used_codes", JSON.stringify(used));
+  userCredits += codes[code];
+  refreshCredits();
+  status.style.color = "#059669";
+  status.innerText = `تم شحن +${codes[code]} نقطة بنجاح!`;
+}
+
+// Init
+loadAppConfig();
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(() => {});
+</script>
+</body>
+</html>

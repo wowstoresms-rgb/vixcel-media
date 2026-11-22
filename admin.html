@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>لوحة تحكم الأدمن — VIXCEL MEDIA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+    body { background: #F1F5F9; color: #0F172A; padding: 16px; }
+    .wrap { max-width: 760px; margin: 0 auto; }
+    .header {
+      background: linear-gradient(135deg, #5B21B6 0%, #2563EB 100%);
+      color: #fff; padding: 18px 20px; border-radius: 18px; margin-bottom: 16px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .card {
+      background: #fff; border-radius: 16px; padding: 18px; margin-bottom: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .card h3 { font-size: 16px; font-weight: 900; color: #2563EB; margin-bottom: 12px; }
+    label { display: block; font-size: 13px; font-weight: 700; margin: 10px 0 5px; }
+    input, textarea, select {
+      width: 100%; padding: 10px 12px; border: 1px solid #CBD5E1; border-radius: 10px;
+      font-size: 14px; background: #F8FAFC;
+    }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .btn {
+      background: linear-gradient(135deg, #5B21B6 0%, #2563EB 100%);
+      color: #fff; border: none; padding: 12px 18px; border-radius: 12px;
+      font-size: 14px; font-weight: 800; cursor: pointer; width: 100%; margin-top: 12px;
+    }
+    .btn-green { background: #059669; }
+    .tool-edit-row {
+      display: grid; grid-template-columns: 1.5fr 2fr 1fr; gap: 8px;
+      padding: 8px 0; border-bottom: 1px solid #E2E8F0; align-items: center;
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div>
+      <h2 style="font-weight:900;">لوحة تحكم VIXCEL MEDIA</h2>
+      <p style="font-size:12px;opacity:0.9;">تعديل النصوص، الأيقونات، الألوان، الإعلانات، وإرسال رسائل للمستخدمين</p>
+    </div>
+    <a href="./index.html" style="background:#fff;color:#2563EB;padding:8px 14px;border-radius:10px;text-decoration:none;font-weight:800;font-size:13px;">العودة للتطبيق</a>
+  </div>
+
+  <!-- 1. Broadcast Message to All Users -->
+  <div class="card">
+    <h3>1. إرسال رسالة أو إشعار عاجل لجميع المستخدمين</h3>
+    <label>حالة شريط الرسائل</label>
+    <select id="admBannerEnabled">
+      <option value="true">مفعّل (يظهر أعلى التطبيق لكل المستخدمين)</option>
+      <option value="false">مخفي</option>
+    </select>
+    <label>نص الرسالة</label>
+    <input type="text" id="admBannerText" placeholder="اكتب رسالتك أو إعلانك هنا..." />
+    <div class="row">
+      <div><label>لون خلفية الرسالة</label><input type="color" id="admBannerBg" value="#EFF6FF" /></div>
+      <div><label>لون نص الرسالة</label><input type="color" id="admBannerColor" value="#1D4ED8" /></div>
+    </div>
+  </div>
+
+  <!-- 2. Brand Name, Logo Colors & Bottom Tabs -->
+  <div class="card">
+    <h3>2. الهوية البصرية والألوان وأسماء القوائم</h3>
+    <div class="row">
+      <div><label>اسم التطبيق الرئيسي</label><input type="text" id="admAppName" value="VIXCEL" /></div>
+      <div><label>الاسم الفرعي</label><input type="text" id="admAppSub" value="MEDIA" /></div>
+    </div>
+    <div class="row">
+      <div><label>اللون الأساسي</label><input type="color" id="admPrimary" value="#2563EB" /></div>
+      <div><label>اللون الثانوي</label><input type="color" id="admSecondary" value="#5B21B6" /></div>
+    </div>
+    <div class="row">
+      <div><label>اسم تبويب الرئيسية</label><input type="text" id="admTabHome" value="الصفحة الرئيسية" /></div>
+      <div><label>اسم تبويب الملفات</label><input type="text" id="admTabFiles" value="الملفات" /></div>
+    </div>
+    <div class="row">
+      <div><label>اسم تبويب الأدوات</label><input type="text" id="admTabTools" value="أدوات" /></div>
+      <div><label>اسم تبويب حسابي</label><input type="text" id="admTabMe" value="أنا" /></div>
+    </div>
+  </div>
+
+  <!-- 3. Ads & Monetization Settings -->
+  <div class="card">
+    <h3>3. إعدادات الربح والإعلانات (Monetag / Adsterra / AdMob)</h3>
+    <div class="row">
+      <div><label>قيمة النقاط لكل إعلان</label><input type="number" id="admRewardPts" value="15" /></div>
+      <div><label>مدة الإعلان بالثواني</label><input type="number" id="admAdSec" value="15" /></div>
+    </div>
+    <label>كود إعلان المكافأة (Rewarded Ad HTML / Script)</label>
+    <textarea id="admRewardCode" rows="3" placeholder="الصق كود الإعلان من Monetag أو Adsterra هنا..."></textarea>
+    <label>كود البنر الإعلاني العلوي (Banner Slot HTML - اختياري)</label>
+    <textarea id="admBannerCode" rows="2" placeholder="الصق كود البنر الإعلاني هنا..."></textarea>
+    <label>حساب InstaPay لاستقبال مدفوعات VIP</label>
+    <input type="text" id="admInstapay" value="vixcel@instapay" />
+  </div>
+
+  <!-- 4. Edit Any Tool Name or Icon -->
+  <div class="card">
+    <h3>4. تعديل أسماء وأيقونات الأدوات بسهولة</h3>
+    <div id="toolsEditorList"></div>
+  </div>
+
+  <!-- Save & Export Config -->
+  <div class="card">
+    <button class="btn" onclick="saveAdminLocal()">💾 حفظ وتطبيق التعديلات فوراً</button>
+    <button class="btn btn-green" onclick="downloadConfigJson()">⬇️ تحميل ملف config.json لنشر التحديث لجميع المستخدمين</button>
+    <p style="font-size:12px;color:#64748B;margin-top:8px;text-align:center;">
+      ملاحظة: عند رفع ملف <code>config.json</code> المحمّل إلى مجلد الاستضافة (GitHub / Netlify)، ستظهر تعديلاتك ورسائلك عند جميع المستخدمين فوراً بدون تحديث APK!
+    </p>
+  </div>
+</div>
+
+<script>
+const TOOLS_META = [
+  ["vid_dl", "تحميل فيديو باللينك", "⬇️"],
+  ["vid_conv", "تحويل صيغ الفيديو", "🎬"],
+  ["img_conv", "تحويل صيغ الصور", "🖼️"],
+  ["lan_transfer", "نقل ملفات شبكة سريعة", "📡"],
+  ["tts_voice", "تحويل الكتابة لصوت", "🎙️"],
+  ["scan_doc", "مسح مستند PDF", "📄"],
+  ["id_card", "بطاقة ID", "🪪"],
+  ["ocr_text", "استخراج النص", "📝"],
+  ["to_word", "إلى Word", "W"],
+  ["to_excel", "إلى Excel", "X"],
+  ["img_to_pdf", "إلى صور PDF", "📑"],
+  ["merge_pdf", "دمج الملفات", "🔗"],
+  ["qr_tool", "مسح وصنع الرمز QR", "🏁"]
+];
+
+let cfg = {};
+
+async function initAdmin() {
+  try {
+    const r = await fetch("./config.json?t=" + Date.now());
+    if (r.ok) cfg = await r.json();
+  } catch (e) {}
+  const local = localStorage.getItem("vixcel_admin_config");
+  if (local) cfg = { ...cfg, ...JSON.parse(local) };
+
+  document.getElementById("admBannerEnabled").value = String(cfg.broadcastBanner?.enabled ?? true);
+  document.getElementById("admBannerText").value = cfg.broadcastBanner?.text || "";
+  document.getElementById("admBannerBg").value = cfg.broadcastBanner?.bgColor || "#EFF6FF";
+  document.getElementById("admBannerColor").value = cfg.broadcastBanner?.textColor || "#1D4ED8";
+
+  document.getElementById("admAppName").value = cfg.appName || "VIXCEL";
+  document.getElementById("admAppSub").value = cfg.appSubtitle || "MEDIA";
+  document.getElementById("admPrimary").value = cfg.primaryColor || "#2563EB";
+  document.getElementById("admSecondary").value = cfg.secondaryColor || "#5B21B6";
+
+  document.getElementById("admTabHome").value = cfg.customLabels?.tab_home || "الصفحة الرئيسية";
+  document.getElementById("admTabFiles").value = cfg.customLabels?.tab_files || "الملفات";
+  document.getElementById("admTabTools").value = cfg.customLabels?.tab_tools || "أدوات";
+  document.getElementById("admTabMe").value = cfg.customLabels?.tab_me || "أنا";
+
+  document.getElementById("admRewardPts").value = cfg.ads?.rewardAmount || 15;
+  document.getElementById("admAdSec").value = cfg.ads?.adDurationSec || 15;
+  document.getElementById("admRewardCode").value = cfg.ads?.rewardedSlotHtml || "";
+  document.getElementById("admBannerCode").value = cfg.ads?.bannerSlotHtml || "";
+  document.getElementById("admInstapay").value = cfg.vip?.instapayHandle || "vixcel@instapay";
+
+  const listEl = document.getElementById("toolsEditorList");
+  listEl.innerHTML = TOOLS_META.map(([id, defName, defIcon]) => `
+    <div class="tool-edit-row">
+      <span style="font-size:12px;color:#64748B;font-weight:700;">${id}</span>
+      <input type="text" id="tname_${id}" value="${(cfg.customToolNames && cfg.customToolNames[id]) || defName}" />
+      <input type="text" id="ticon_${id}" value="${(cfg.customToolIcons && cfg.customToolIcons[id]) || defIcon}" style="text-align:center;" />
+    </div>
+  `).join("");
+}
+
+function collectConfig() {
+  const customToolNames = {};
+  const customToolIcons = {};
+  TOOLS_META.forEach(([id]) => {
+    customToolNames[id] = document.getElementById("tname_" + id).value.trim();
+    customToolIcons[id] = document.getElementById("ticon_" + id).value.trim();
+  });
+
+  return {
+    appName: document.getElementById("admAppName").value.trim(),
+    appSubtitle: document.getElementById("admAppSub").value.trim(),
+    primaryColor: document.getElementById("admPrimary").value,
+    secondaryColor: document.getElementById("admSecondary").value,
+    broadcastBanner: {
+      enabled: document.getElementById("admBannerEnabled").value === "true",
+      text: document.getElementById("admBannerText").value,
+      bgColor: document.getElementById("admBannerBg").value,
+      textColor: document.getElementById("admBannerColor").value
+    },
+    ads: {
+      enabled: true,
+      rewardAmount: parseInt(document.getElementById("admRewardPts").value || "15", 10),
+      adDurationSec: parseInt(document.getElementById("admAdSec").value || "15", 10),
+      rewardedSlotHtml: document.getElementById("admRewardCode").value,
+      bannerSlotHtml: document.getElementById("admBannerCode").value
+    },
+    vip: {
+      instapayHandle: document.getElementById("admInstapay").value.trim(),
+      promoCodes: cfg.vip?.promoCodes || { "VIXCEL100": 100, "MEDIA500": 500, "FREE50": 50 }
+    },
+    customLabels: {
+      tab_home: document.getElementById("admTabHome").value.trim(),
+      tab_files: document.getElementById("admTabFiles").value.trim(),
+      tab_tools: document.getElementById("admTabTools").value.trim(),
+      tab_me: document.getElementById("admTabMe").value.trim()
+    },
+    customToolNames,
+    customToolIcons
+  };
+}
+
+function saveAdminLocal() {
+  const updated = collectConfig();
+  localStorage.setItem("vixcel_admin_config", JSON.stringify(updated));
+  alert("✅ تم حفظ التعديلات! افتح التطبيق لمعاينتها فوراً.");
+}
+
+function downloadConfigJson() {
+  const updated = collectConfig();
+  localStorage.setItem("vixcel_admin_config", JSON.stringify(updated));
+  const blob = new Blob([JSON.stringify(updated, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "config.json";
+  a.click();
+}
+
+initAdmin();
+</script>
+</body>
+</html>

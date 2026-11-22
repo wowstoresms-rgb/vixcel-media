@@ -1,0 +1,39 @@
+{
+  "appName": "VIXCEL MEDIA",
+  "appSubtitle": "منصة الوسائط الذكية وأدوات المستندات الشاملة",
+  "primaryColor": "#2563EB",
+  "secondaryColor": "#5B21B6",
+  "accentColor": "#10B981",
+  "broadcastBanner": {
+    "enabled": true,
+    "text": "مرحباً بك في VIXCEL MEDIA — جميع أدوات المستندات والميديا ونقل الملفات السريع في مكان واحد!",
+    "bgColor": "#EFF6FF",
+    "textColor": "#1D4ED8"
+  },
+  "ads": {
+    "enabled": true,
+    "rewardAmount": 15,
+    "adDurationSec": 15,
+    "rewardedSlotHtml": "<div style='padding:14px;text-align:center;color:#4F46E5;font-weight:700;'>مساحة إعلانية جاهزة لـ Monetag / Adsterra<br><span style='font-size:12px;color:#64748B;'>الصق كود الإعلان من لوحة الأدمن</span></div>",
+    "bannerSlotHtml": ""
+  },
+  "credits": {
+    "welcomeCredits": 30,
+    "freeMode": true,
+    "defaultToolCost": 2
+  },
+  "vip": {
+    "instapayHandle": "vixcel@instapay",
+    "promoCodes": {
+      "VIXCEL100": 100,
+      "MEDIA500": 500,
+      "FREE50": 50
+    }
+  },
+  "customLabels": {
+    "tab_home": "الرئيسية",
+    "tab_files": "الملفات",
+    "tab_tools": "أدوات",
+    "tab_me": "أنا"
+  }
+}
