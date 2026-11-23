@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>VIXCEL MEDIA — منصة الأدوات الذكية والميديا</title>
+  <title>VIXCEL MEDIA — منصة الأدوات الذكية والميديا (Beta 1.0)</title>
   <meta name="theme-color" content="#2563EB" />
   <link rel="manifest" href="./manifest.json" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,9 +21,10 @@
     :root {
       --primary: #2563EB;
       --secondary: #5B21B6;
-      --grad: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
-      --bg: #F8FAFC;
-      --surface: #FFFFFF;
+      --accent-cyan: #06B6D4;
+      --grad: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 60%, var(--accent-cyan) 100%);
+      --bg: #F1F5F9;
+      --surface: rgba(255, 255, 255, 0.92);
       --text: #0F172A;
       --muted: #64748B;
       --border: #E2E8F0;
@@ -33,120 +34,174 @@
       --soft-orange: #FFF7ED;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background: var(--bg); color: var(--text); padding-bottom: 84px; min-height: 100vh; }
+
+    body {
+      background: radial-gradient(circle at 10% 10%, #E0E7FF 0%, #F1F5F9 45%, #EDE9FE 100%);
+      background-attachment: fixed;
+      color: var(--text);
+      padding-bottom: 130px;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Keyframe Animations */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+    }
+    @keyframes pulseRing {
+      0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.55); }
+      70% { box-shadow: 0 0 0 14px rgba(37, 99, 235, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(14px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes shineSweep {
+      0% { left: -100%; }
+      100% { left: 200%; }
+    }
 
     /* Broadcast Top Bar */
     .broadcast-bar {
-      background: var(--soft-blue);
-      color: #1D4ED8;
-      padding: 8px 14px;
+      background: linear-gradient(90deg, #1E1B4B, #1D4ED8);
+      color: #fff;
+      padding: 7px 14px;
       font-size: 12px;
       font-weight: 700;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #DBEAFE;
     }
-    .broadcast-bar button { background: none; border: none; color: inherit; font-weight: 900; cursor: pointer; font-size: 15px; }
+    .broadcast-bar button { background: none; border: none; color: inherit; font-weight: 900; cursor: pointer; font-size: 16px; }
 
-    /* App Header */
+    /* App Header (Glassmorphism) */
     .app-header {
-      background: var(--surface);
-      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 11px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: sticky;
       top: 0;
       z-index: 50;
-      box-shadow: 0 1px 6px rgba(15,23,42,0.05);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
     }
     .vixcel-brand { display: flex; align-items: center; gap: 10px; }
-    .vixcel-icon { width: 36px; height: 36px; flex-shrink: 0; }
+    .vixcel-icon { width: 38px; height: 38px; flex-shrink: 0; filter: drop-shadow(0 3px 6px rgba(37,99,235,0.25)); }
     .vixcel-wordmark { line-height: 1; }
-    .vixcel-wordmark .top { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; color: #0F172A; }
-    .vixcel-wordmark .sub { font-size: 9px; font-weight: 700; letter-spacing: 3px; color: #475569; display: block; margin-top: 2px; }
-
-    .header-actions { display: flex; align-items: center; gap: 8px; }
-    .pill-badge {
-      background: var(--soft-blue); color: var(--primary); border: 1px solid #BFDBFE;
-      padding: 5px 11px; border-radius: 999px; font-size: 12px; font-weight: 800; cursor: pointer;
+    .vixcel-wordmark .top { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; color: #0F172A; display: flex; align-items: center; gap: 5px; }
+    .beta-pill {
+      font-size: 9px; background: var(--grad); color: #fff; padding: 2px 6px;
+      border-radius: 6px; font-weight: 800; letter-spacing: 0;
     }
+    .vixcel-wordmark .sub { font-size: 9px; font-weight: 700; letter-spacing: 3px; color: #475569; display: block; margin-top: 3px; }
+
+    .header-actions { display: flex; align-items: center; gap: 7px; }
+    .pill-badge {
+      background: linear-gradient(135deg, #EFF6FF, #E0E7FF);
+      color: var(--primary); border: 1px solid #BFDBFE;
+      padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 900;
+      cursor: pointer; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .pill-badge:hover { transform: scale(1.06); }
+    .pill-badge:active { transform: scale(0.94); }
+
     .icon-btn {
       width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border);
-      background: var(--surface); display: flex; align-items: center; justify-content: center;
-      cursor: pointer; color: var(--text); font-size: 16px;
+      background: #fff; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text); font-size: 15px;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
+    .icon-btn:hover { transform: translateY(-2px) scale(1.06); border-color: var(--primary); box-shadow: 0 4px 10px rgba(37,99,235,0.15); }
+    .icon-btn:active { transform: scale(0.92); }
 
     /* Search Drawer */
     .search-box {
-      padding: 10px 16px; background: var(--surface); border-bottom: 1px solid var(--border);
-      display: none;
+      padding: 10px 16px; background: rgba(255,255,255,0.95); border-bottom: 1px solid var(--border);
+      display: none; animation: popIn 0.2s ease;
     }
     .search-box.open { display: block; }
     .search-box input {
-      width: 100%; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--border);
-      background: var(--bg); font-size: 14px; outline: none;
+      width: 100%; padding: 10px 14px; border-radius: 12px; border: 1.5px solid #CBD5E1;
+      background: #F8FAFC; font-size: 14px; outline: none; transition: 0.2s;
     }
+    .search-box input:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
 
     /* Hero Promo Banner */
-    .container { max-width: 960px; margin: 0 auto; padding: 12px 14px; }
+    .container { max-width: 960px; margin: 0 auto; padding: 14px; }
     .hero-banner {
-      background: linear-gradient(120deg, #EEF2FF 0%, #E0E7FF 50%, #F3E8FF 100%);
-      border: 1px solid #C7D2FE;
-      border-radius: 18px;
-      padding: 16px 18px;
+      background: linear-gradient(125deg, #1E1B4B 0%, #312E81 45%, #1D4ED8 100%);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 22px;
+      padding: 18px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       margin-bottom: 14px;
       position: relative;
       overflow: hidden;
+      color: #fff;
+      box-shadow: 0 12px 28px rgba(30, 27, 75, 0.22);
     }
-    .hero-banner h2 {
-      font-size: 18px; font-weight: 900;
-      background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    .hero-banner::after {
+      content: ""; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+      transform: skewX(-25deg); animation: shineSweep 5s infinite;
     }
-    .hero-banner p { font-size: 12px; color: #334155; margin-top: 4px; font-weight: 600; }
+    .hero-banner h2 { font-size: 18px; font-weight: 900; color: #fff; }
+    .hero-banner p { font-size: 12px; color: #CBD5E1; margin-top: 4px; font-weight: 600; }
     .hero-cta {
-      background: var(--grad); color: #fff; border: none; padding: 8px 14px;
-      border-radius: 12px; font-size: 12px; font-weight: 800; cursor: pointer; white-space: nowrap;
-      box-shadow: 0 4px 12px rgba(37,99,235,0.25);
+      background: linear-gradient(135deg, #FACC15, #F59E0B); color: #0F172A; border: none;
+      padding: 9px 15px; border-radius: 13px; font-size: 12px; font-weight: 900;
+      cursor: pointer; white-space: nowrap; position: relative; z-index: 2;
+      box-shadow: 0 6px 16px rgba(245, 158, 11, 0.35);
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
+    .hero-cta:hover { transform: scale(1.06); }
+    .hero-cta:active { transform: scale(0.94); }
 
     /* Horizontal Category Filter Bar */
     .cat-tabs {
-      display: flex; gap: 16px; overflow-x: auto; padding: 8px 4px 10px;
-      border-bottom: 1px solid var(--border); margin-bottom: 14px; scrollbar-width: none;
+      display: flex; gap: 10px; overflow-x: auto; padding: 6px 2px 12px;
+      margin-bottom: 10px; scrollbar-width: none;
     }
     .cat-tabs::-webkit-scrollbar { display: none; }
     .cat-tab {
-      font-size: 14px; font-weight: 700; color: var(--muted); white-space: nowrap;
-      cursor: pointer; padding-bottom: 6px; position: relative; background: none; border: none;
+      font-size: 13px; font-weight: 800; color: var(--muted); white-space: nowrap;
+      cursor: pointer; padding: 7px 14px; border-radius: 999px;
+      background: rgba(255,255,255,0.8); border: 1px solid var(--border);
+      transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    .cat-tab.active { color: var(--primary); font-weight: 900; }
-    .cat-tab.active::after {
-      content: ""; position: absolute; bottom: 0; right: 20%; left: 20%;
-      height: 3px; border-radius: 4px; background: var(--grad);
+    .cat-tab:hover { transform: translateY(-2px); color: var(--primary); }
+    .cat-tab.active {
+      background: var(--grad); color: #fff; border-color: transparent;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.28);
     }
 
-    /* Section Card & 4-Column Tool Grid */
+    /* Section Card & Tool Grid with Spring Motion */
     .section-card {
       background: var(--surface);
-      border-radius: 18px;
-      padding: 16px 12px;
-      margin-bottom: 14px;
-      box-shadow: 0 2px 10px rgba(15,23,42,0.03);
-      border: 1px solid #F1F5F9;
+      backdrop-filter: blur(10px);
+      border-radius: 22px;
+      padding: 18px 14px;
+      margin-bottom: 16px;
+      box-shadow: 0 6px 24px rgba(15, 23, 42, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      animation: popIn 0.35s ease;
     }
     .section-title {
       font-size: 15px; font-weight: 900; color: #1E293B; margin-bottom: 14px; padding: 0 6px;
       display: flex; justify-content: space-between; align-items: center;
     }
     .section-badge {
-      font-size: 11px; background: var(--soft-purple); color: var(--secondary);
-      padding: 2px 8px; border-radius: 999px; font-weight: 800;
+      font-size: 10px; background: var(--soft-purple); color: var(--secondary);
+      padding: 3px 9px; border-radius: 999px; font-weight: 900;
     }
     .tools-grid {
       display: grid;
@@ -158,41 +213,137 @@
     }
     .tool-item {
       display: flex; flex-direction: column; align-items: center; text-align: center;
-      cursor: pointer; padding: 6px 2px; border-radius: 12px; transition: 0.15s;
+      cursor: pointer; padding: 8px 4px; border-radius: 16px;
+      transition: transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s, box-shadow 0.2s;
     }
-    .tool-item:active { transform: scale(0.95); background: #F8FAFC; }
+    .tool-item:hover {
+      transform: translateY(-5px) scale(1.04);
+      background: #FFFFFF;
+      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.1);
+    }
+    .tool-item:active { transform: scale(0.92); }
     .tool-circle {
-      width: 50px; height: 50px; border-radius: 50%;
+      width: 54px; height: 54px; border-radius: 18px;
       display: flex; align-items: center; justify-content: center;
-      margin-bottom: 7px; font-size: 21px; position: relative;
+      margin-bottom: 8px; font-size: 23px; position: relative;
+      transition: transform 0.25s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.04);
     }
-    .c-blue { background: #EFF6FF; color: #2563EB; }
-    .c-purple { background: #F3E8FF; color: #7C3AED; }
-    .c-teal { background: #ECFDF5; color: #059669; }
-    .c-orange { background: #FFF7ED; color: #EA580C; }
-    .c-indigo { background: #EEF2FF; color: #4F46E5; }
+    .tool-item:hover .tool-circle { transform: rotate(-4deg) scale(1.08); }
+    .c-blue { background: linear-gradient(135deg, #EFF6FF, #DBEAFE); color: #2563EB; }
+    .c-purple { background: linear-gradient(135deg, #F3E8FF, #E9D5FF); color: #7C3AED; }
+    .c-teal { background: linear-gradient(135deg, #ECFDF5, #D1FAE5); color: #059669; }
+    .c-orange { background: linear-gradient(135deg, #FFF7ED, #FFEDD5); color: #EA580C; }
+    .c-indigo { background: linear-gradient(135deg, #EEF2FF, #E0E7FF); color: #4F46E5; }
     .tool-new-tag {
-      position: absolute; top: -3px; left: -5px; background: var(--grad); color: #fff;
-      font-size: 9px; font-weight: 800; padding: 1px 5px; border-radius: 6px;
+      position: absolute; top: -5px; left: -5px; background: var(--grad); color: #fff;
+      font-size: 9px; font-weight: 800; padding: 1px 6px; border-radius: 7px;
+      box-shadow: 0 2px 6px rgba(37,99,235,0.3);
     }
     .tool-cost-tag {
-      position: absolute; bottom: -3px; right: -5px; background: #0F172A; color: #FACC15;
-      font-size: 8px; font-weight: 800; padding: 1px 4px; border-radius: 5px;
+      position: absolute; bottom: -5px; right: -5px; background: #0F172A; color: #FACC15;
+      font-size: 9px; font-weight: 900; padding: 1px 5px; border-radius: 6px;
     }
-    .tool-name { font-size: 12px; font-weight: 700; color: #334155; line-height: 1.3; }
+    .tool-name { font-size: 12px; font-weight: 800; color: #334155; line-height: 1.3; }
+
+    /* ==================== BACKGROUND AUDIO PLAYER BAR ==================== */
+    .bg-audio-bar {
+      position: fixed; bottom: 72px; left: 12px; right: 12px; max-width: 620px; margin: 0 auto;
+      background: rgba(15, 23, 42, 0.94); backdrop-filter: blur(12px); color: #fff;
+      border-radius: 16px; padding: 9px 14px; z-index: 65;
+      display: none; align-items: center; justify-content: space-between; gap: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.28); border: 1px solid rgba(255,255,255,0.12);
+      animation: popIn 0.25s ease;
+    }
+    .bg-audio-bar.open { display: flex; }
+    .bg-audio-bar audio { height: 32px; flex: 1; max-width: 240px; }
+
+    /* ==================== FLOATING AI BOT (OUFA) ==================== */
+    .oufa-fab {
+      position: fixed; bottom: 80px; left: 16px; z-index: 80;
+      display: flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
+      color: #fff; border: 2px solid #38BDF8;
+      padding: 6px 14px 6px 6px; border-radius: 999px;
+      cursor: pointer; animation: floatSlow 3.2s ease-in-out infinite, pulseRing 2.5s infinite;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.35);
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .oufa-fab:hover { transform: scale(1.08); }
+    .oufa-fab:active { transform: scale(0.93); }
+    .oufa-avatar-wrap {
+      width: 44px; height: 44px; border-radius: 50%; overflow: hidden;
+      border: 2px solid #FACC15; flex-shrink: 0; background: #0284C7;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .oufa-fab-label { text-align: right; line-height: 1.2; }
+    .oufa-fab-label strong { display: block; font-size: 13px; font-weight: 900; color: #38BDF8; }
+    .oufa-fab-label span { font-size: 10px; color: #E2E8F0; font-weight: 700; }
+
+    /* Oufa Chat Window */
+    .oufa-chat-window {
+      position: fixed; bottom: 140px; left: 16px; width: calc(100vw - 32px); max-width: 390px;
+      height: 470px; max-height: 70vh; background: #0F172A; color: #F8FAFC;
+      border-radius: 24px; z-index: 95; display: none; flex-direction: column;
+      overflow: hidden; border: 1.5px solid #38BDF8;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+      animation: popIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .oufa-chat-window.open { display: flex; }
+    .oufa-chat-head {
+      background: linear-gradient(135deg, #1E1B4B, #1D4ED8);
+      padding: 12px 14px; display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .oufa-chat-msgs {
+      flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;
+      background: radial-gradient(circle at top right, #1E293B, #0F172A);
+    }
+    .msg-bubble {
+      max-width: 85%; padding: 10px 13px; border-radius: 16px; font-size: 13px; line-height: 1.55;
+      animation: popIn 0.2s ease;
+    }
+    .msg-bot {
+      align-self: flex-start; background: #1E293B; color: #F1F5F9;
+      border: 1px solid #334155; border-bottom-right-radius: 4px;
+    }
+    .msg-user {
+      align-self: flex-end; background: var(--grad); color: #fff;
+      border-bottom-left-radius: 4px; font-weight: 700;
+    }
+    .bot-action-chip {
+      display: inline-block; margin-top: 7px; background: #FACC15; color: #0F172A;
+      padding: 5px 11px; border-radius: 9px; font-size: 11px; font-weight: 900;
+      border: none; cursor: pointer;
+    }
+    .oufa-chat-input {
+      padding: 10px; background: #1E293B; display: flex; gap: 7px;
+      border-top: 1px solid #334155;
+    }
+    .oufa-chat-input input {
+      flex: 1; background: #0F172A; border: 1px solid #475569; color: #fff;
+      padding: 9px 12px; border-radius: 12px; font-size: 13px; outline: none;
+    }
+    .oufa-chat-input button {
+      background: var(--grad); color: #fff; border: none; padding: 0 15px;
+      border-radius: 12px; font-weight: 900; cursor: pointer;
+    }
 
     /* Bottom Navigation Bar */
     .bottom-nav {
       position: fixed; bottom: 0; left: 0; right: 0; height: 66px;
-      background: var(--surface); border-top: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
       display: flex; justify-content: space-around; align-items: center; z-index: 60;
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.04);
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.05);
     }
     .nav-btn {
       background: none; border: none; display: flex; flex-direction: column; align-items: center;
-      gap: 3px; color: var(--muted); font-size: 11px; font-weight: 700; cursor: pointer; flex: 1;
+      gap: 3px; color: var(--muted); font-size: 11px; font-weight: 800; cursor: pointer; flex: 1;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s;
     }
-    .nav-btn.active { color: var(--primary); font-weight: 900; }
+    .nav-btn:hover { transform: translateY(-2px); }
+    .nav-btn.active { color: var(--primary); font-weight: 900; transform: scale(1.06); }
     .nav-btn svg { width: 22px; height: 22px; }
 
     /* Views */
@@ -201,71 +352,88 @@
 
     /* Workspace Modal */
     .modal-overlay {
-      position: fixed; inset: 0; background: rgba(15,23,42,0.65); z-index: 100;
-      display: none; align-items: flex-end; justify-content: center;
+      position: fixed; inset: 0; background: rgba(15,23,42,0.7); backdrop-filter: blur(5px);
+      z-index: 100; display: none; align-items: flex-end; justify-content: center;
     }
     .modal-overlay.open { display: flex; }
     @media (min-width: 640px) { .modal-overlay.open { align-items: center; } }
     .modal-sheet {
-      background: var(--surface); width: 100%; max-width: 580px; max-height: 92vh;
-      border-radius: 22px 22px 0 0; padding: 20px; overflow-y: auto;
-      box-shadow: 0 -10px 30px rgba(0,0,0,0.18);
+      background: #FFFFFF; width: 100%; max-width: 580px; max-height: 92vh;
+      border-radius: 24px 24px 0 0; padding: 20px; overflow-y: auto;
+      box-shadow: 0 -10px 35px rgba(0,0,0,0.22);
+      animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    @media (min-width: 640px) { .modal-sheet { border-radius: 22px; } }
+    @media (min-width: 640px) { .modal-sheet { border-radius: 24px; } }
     .modal-head {
       display: flex; justify-content: space-between; align-items: center;
       padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 14px;
     }
     .modal-head h3 { font-size: 17px; font-weight: 900; color: var(--primary); }
     .close-btn {
-      background: #F1F5F9; border: none; width: 32px; height: 32px; border-radius: 50%;
+      background: #F1F5F9; border: none; width: 34px; height: 34px; border-radius: 50%;
       font-size: 18px; font-weight: bold; cursor: pointer; color: #334155;
+      transition: transform 0.2s;
     }
+    .close-btn:hover { transform: rotate(90deg) scale(1.1); background: #FEE2E2; color: #DC2626; }
 
     /* Form Controls inside Tool Modal */
-    .f-label { display: block; font-size: 13px; font-weight: 700; margin: 10px 0 6px; color: #1E293B; }
+    .f-label { display: block; font-size: 13px; font-weight: 800; margin: 10px 0 6px; color: #1E293B; }
     .f-input, .f-select, .f-textarea {
-      width: 100%; padding: 11px 12px; border: 1px solid #CBD5E1; border-radius: 12px;
-      font-size: 14px; background: #F8FAFC; outline: none;
+      width: 100%; padding: 11px 12px; border: 1.5px solid #CBD5E1; border-radius: 13px;
+      font-size: 14px; background: #F8FAFC; outline: none; transition: 0.2s;
     }
     .f-input:focus, .f-select:focus, .f-textarea:focus { border-color: var(--primary); background: #fff; }
     .btn-primary {
-      width: 100%; background: var(--grad); color: #fff; border: none; padding: 12px;
-      border-radius: 12px; font-size: 15px; font-weight: 800; cursor: pointer; margin-top: 12px;
-      box-shadow: 0 4px 12px rgba(37,99,235,0.25);
+      width: 100%; background: var(--grad); color: #fff; border: none; padding: 13px;
+      border-radius: 14px; font-size: 15px; font-weight: 900; cursor: pointer; margin-top: 12px;
+      box-shadow: 0 6px 16px rgba(37,99,235,0.28);
+      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
     }
+    .btn-primary:hover:not(:disabled) { transform: translateY(-2px) scale(1.01); box-shadow: 0 10px 22px rgba(37,99,235,0.35); }
+    .btn-primary:active:not(:disabled) { transform: scale(0.96); }
     .btn-primary:disabled { opacity: 0.65; cursor: not-allowed; }
     .btn-outline {
       background: #fff; color: var(--primary); border: 1.5px solid var(--primary);
-      padding: 9px 14px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer;
+      padding: 9px 14px; border-radius: 11px; font-size: 13px; font-weight: 800; cursor: pointer;
+      transition: transform 0.2s;
     }
+    .btn-outline:active { transform: scale(0.95); }
+
     .result-area {
-      margin-top: 14px; padding: 14px; border-radius: 14px; background: #F8FAFC;
-      border: 1px dashed #94A3B8; text-align: center;
+      margin-top: 14px; padding: 14px; border-radius: 16px; background: #F8FAFC;
+      border: 1.5px dashed #94A3B8; text-align: center;
     }
     .result-area img, .result-area video, .result-area canvas {
-      max-width: 100%; max-height: 280px; border-radius: 10px; margin-top: 8px;
+      max-width: 100%; max-height: 260px; border-radius: 12px; margin-top: 8px;
+      background-image: linear-gradient(45deg, #E2E8F0 25%, transparent 25%), linear-gradient(-45deg, #E2E8F0 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #E2E8F0 75%), linear-gradient(-45deg, transparent 75%, #E2E8F0 75%);
+      background-size: 16px 16px; background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+    }
+    .export-bar {
+      display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; margin-top: 12px;
     }
     .dl-link {
-      display: inline-block; margin-top: 10px; background: #059669; color: #fff;
-      padding: 9px 18px; border-radius: 10px; text-decoration: none; font-weight: 800; font-size: 13px;
+      display: inline-flex; align-items: center; gap: 5px; background: #059669; color: #fff;
+      padding: 8px 13px; border-radius: 10px; text-decoration: none; font-weight: 800;
+      font-size: 12px; border: none; cursor: pointer; transition: transform 0.2s;
     }
+    .dl-link:hover { transform: translateY(-2px); }
+    .dl-link.blue { background: #2563EB; }
+    .dl-link.purple { background: #7C3AED; }
+    .dl-link.dark { background: #0F172A; }
 
     /* Saved Files List */
     .file-card {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+      background: #fff; border: 1px solid var(--border); border-radius: 14px;
       padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
     }
 
     /* Ad Box */
     .ad-banner-slot {
-      margin: 10px 0 14px; border-radius: 14px; overflow: hidden; background: #FFFFFF;
+      margin: 10px 0 14px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.92);
       border: 1px solid #E2E8F0; min-height: 60px; display: flex; flex-direction: column;
       align-items: center; justify-content: center; padding: 6px; position: relative;
     }
-    .ad-label-tiny {
-      font-size: 9px; color: #94A3B8; font-weight: 700; margin-bottom: 2px; letter-spacing: 0.5px;
-    }
+    .ad-label-tiny { font-size: 9px; color: #94A3B8; font-weight: 700; margin-bottom: 2px; }
 
     /* Maintenance Overlay */
     .maint-screen {
@@ -287,11 +455,11 @@
 
   <!-- Dynamic Admin Broadcast Banner -->
   <div class="broadcast-bar" id="broadcastBar">
-    <span id="broadcastText">مرحباً بك في VIXCEL MEDIA — جميع أدوات المستندات والميديا ونقل الملفات السريع في مكان واحد!</span>
-    <button onclick="document.getElementById('broadcastBar').style.display='none'">×</button>
+    <span id="broadcastText">مرحباً بك في VIXCEL MEDIA (النسخة التجريبية 1) — تطوير: محمد رؤوف (Oufa)</span>
+    <button onclick="sfx('click'); document.getElementById('broadcastBar').style.display='none'">×</button>
   </div>
 
-  <!-- Top Header with VIXCEL MEDIA Logo -->
+  <!-- Top Header -->
   <header class="app-header">
     <div class="vixcel-brand">
       <svg class="vixcel-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -305,20 +473,21 @@
         <path d="M84 36H56V52H68V62C68 73 61 80 50 80H38V96H50C70 96 84 82 84 62V36Z" fill="url(#vixGrad)"/>
       </svg>
       <div class="vixcel-wordmark">
-        <span class="top" id="brandNameText">VIXCEL</span>
+        <span class="top"><span id="brandNameText">VIXCEL</span> <span class="beta-pill">Beta 1.0</span></span>
         <span class="sub" id="brandSubText">MEDIA</span>
       </div>
     </div>
 
     <div class="header-actions">
-      <div class="pill-badge" onclick="openWalletModal()">⚡ <span id="creditCount">30</span> نقطة</div>
-      <button class="icon-btn" onclick="toggleSearch()" title="بحث">🔍</button>
+      <div class="pill-badge" onclick="sfx('click'); openWalletModal()">⚡ <span id="creditCount">30</span> نقطة</div>
+      <button class="icon-btn" id="soundToggleBtn" onclick="toggleSoundFx()" title="أصوات الأزرار">🔊</button>
+      <button class="icon-btn" onclick="sfx('click'); toggleSearch()" title="بحث">🔍</button>
     </div>
   </header>
 
   <!-- Quick Search Input -->
   <div class="search-box" id="searchBox">
-    <input type="text" id="toolSearchInput" placeholder="ابحث عن أي أداة (تحميل فيديو، تحويل صيغ، نقل ملفات، صوت، PDF، OCR)..." oninput="filterToolsBySearch()" />
+    <input type="text" id="toolSearchInput" placeholder="ابحث عن أي أداة (تغيير نبرة الصوت، تفريغ خلفية، PDF، OCR، نقل ملفات)..." oninput="filterToolsBySearch()" />
   </div>
 
   <!-- ==================== VIEW 1: TOOLS ==================== -->
@@ -326,21 +495,21 @@
     <div class="hero-banner">
       <div>
         <h2 id="heroTitleText">VIXCEL AI & MEDIA PRO</h2>
-        <p id="appSubDesc">تحميل فيديو • تحويل صيغ • نقل ملفات سريع • مسح ضوئي</p>
+        <p id="appSubDesc">تغيير نبرة الصوت • تفريغ الصور • PDF • نقل ملفات سريع</p>
       </div>
-      <button class="hero-cta" onclick="openTool('lan_transfer')">⚡ نقل ملفات سريع</button>
+      <button class="hero-cta" onclick="sfx('pop'); openTool('voice_changer')">🎭 تغيير الصوت</button>
     </div>
 
     <!-- Top Ad Banner Slot -->
     <div class="ad-banner-slot" id="topAdSlot" style="display:none;"></div>
 
     <div class="cat-tabs" id="catTabs">
-      <button class="cat-tab active" onclick="scrollToCat('all', this)">الكل</button>
-      <button class="cat-tab" onclick="scrollToCat('sec-media', this)">الميديا والنقل</button>
-      <button class="cat-tab" onclick="scrollToCat('sec-scan', this)">المسح الضوئي</button>
-      <button class="cat-tab" onclick="scrollToCat('sec-convert', this)">التحويل</button>
-      <button class="cat-tab" onclick="scrollToCat('sec-edit', this)">تحرير PDF</button>
-      <button class="cat-tab" onclick="scrollToCat('sec-utils', this)">الأدوات المساعدة</button>
+      <button class="cat-tab active" onclick="sfx('click'); scrollToCat('all', this)">الكل</button>
+      <button class="cat-tab" onclick="sfx('click'); scrollToCat('sec-media', this)">الميديا والصوت</button>
+      <button class="cat-tab" onclick="sfx('click'); scrollToCat('sec-scan', this)">المسح والتفريغ</button>
+      <button class="cat-tab" onclick="sfx('click'); scrollToCat('sec-convert', this)">التحويل</button>
+      <button class="cat-tab" onclick="sfx('click'); scrollToCat('sec-edit', this)">تحرير PDF</button>
+      <button class="cat-tab" onclick="sfx('click'); scrollToCat('sec-utils', this)">الأدوات المساعدة</button>
     </div>
 
     <div id="toolsContainer"></div>
@@ -357,8 +526,8 @@
     </div>
     <div class="section-card">
       <div class="section-title"><span>مكافآت وإعلانات يومية</span></div>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">شاهد إعلاناً قصيراً واحصل على نقاط مجانية لاستخدام أدوات الذكاء الاصطناعي.</p>
-      <button class="btn-primary" id="homeAdBtn" onclick="openAdModal()">🎁 شاهد إعلان واحصل على +15 نقطة</button>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">شاهد إعلاناً قصيراً واحصل على نقاط مجانية لاستخدام الأدوات المدفوعة.</p>
+      <button class="btn-primary" id="homeAdBtn" onclick="sfx('pop'); openAdModal()">🎁 شاهد إعلان واحصل على +15 نقطة</button>
     </div>
   </main>
 
@@ -367,7 +536,7 @@
     <div class="section-card">
       <div class="section-title">
         <span>ملفاتي المحفوظة (السجل المحلي)</span>
-        <button class="btn-outline" onclick="clearHistory()" style="font-size:11px;padding:4px 10px;">مسح السجل</button>
+        <button class="btn-outline" onclick="sfx('click'); clearHistory()" style="font-size:11px;padding:4px 10px;">مسح السجل</button>
       </div>
       <div id="savedFilesList">
         <p style="text-align:center;color:var(--muted);font-size:13px;padding:24px;">لم تقم بمعالجة أو حفظ أي ملفات بعد.</p>
@@ -378,33 +547,76 @@
   <!-- ==================== VIEW 4: ME / ACCOUNT ==================== -->
   <main class="container view-pane" id="view-me">
     <div class="section-card" style="text-align:center;padding:24px 16px;">
-      <div style="width:68px;height:68px;border-radius:50%;background:var(--grad);color:#fff;font-size:28px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;">V</div>
+      <div style="width:74px;height:74px;border-radius:50%;overflow:hidden;border:3px solid var(--primary);margin:0 auto 10px;" id="meDevAvatar"></div>
       <h3 style="font-weight:900;">حساب مستخدم VIXCEL MEDIA</h3>
-      <p style="font-size:13px;color:var(--muted);margin:4px 0 14px;">الرصيد المتاح: <strong id="meCredits" style="color:var(--primary);">30</strong> نقطة</p>
+      <p style="font-size:12px;color:var(--secondary);font-weight:800;margin-top:3px;">تطوير وتصميم: محمد رؤوف (Oufa) • النسخة التجريبية 1</p>
+      <p style="font-size:13px;color:var(--muted);margin:6px 0 14px;">الرصيد المتاح: <strong id="meCredits" style="color:var(--primary);">30</strong> نقطة</p>
       <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
-        <button class="btn-primary" style="width:auto;padding:10px 18px;" onclick="openAdModal()">+ شحن مجاني (إعلان)</button>
-        <button class="btn-outline" onclick="openWalletModal()">كود شحن / VIP</button>
+        <button class="btn-primary" style="width:auto;padding:10px 18px;" onclick="sfx('pop'); openAdModal()">+ شحن مجاني (إعلان)</button>
+        <button class="btn-outline" onclick="sfx('click'); openWalletModal()">كود شحن / VIP</button>
+        <button class="btn-outline" onclick="sfx('pop'); toggleOufaChat(true)">🤖 اسأل المطور Oufa</button>
       </div>
     </div>
   </main>
 
+  <!-- ==================== STICKY BACKGROUND AUDIO PLAYER ==================== -->
+  <div class="bg-audio-bar" id="bgAudioBar">
+    <div style="display:flex;align-items:center;gap:8px;min-width:0;">
+      <span style="font-size:18px;">🎧</span>
+      <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+        <div id="bgAudioTitle" style="font-size:12px;font-weight:800;color:#38BDF8;">مشغل الخلفية</div>
+        <div style="font-size:10px;color:#94A3B8;">يعمل أثناء تصفحك</div>
+      </div>
+    </div>
+    <audio id="bgAudioPlayer" controls></audio>
+    <a id="bgAudioDl" href="#" download="vixcel_audio.wav" class="dl-link" style="margin:0;padding:6px 10px;font-size:11px;">⬇️</a>
+    <button onclick="closeBgAudio()" style="background:none;border:none;color:#94A3B8;font-size:18px;cursor:pointer;">×</button>
+  </div>
+
+  <!-- ==================== FLOATING OUFA AI BOT ==================== -->
+  <button class="oufa-fab" onclick="sfx('pop'); toggleOufaChat()" title="تحدث مع Oufa المساعد الذكي">
+    <div class="oufa-avatar-wrap" id="oufaFabAvatar"></div>
+    <div class="oufa-fab-label">
+      <strong id="oufaBotNameBadge">Oufa AI</strong>
+      <span>مساعدك الذكي</span>
+    </div>
+  </button>
+
+  <div class="oufa-chat-window" id="oufaChatWin">
+    <div class="oufa-chat-head">
+      <div style="display:flex;align-items:center;gap:9px;">
+        <div class="oufa-avatar-wrap" style="width:38px;height:38px;" id="oufaHeadAvatar"></div>
+        <div>
+          <div style="font-size:14px;font-weight:900;color:#fff;" id="oufaHeadTitle">Oufa — المساعد الذكي</div>
+          <div style="font-size:10px;color:#38BDF8;font-weight:700;">● متصل الآن • مطور الموقع: محمد رؤوف</div>
+        </div>
+      </div>
+      <button onclick="sfx('click'); toggleOufaChat(false)" style="background:rgba(255,255,255,0.12);border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:17px;cursor:pointer;">×</button>
+    </div>
+    <div class="oufa-chat-msgs" id="oufaMsgsBox"></div>
+    <div class="oufa-chat-input">
+      <input type="text" id="oufaInput" placeholder="اسأل Oufa عن أي أداة أو عن المبرمج..." onkeydown="if(event.key==='Enter') sendToOufa()" />
+      <button onclick="sendToOufa()">إرسال</button>
+    </div>
+  </div>
+
   <!-- Bottom Navigation -->
   <nav class="bottom-nav">
-    <button class="nav-btn" onclick="switchView('home', this)">
+    <button class="nav-btn" onclick="sfx('click'); switchView('home', this)">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L4 9v12h5v-7h6v7h5V9l-8-6z"/></svg>
-      <span id="lbl-home">الصفحة الرئيسية</span>
+      <span>الصفحة الرئيسية</span>
     </button>
-    <button class="nav-btn" onclick="switchView('files', this)">
+    <button class="nav-btn" onclick="sfx('click'); switchView('files', this)">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm1 7V3.5L18.5 9H15z"/></svg>
-      <span id="lbl-files">الملفات</span>
+      <span>الملفات</span>
     </button>
-    <button class="nav-btn active" onclick="switchView('tools', this)">
+    <button class="nav-btn active" onclick="sfx('click'); switchView('tools', this)">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 4h7v3h-7v-3zm0-4h7v2h-7v-2z"/></svg>
-      <span id="lbl-tools">أدوات</span>
+      <span>أدوات</span>
     </button>
-    <button class="nav-btn" onclick="switchView('me', this)">
+    <button class="nav-btn" onclick="sfx('click'); switchView('me', this)">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/></svg>
-      <span id="lbl-me">أنا</span>
+      <span>أنا</span>
     </button>
   </nav>
 
@@ -413,7 +625,7 @@
     <div class="modal-sheet">
       <div class="modal-head">
         <h3 id="modalToolTitle">اسم الأداة</h3>
-        <button class="close-btn" onclick="closeToolModal()">×</button>
+        <button class="close-btn" onclick="sfx('click'); closeToolModal()">×</button>
       </div>
       <div id="modalToolBody"></div>
     </div>
@@ -424,11 +636,12 @@
     <div class="modal-sheet" style="text-align:center;">
       <div class="modal-head">
         <h3 id="adModalTitle">مكافأة مشاهدة إعلان (+15 نقطة)</h3>
-        <button class="close-btn" onclick="closeAdModal()">×</button>
+        <button class="close-btn" onclick="sfx('click'); closeAdModal()">×</button>
       </div>
       <div id="rewardedAdContainer" style="min-height:270px;background:#F8FAFC;border:1px dashed #CBD5E1;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px;margin:10px 0;">
         <div id="adCustomCode" style="width:100%;display:flex;justify-content:center;align-items:center;min-height:250px;"></div>
         <div id="adCountdownText" style="font-size:24px;font-weight:900;color:var(--primary);margin-top:8px;">15</div>
+        <div id="adFocusWarn" style="font-size:11px;color:#DC2626;font-weight:800;display:none;margin-top:4px;">⚠️ تم إيقاف العداد مؤقتاً — أبقِ نافذة الإعلان مفتوحة لاحتساب النقاط!</div>
       </div>
       <button class="btn-primary" id="claimAdBtn" disabled onclick="claimReward()">انتظر انتهاء الإعلان (15ث)...</button>
     </div>
@@ -439,13 +652,13 @@
     <div class="modal-sheet">
       <div class="modal-head">
         <h3>محفظة النقاط وشحن VIP</h3>
-        <button class="close-btn" onclick="document.getElementById('walletModal').classList.remove('open')">×</button>
+        <button class="close-btn" onclick="sfx('click'); document.getElementById('walletModal').classList.remove('open')">×</button>
       </div>
       <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">
         للشحن المباشر عبر InstaPay: <strong id="instapayText" style="color:var(--primary);">vixcel@instapay</strong>
       </p>
       <div id="whatsappBox" style="display:none;margin-bottom:10px;">
-        <a id="whatsappLink" href="#" target="_blank" class="dl-link" style="background:#16A34A;width:100%;text-align:center;">💬 تواصل عبر واتساب لتفعيل VIP</a>
+        <a id="whatsappLink" href="#" target="_blank" class="dl-link" style="background:#16A34A;width:100%;justify-content:center;">💬 تواصل عبر واتساب لتفعيل VIP</a>
       </div>
       <label class="f-label">أدخل كود الشحن (Promo Code)</label>
       <div style="display:flex;gap:8px;">
@@ -459,6 +672,189 @@
   <script>
     if (window.pdfjsLib) {
       pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+
+    // ==================== SYNTHESIZED UI SOUND EFFECTS (WEB AUDIO) ====================
+    let soundEnabled = localStorage.getItem('vix_sound') !== '0';
+    let uiAudioCtx = null;
+    function sfx(type = 'click') {
+      if (!soundEnabled) return;
+      try {
+        if (!uiAudioCtx) uiAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (uiAudioCtx.state === 'suspended') uiAudioCtx.resume();
+        const osc = uiAudioCtx.createOscillator();
+        const gain = uiAudioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(uiAudioCtx.destination);
+        const now = uiAudioCtx.currentTime;
+
+        if (type === 'click') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(620, now);
+          osc.frequency.exponentialRampToValueAtTime(320, now + 0.06);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+          osc.start(now); osc.stop(now + 0.065);
+        } else if (type === 'pop') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(420, now);
+          osc.frequency.exponentialRampToValueAtTime(840, now + 0.09);
+          gain.gain.setValueAtTime(0.1, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+          osc.start(now); osc.stop(now + 0.095);
+        } else if (type === 'success') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(523.25, now);
+          osc.frequency.setValueAtTime(659.25, now + 0.08);
+          osc.frequency.setValueAtTime(783.99, now + 0.16);
+          gain.gain.setValueAtTime(0.11, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+          osc.start(now); osc.stop(now + 0.31);
+        } else if (type === 'error') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(190, now);
+          osc.frequency.linearRampToValueAtTime(130, now + 0.18);
+          gain.gain.setValueAtTime(0.09, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.19);
+          osc.start(now); osc.stop(now + 0.2);
+        }
+      } catch (e) {}
+    }
+
+    function toggleSoundFx() {
+      soundEnabled = !soundEnabled;
+      localStorage.setItem('vix_sound', soundEnabled ? '1' : '0');
+      document.getElementById('soundToggleBtn').innerText = soundEnabled ? '🔊' : '🔇';
+      if (soundEnabled) sfx('pop');
+    }
+    document.getElementById('soundToggleBtn').innerText = soundEnabled ? '🔊' : '🔇';
+
+    // ==================== STYLIZED CYBER-DESIGNER AVATAR (OUFA) ====================
+    const DEFAULT_OUFA_AVATAR_SVG = `
+      <svg viewBox="0 0 120 120" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bgCyber" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#0284C7"/>
+            <stop offset="55%" stop-color="#2563EB"/>
+            <stop offset="100%" stop-color="#5B21B6"/>
+          </linearGradient>
+          <linearGradient id="goldCyber" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FDE047"/>
+            <stop offset="50%" stop-color="#D97706"/>
+            <stop offset="100%" stop-color="#78350F"/>
+          </linearGradient>
+        </defs>
+        <rect width="120" height="120" fill="url(#bgCyber)"/>
+        <!-- Tuxedo Shoulders -->
+        <path d="M18 120 C22 96, 42 90, 60 90 C78 90, 98 96, 102 120 Z" fill="#0F172A"/>
+        <polygon points="52,92 60,104 68,92" fill="#F8FAFC"/>
+        <polygon points="54,95 60,99 54,103" fill="#1E293B"/>
+        <polygon points="66,95 60,99 66,103" fill="#1E293B"/>
+        <!-- Face Base (Left Human / Right Gold Cyborg) -->
+        <path d="M36 46 C36 26, 84 26, 84 46 L84 64 C84 80, 72 90, 60 90 L60 28 C46 28, 36 34, 36 46 Z" fill="#E0A982"/>
+        <path d="M60 28 C74 28, 84 34, 84 46 L84 64 C84 80, 72 90, 60 90 Z" fill="url(#goldCyber)"/>
+        <!-- Hair & Cyber Crown -->
+        <path d="M34 46 C33 24, 48 18, 60 19 L60 31 C47 30, 38 36, 36 48 Z" fill="#1E1B18"/>
+        <path d="M60 19 C74 18, 87 25, 86 46 L82 46 C81 35, 72 30, 60 31 Z" fill="#92400E"/>
+        <rect x="73" y="16" width="5" height="14" rx="2" transform="rotate(22 73 16)" fill="#FACC15"/>
+        <!-- Left Human Eye & Smile -->
+        <ellipse cx="48" cy="52" rx="4" ry="2.6" fill="#1E1B18"/>
+        <circle cx="49" cy="51.5" r="1" fill="#fff"/>
+        <path d="M47 70 Q54 75 60 73" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <!-- Right Glowing Cyber Eye & Circuit Lines -->
+        <circle cx="72" cy="52" r="5.5" fill="#1E1B4B" stroke="#FDE047" stroke-width="1.2"/>
+        <circle cx="72" cy="52" r="3" fill="#F97316"/>
+        <circle cx="72" cy="52" r="1.3" fill="#FEF08A"/>
+        <path d="M63 40 L76 40 M63 63 L78 63 M63 72 L74 72" stroke="#451A03" stroke-width="1.5"/>
+      </svg>
+    `;
+
+    function renderOufaAvatars(customUrl) {
+      const html = customUrl
+        ? `<img src="${customUrl}" style="width:100%;height:100%;object-fit:cover;" alt="Oufa" />`
+        : DEFAULT_OUFA_AVATAR_SVG;
+      ['oufaFabAvatar', 'oufaHeadAvatar', 'meDevAvatar'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = html;
+      });
+    }
+
+    // ==================== ANTI-CHEAT LEDGER SYSTEM ====================
+    const AC_SALT = 'VIXCEL_OUFA_BETA1_GUARD_2026';
+    function computeLedgerSig(credits, nonce, usedPromosStr) {
+      const raw = `${AC_SALT}|${credits}|${nonce}|${usedPromosStr}`;
+      let h = 2166136261;
+      for (let i = 0; i < raw.length; i++) {
+        h ^= raw.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return (h >>> 0).toString(16);
+    }
+
+    function loadSecureWallet(defaultInitial = 30) {
+      const raw = localStorage.getItem('vixcel_wallet_v2');
+      if (!raw) {
+        const initState = { credits: defaultInitial, nonce: 1, usedPromos: [], dailyAds: 0, dayKey: new Date().toDateString() };
+        saveSecureWallet(initState);
+        return initState;
+      }
+      try {
+        const parsed = JSON.parse(raw);
+        const expectedSig = computeLedgerSig(parsed.credits, parsed.nonce, JSON.stringify(parsed.usedPromos || []));
+        if (parsed.sig !== expectedSig || isNaN(parsed.credits) || parsed.credits < 0) {
+          // تم اكتشاف تلاعب بالرصيد في المتصفح -> إعادة ضبط آمنة
+          const resetState = { credits: 10, nonce: 99, usedPromos: parsed.usedPromos || [], dailyAds: 0, dayKey: new Date().toDateString() };
+          saveSecureWallet(resetState);
+          return resetState;
+        }
+        if (parsed.dayKey !== new Date().toDateString()) {
+          parsed.dailyAds = 0;
+          parsed.dayKey = new Date().toDateString();
+          saveSecureWallet(parsed);
+        }
+        return parsed;
+      } catch (e) {
+        const fallback = { credits: defaultInitial, nonce: 1, usedPromos: [], dailyAds: 0, dayKey: new Date().toDateString() };
+        saveSecureWallet(fallback);
+        return fallback;
+      }
+    }
+
+    function saveSecureWallet(state) {
+      state.nonce = (state.nonce || 1) + 1;
+      state.sig = computeLedgerSig(state.credits, state.nonce, JSON.stringify(state.usedPromos || []));
+      localStorage.setItem('vixcel_wallet_v2', JSON.stringify(state));
+    }
+
+    let WALLET = loadSecureWallet(30);
+
+    function refreshCredits() {
+      saveSecureWallet(WALLET);
+      const c1 = document.getElementById('creditCount');
+      const c2 = document.getElementById('meCredits');
+      if (c1) c1.innerText = WALLET.credits;
+      if (c2) c2.innerText = WALLET.credits;
+    }
+
+    // خصم النقاط بعد إتمام المهمة بنجاح فقط
+    function checkCanAffordTool(toolId) {
+      const meta = getToolMetaById(toolId);
+      if (!meta || !meta.cost || meta.cost <= 0) return true;
+      if (WALLET.credits < meta.cost) {
+        sfx('error');
+        alert(`⚠️ هذه الأداة تتطلب ${meta.cost} نقطة بعد إتمام المعالجة.\nرصيدك الحالي: ${WALLET.credits} نقطة — شاهد إعلاناً قصيراً للشحن مجاناً!`);
+        openAdModal();
+        return false;
+      }
+      return true;
+    }
+
+    function deductCreditsAfterTask(toolId) {
+      const meta = getToolMetaById(toolId);
+      if (!meta || !meta.cost || meta.cost <= 0) return;
+      WALLET = loadSecureWallet(30);
+      WALLET.credits = Math.max(0, WALLET.credits - Number(meta.cost));
+      refreshCredits();
     }
 
     // ==================== SMART AD RENDERER ====================
@@ -481,16 +877,16 @@
       }
     }
 
-    // ==================== STATE & DEFAULT CONFIG (SYNTAX FIXED) ====================
+    // ==================== DEFAULT CONFIG & BOT KNOWLEDGE ====================
     const DEFAULT_ADSTERRA = `<iframe style="width:300px;height:250px;border:0;overflow:hidden;display:block;margin:0 auto;border-radius:12px;" scrolling="no" srcdoc="<!DOCTYPE html><html><body style='margin:0;padding:0;background:transparent;display:flex;justify-content:center;align-items:center;'><script>atOptions={'key':'91f08312e452b635484c92c1aaf5fed9','format':'iframe','height':250,'width':300,'params':{}};<\/script><script src='https://bauval.org/22/91f08312e452b635484c92c1aaf5fed9'><\/script></body></html>"></iframe>`;
 
     let APP_CFG = {
       brandName: 'VIXCEL',
       brandSub: 'MEDIA',
       heroTitle: 'VIXCEL AI & MEDIA PRO',
-      heroDesc: 'تحميل فيديو • تحويل صيغ • نقل ملفات سريع • مسح ضوئي',
+      heroDesc: 'تغيير نبرة الصوت • تفريغ الصور • PDF • نقل ملفات سريع',
       broadcastEnabled: true,
-      broadcastText: 'مرحباً بك في VIXCEL MEDIA — جميع أدوات المستندات والميديا ونقل الملفات السريع في مكان واحد!',
+      broadcastText: 'مرحباً بك في VIXCEL MEDIA (النسخة التجريبية 1) — تطوير: محمد رؤوف (Oufa)',
       maintenanceMode: false,
       maintenanceMsg: 'نقوم بإضافة أدوات وتحسينات جديدة في VIXCEL MEDIA. سنعود للعمل خلال دقائق!',
       primaryColor: '#2563EB',
@@ -502,27 +898,33 @@
       rewardedAdCode: DEFAULT_ADSTERRA,
       rewardSeconds: 15,
       rewardPoints: 15,
+      maxDailyAds: 15,
       initialCredits: 30,
       instapayId: 'vixcel@instapay',
       whatsappNumber: '',
       promoCodes: { 'VIXCEL100': 100, 'VIP500': 500, 'FREE50': 50 },
+      botName: 'Oufa',
+      botAvatarUrl: '',
+      botWelcome: 'أهلاً بيك في VIXCEL MEDIA (النسخة التجريبية 1)! أنا Oufa المساعد الذكي للمنصة. مطور الموقع هو المهندس محمد رؤوف (Oufa) خريج نظم المعلومات (Information Systems) ومصمم جرافيك ومحب للبرمجة والتصوير. تحب أساعدك في أي أداة النهاردة؟',
+      botKnowledge: 'المطور والمبرمج: محمد رؤوف، ولقبه البرمجي Oufa. المؤهل: خريج نظم معلومات (Information Systems). المهارات والاهتمامات: يعشق البرمجة وتطوير أدوات الذكاء الاصطناعي، ويعمل Graphic Designer محترف، كما يحب التصوير الفوتوغرافي. حالة الموقع: هذه هي النسخة التجريبية 1 (Beta 1.0) من منصة VIXCEL MEDIA.',
       toolsOverride: {}
     };
 
-    let userCredits = parseInt(localStorage.getItem('vixcel_credits') || '30', 10);
     let savedHistory = JSON.parse(localStorage.getItem('vixcel_history') || '[]');
     let adTimerInterval = null;
+    let activeAdSessionToken = null;
+    let adStartTimestamp = 0;
     let activePeer = null;
 
     const SECTIONS = [
       {
         id: 'sec-media',
-        title: 'أدوات الميديا والنقل السريع',
-        badge: 'VIXCEL EXCLUSIVE',
+        title: 'أدوات الميديا والصوت الذكي',
+        badge: 'NEW VOICE AI',
         tools: [
-          { id: 'vid_to_mp3', name: 'استخراج صوت MP3', icon: '🎵', color: 'c-purple', tag: 'سريع', cost: 0 },
-          { id: 'img_convert', name: 'تحويل صيغ الصور', icon: '🖼️', color: 'c-blue', cost: 0 },
-          { id: 'vid_compress', name: 'قص وضغط فيديو', icon: '🎬', color: 'c-indigo', cost: 0 },
+          { id: 'voice_changer', name: 'تغيير نبرة الصوت', icon: '🎭', color: 'c-purple', tag: 'جديد', cost: 0 },
+          { id: 'vid_to_mp3', name: 'استخراج صوت MP3', icon: '🎵', color: 'c-blue', tag: 'سريع', cost: 0 },
+          { id: 'img_convert', name: 'تحويل صيغ الصور', icon: '🖼️', color: 'c-indigo', cost: 0 },
           { id: 'img_compress', name: 'ضغط حجم الصور', icon: '🗜️', color: 'c-teal', cost: 0 },
           { id: 'lan_transfer', name: 'نقل ملفات P2P', icon: '⚡', color: 'c-orange', tag: 'مجاني', cost: 0 },
           { id: 'voice_rec', name: 'مسجل صوت ذكي', icon: '🎙️', color: 'c-purple', cost: 0 }
@@ -530,11 +932,11 @@
       },
       {
         id: 'sec-scan',
-        title: 'المسح الضوئي واستخراج النصوص',
+        title: 'المسح الضوئي والتفريغ (PNG / PDF)',
         tools: [
+          { id: 'bg_remove', name: 'تفريغ خلفية الصورة', icon: '✂️', color: 'c-teal', tag: 'PNG', cost: 0 },
           { id: 'doc_scan', name: 'ماسح المستندات', icon: '📷', color: 'c-blue', tag: 'HD', cost: 0 },
-          { id: 'ocr_text', name: 'استخراج نص OCR', icon: '📝', color: 'c-teal', cost: 0 },
-          { id: 'id_scan', name: 'مسح البطاقة والهوية', icon: '🪪', color: 'c-indigo', cost: 0 },
+          { id: 'ocr_text', name: 'استخراج نص OCR', icon: '📝', color: 'c-indigo', cost: 0 },
           { id: 'qr_scan', name: 'صانع باركود QR', icon: '📱', color: 'c-purple', cost: 0 }
         ]
       },
@@ -582,12 +984,9 @@
       };
     }
 
-    function refreshCredits() {
-      localStorage.setItem('vixcel_credits', String(userCredits));
-      const c1 = document.getElementById('creditCount');
-      const c2 = document.getElementById('meCredits');
-      if (c1) c1.innerText = userCredits;
-      if (c2) c2.innerText = userCredits;
+    function getToolMetaById(id) {
+      const raw = SECTIONS.flatMap(s => s.tools).find(t => t.id === id);
+      return raw ? getToolMeta(raw) : null;
     }
 
     function addHistoryItem(title, type) {
@@ -632,23 +1031,17 @@
       let html = '';
 
       SECTIONS.forEach(sec => {
-        const secOv = (APP_CFG.sectionsOverride && APP_CFG.sectionsOverride[sec.id]) || {};
-        if (secOv.enabled === false) return;
-
-        const filtered = sec.tools
-          .map(getToolMeta)
-          .filter(t => t.enabled && (!q || t.name.toLowerCase().includes(q)));
+        const filtered = sec.tools.map(getToolMeta).filter(t => t.enabled && (!q || t.name.toLowerCase().includes(q)));
         if (!filtered.length) return;
-
         html += `
           <div class="section-card" id="${sec.id}">
             <div class="section-title">
-              <span>${secOv.title || sec.title}</span>
+              <span>${sec.title}</span>
               ${sec.badge ? `<span class="section-badge">${sec.badge}</span>` : ''}
             </div>
             <div class="tools-grid">
               ${filtered.map(t => `
-                <div class="tool-item" onclick="openTool('${t.id}')">
+                <div class="tool-item" onclick="sfx('pop'); openTool('${t.id}')">
                   <div class="tool-circle ${t.color}">
                     ${t.tag ? `<span class="tool-new-tag">${t.tag}</span>` : ''}
                     ${t.cost > 0 ? `<span class="tool-cost-tag">⚡${t.cost}</span>` : ''}
@@ -667,12 +1060,12 @@
       if (homeGrid) {
         const quick = [
           SECTIONS[0].tools[0], SECTIONS[0].tools[1], SECTIONS[0].tools[4],
-          SECTIONS[1].tools[0], SECTIONS[1].tools[1], SECTIONS[2].tools[0],
-          SECTIONS[3].tools[0], SECTIONS[4].tools[0]
+          SECTIONS[1].tools[0], SECTIONS[1].tools[1], SECTIONS[1].tools[2],
+          SECTIONS[2].tools[0], SECTIONS[3].tools[0]
         ].map(getToolMeta).filter(t => t.enabled);
 
         homeGrid.innerHTML = quick.map(t => `
-          <div class="tool-item" onclick="openTool('${t.id}')">
+          <div class="tool-item" onclick="sfx('pop'); openTool('${t.id}')">
             <div class="tool-circle ${t.color}"><span>${t.icon}</span></div>
             <div class="tool-name">${t.name}</div>
           </div>
@@ -707,14 +1100,104 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // ==================== REWARDED AD MODAL ====================
+    // ==================== BACKGROUND AUDIO PLAYER ====================
+    function playInBackground(url, title, filename = 'vixcel_audio.wav') {
+      const bar = document.getElementById('bgAudioBar');
+      const player = document.getElementById('bgAudioPlayer');
+      const dl = document.getElementById('bgAudioDl');
+      document.getElementById('bgAudioTitle').innerText = title;
+      player.src = url;
+      dl.href = url;
+      dl.download = filename;
+      bar.classList.add('open');
+      player.play().catch(() => {});
+      sfx('success');
+    }
+
+    function closeBgAudio() {
+      const bar = document.getElementById('bgAudioBar');
+      const player = document.getElementById('bgAudioPlayer');
+      player.pause();
+      bar.classList.remove('open');
+    }
+
+    // ==================== MULTI-FORMAT EXPORT HELPER (PNG / TRANSPARENT PNG / PDF) ====================
+    function buildImageExportButtons(canvas, baseName = 'vixcel_export') {
+      const jpgUrl = canvas.toDataURL('image/jpeg', 0.92);
+      const pngUrl = canvas.toDataURL('image/png');
+      const uid = 'exp_' + Math.floor(Math.random() * 99999);
+      window[uid] = canvas;
+      return `
+        <div class="export-bar">
+          <a class="dl-link" href="${pngUrl}" download="${baseName}.png" onclick="sfx('success')">⬇️ صورة PNG</a>
+          <a class="dl-link blue" href="${jpgUrl}" download="${baseName}.jpg" onclick="sfx('success')">⬇️ صورة JPG</a>
+          <button class="dl-link purple" onclick="exportTransparentPNG('${uid}', '${baseName}')">✂️ صورة مفرغة PNG</button>
+          <button class="dl-link dark" onclick="exportCanvasToPDF('${uid}', '${baseName}')">📄 تصدير PDF</button>
+        </div>
+      `;
+    }
+
+    function exportTransparentPNG(uid, baseName) {
+      const srcCanvas = window[uid];
+      if (!srcCanvas) return;
+      const c = document.createElement('canvas');
+      c.width = srcCanvas.width;
+      c.height = srcCanvas.height;
+      const ctx = c.getContext('2d');
+      ctx.drawImage(srcCanvas, 0, 0);
+      const imgData = ctx.getImageData(0, 0, c.width, c.height);
+      const d = imgData.data;
+      // أخذ لون زاوية الصورة كخلفية وتفريغها بذكاء
+      const bgR = d[0], bgG = d[1], bgB = d[2];
+      for (let i = 0; i < d.length; i += 4) {
+        const r = d[i], g = d[i + 1], b = d[i + 2];
+        const distCorner = Math.hypot(r - bgR, g - bgG, b - bgB);
+        const isWhite = (r > 232 && g > 232 && b > 232);
+        if (distCorner < 46 || isWhite) {
+          d[i + 3] = 0;
+        }
+      }
+      ctx.putImageData(imgData, 0, 0);
+      const url = c.toDataURL('image/png');
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = baseName + '_transparent.png';
+      a.click();
+      sfx('success');
+    }
+
+    function exportCanvasToPDF(uid, baseName) {
+      const srcCanvas = window[uid];
+      if (!srcCanvas || !window.jspdf) return;
+      const { jsPDF } = window.jspdf;
+      const orient = srcCanvas.width > srcCanvas.height ? 'l' : 'p';
+      const doc = new jsPDF({ orientation: orient, unit: 'px', format: [srcCanvas.width, srcCanvas.height] });
+      doc.addImage(srcCanvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, srcCanvas.width, srcCanvas.height);
+      doc.save(baseName + '.pdf');
+      sfx('success');
+    }
+
+    // ==================== REWARDED AD MODAL WITH ANTI-CHEAT ====================
     function openAdModal() {
+      WALLET = loadSecureWallet(30);
+      const maxDaily = Number(APP_CFG.maxDailyAds || 15);
+      if (WALLET.dailyAds >= maxDaily) {
+        sfx('error');
+        alert(`⚠️ لقد وصلت للحد الأقصى لمشاهدة الإعلانات اليوم (${maxDaily} إعلانات). عد غداً للمزيد!`);
+        return;
+      }
+
       const modal = document.getElementById('adModal');
       const adSlot = document.getElementById('adCustomCode');
       const countEl = document.getElementById('adCountdownText');
+      const warnEl = document.getElementById('adFocusWarn');
       const btn = document.getElementById('claimAdBtn');
       const pts = Number(APP_CFG.rewardPoints || 15);
       let sec = Number(APP_CFG.rewardSeconds || 15);
+
+      activeAdSessionToken = 'AD_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+      adStartTimestamp = Date.now();
+      warnEl.style.display = 'none';
 
       document.getElementById('adModalTitle').innerText = `مكافأة مشاهدة إعلان (+${pts} نقطة)`;
       renderSafeAdHtml(adSlot, APP_CFG.rewardedAdCode || DEFAULT_ADSTERRA);
@@ -726,6 +1209,11 @@
 
       clearInterval(adTimerInterval);
       adTimerInterval = setInterval(() => {
+        if (document.hidden) {
+          warnEl.style.display = 'block';
+          return;
+        }
+        warnEl.style.display = 'none';
         sec--;
         if (sec > 0) {
           countEl.innerText = sec;
@@ -735,25 +1223,39 @@
           countEl.innerText = '✅ جاهز للاستلام';
           btn.disabled = false;
           btn.innerText = `استلم +${pts} نقطة الآن`;
+          sfx('pop');
         }
       }, 1000);
     }
 
     function closeAdModal() {
       clearInterval(adTimerInterval);
+      activeAdSessionToken = null;
       document.getElementById('adModal').classList.remove('open');
       document.getElementById('adCustomCode').innerHTML = '';
     }
 
     function claimReward() {
+      const reqSec = Number(APP_CFG.rewardSeconds || 15);
+      const elapsedSec = (Date.now() - adStartTimestamp) / 1000;
+      if (!activeAdSessionToken || elapsedSec < (reqSec - 1.5)) {
+        sfx('error');
+        alert('⚠️ نظام الحماية: يجب إكمال مدة مشاهدة الإعلان كاملة لاستلام النقاط.');
+        closeAdModal();
+        return;
+      }
+      activeAdSessionToken = null;
       const pts = Number(APP_CFG.rewardPoints || 15);
-      userCredits += pts;
+      WALLET = loadSecureWallet(30);
+      WALLET.credits += pts;
+      WALLET.dailyAds = (WALLET.dailyAds || 0) + 1;
       refreshCredits();
       closeAdModal();
+      sfx('success');
       alert(`🎉 مبروك! تم إضافة +${pts} نقطة إلى رصيدك.`);
     }
 
-    // ==================== WALLET & PROMO ====================
+    // ==================== WALLET & SINGLE-USE PROMO CODES ====================
     function openWalletModal() {
       document.getElementById('walletModal').classList.add('open');
     }
@@ -763,70 +1265,184 @@
       const status = document.getElementById('promoStatusMsg');
       const code = input.value.trim().toUpperCase();
       const codes = APP_CFG.promoCodes || { 'VIXCEL100': 100, 'VIP500': 500, 'FREE50': 50 };
+
+      WALLET = loadSecureWallet(30);
+      if ((WALLET.usedPromos || []).includes(code)) {
+        sfx('error');
+        status.style.color = '#DC2626';
+        status.innerText = '⚠️ لقد قمت باستخدام هذا الكود من قبل!';
+        return;
+      }
+
       if (codes[code]) {
-        userCredits += Number(codes[code]);
+        WALLET.credits += Number(codes[code]);
+        WALLET.usedPromos = [...(WALLET.usedPromos || []), code];
         refreshCredits();
+        sfx('success');
         status.style.color = '#059669';
-        status.innerText = `تم شحن +${codes[code]} نقطة بنجاح!`;
+        status.innerText = `✅ تم شحن +${codes[code]} نقطة بنجاح!`;
         input.value = '';
       } else {
+        sfx('error');
         status.style.color = '#DC2626';
-        status.innerText = 'كود الشحن غير صحيح أو منتهي الصلاحية.';
+        status.innerText = '❌ كود الشحن غير صحيح أو منتهي الصلاحية.';
+      }
+    }
+
+    // ==================== FLOATING OUFA AI BOT ENGINE ====================
+    let oufaHistory = [];
+    function toggleOufaChat(forceState) {
+      const win = document.getElementById('oufaChatWin');
+      const willOpen = forceState !== undefined ? forceState : !win.classList.contains('open');
+      win.classList.toggle('open', willOpen);
+      const box = document.getElementById('oufaMsgsBox');
+      if (willOpen && box.children.length === 0) {
+        appendOufaMsg(APP_CFG.botWelcome, 'bot', [
+          { label: '🎭 جرب تغيير الصوت', tool: 'voice_changer' },
+          { label: '✂️ تفريغ صورة PNG', tool: 'bg_remove' }
+        ]);
+      }
+      if (willOpen) document.getElementById('oufaInput').focus();
+    }
+
+    function appendOufaMsg(text, sender = 'bot', actions = []) {
+      const box = document.getElementById('oufaMsgsBox');
+      const div = document.createElement('div');
+      div.className = 'msg-bubble ' + (sender === 'user' ? 'msg-user' : 'msg-bot');
+      div.innerText = text;
+      if (actions && actions.length) {
+        const wrap = document.createElement('div');
+        actions.forEach(a => {
+          const b = document.createElement('button');
+          b.className = 'bot-action-chip';
+          b.innerText = a.label;
+          b.style.marginLeft = '6px';
+          b.onclick = () => { sfx('pop'); toggleOufaChat(false); openTool(a.tool); };
+          wrap.appendChild(b);
+        });
+        div.appendChild(wrap);
+      }
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+      return div;
+    }
+
+    function detectSuggestedTool(q) {
+      const s = q.toLowerCase();
+      if (s.includes('صوت') || s.includes('نبرة') || s.includes('روبوت') || s.includes('هيليوم') || s.includes('عجوز')) return [{ label: '🎭 افتح أداة تغيير نبرة الصوت', tool: 'voice_changer' }];
+      if (s.includes('خلفية') || s.includes('مفرغ') || s.includes('تفريغ')) return [{ label: '✂️ افتح أداة تفريغ الصور', tool: 'bg_remove' }];
+      if (s.includes('دمج') && s.includes('pdf')) return [{ label: '🔗 افتح أداة دمج PDF', tool: 'pdf_merge' }];
+      if (s.includes('نقل') || s.includes('موبايل') || s.includes('ارسال')) return [{ label: '⚡ افتح النقل السريع P2P', tool: 'lan_transfer' }];
+      if (s.includes('نص') || s.includes('ocr')) return [{ label: '📝 افتح استخراج النصوص OCR', tool: 'ocr_text' }];
+      return [];
+    }
+
+    async function sendToOufa() {
+      const inp = document.getElementById('oufaInput');
+      const q = inp.value.trim();
+      if (!q) return;
+      inp.value = '';
+      sfx('click');
+      appendOufaMsg(q, 'user');
+
+      const typingEl = appendOufaMsg('Oufa يكتب الآن...', 'bot');
+      const suggested = detectSuggestedTool(q);
+
+      const sysPrompt = `أنت المساعد الذكي "${APP_CFG.botName || 'Oufa'}" داخل منصة VIXCEL MEDIA (النسخة التجريبية 1).
+تتحدث باللهجة المصرية الودودة والذكية بطلاقة واحترافية.
+معلومات المبرمج ومطور الموقع التي يجب أن تفتخر بها عند السؤال عنه أو عن الموقع:
+${APP_CFG.botKnowledge}
+أدوات الموقع المتاحة مجاناً في المتصفح: تغيير نبرة الصوت (روبوت، عجوز، امرأة، طفل، هيليوم، شرير، فضائي)، تفريغ خلفية الصور PNG، تحويل الصور والـ PDF، دمج وتقسيم PDF، استخراج النصوص OCR، نقل الملفات السريع P2P، وضغط ZIP.
+أجب بإيجاز ووضوح ومساعدة عملية.`;
+
+      oufaHistory.push({ role: 'user', content: q });
+      if (oufaHistory.length > 8) oufaHistory = oufaHistory.slice(-8);
+
+      try {
+        const res = await fetch('https://text.pollinations.ai/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            messages: [{ role: 'system', content: sysPrompt }, ...oufaHistory],
+            model: 'openai',
+            seed: Math.floor(Math.random() * 10000)
+          })
+        });
+        if (!res.ok) throw new Error('API busy');
+        const reply = (await res.text()).trim();
+        oufaHistory.push({ role: 'assistant', content: reply });
+        typingEl.remove();
+        sfx('pop');
+        appendOufaMsg(reply, 'bot', suggested);
+      } catch (e) {
+        typingEl.remove();
+        sfx('pop');
+        const fallback = 'أهلاً بيك! أنا Oufa المساعد الذكي لمنصة VIXCEL MEDIA (النسخة التجريبية 1) اللي برمجها وصممها المهندس محمد رؤوف (Oufa) خريج نظم المعلومات ومصمم الجرافيك. تقدر تستخدم كل أدوات الصوت والصور والـ PDF مباشرة من الواجهة!';
+        appendOufaMsg(fallback, 'bot', suggested);
       }
     }
 
     // ==================== UNIVERSAL TOOL WORKSPACE ====================
     function closeToolModal() {
       if (activePeer) { try { activePeer.destroy(); } catch (e) {} activePeer = null; }
+      if (vcStream) { try { vcStream.getTracks().forEach(t => t.stop()); } catch (e) {} vcStream = null; }
       document.getElementById('toolModal').classList.remove('open');
       document.getElementById('modalToolBody').innerHTML = '';
     }
 
     function openTool(id) {
-      const allTools = SECTIONS.flatMap(s => s.tools).map(getToolMeta);
-      const toolObj = allTools.find(t => t.id === id);
-
-      if (toolObj && toolObj.cost > 0) {
-        if (userCredits < toolObj.cost) {
-          alert(`⚠️ هذه الأداة تتطلب ${toolObj.cost} نقطة. رصيدك الحالي ${userCredits} نقطة — شاهد إعلاناً قصيراً للشحن مجاناً!`);
-          openAdModal();
-          return;
-        }
-        userCredits -= toolObj.cost;
-        refreshCredits();
-      }
+      if (!checkCanAffordTool(id)) return;
 
       const modal = document.getElementById('toolModal');
       const titleEl = document.getElementById('modalToolTitle');
       const body = document.getElementById('modalToolBody');
+      const toolObj = getToolMetaById(id);
       titleEl.innerText = toolObj ? `${toolObj.icon} ${toolObj.name}` : 'أداة VIXCEL';
 
-      if (id === 'img_convert' || id === 'img_compress' || id === 'doc_scan' || id === 'id_scan') {
+      if (id === 'voice_changer') {
+        body.innerHTML = `
+          <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">سجّل صوتك من الموبايل أو ارفع ملفاً صوتياً، واختر النبرة المطلوبة لتحويلها فوراً!</p>
+          <div style="display:flex;gap:8px;margin-bottom:10px;">
+            <button class="btn-primary" id="vcRecBtn" style="margin-top:0;" onclick="vcStartRecord()">🎙️ تسجيل من الميكروفون</button>
+            <button class="btn-outline" id="vcStopBtn" disabled onclick="vcStopRecord()">⏹️ إيقاف التسجيل</button>
+          </div>
+          <label class="f-label">أو اختر ملف صوتي جاهز من جهازك</label>
+          <input type="file" id="vcFileInput" accept="audio/*" class="f-input" onchange="vcLoadFile()" />
+          <label class="f-label">اختر الشخصية / نبرة الصوت</label>
+          <select id="vcEffectSelect" class="f-select">
+            <option value="robot">🤖 إنسان آلي (Robot)</option>
+            <option value="oldman">👴 رجل عجوز (Old Man)</option>
+            <option value="woman">👩 امرأة (Woman)</option>
+            <option value="child">👶 طفل (Child)</option>
+            <option value="helium">🎈 هيليوم مضحك (Helium)</option>
+            <option value="villain">😈 شرير مرعب (Villain)</option>
+            <option value="alien">👽 فضائي (Alien)</option>
+          </select>
+          <button class="btn-primary" id="vcApplyBtn" onclick="vcProcessVoice()">✨ تحويل نبرة الصوت الآن</button>
+          <div class="result-area" id="tResult" style="display:none;"></div>
+        `;
+      } else if (id === 'bg_remove' || id === 'img_convert' || id === 'img_compress' || id === 'doc_scan') {
         const isCompress = id === 'img_compress';
-        const isScan = id === 'doc_scan' || id === 'id_scan';
+        const isBgRemove = id === 'bg_remove';
         body.innerHTML = `
           <label class="f-label">اختر الصورة من جهازك</label>
           <input type="file" id="tImgFile" accept="image/*" class="f-input" />
-          ${!isCompress && !isScan ? `
-            <label class="f-label">الصيغة المطلوبة</label>
-            <select id="tImgFmt" class="f-select">
-              <option value="image/png">PNG (جودة عالية شفافة)</option>
-              <option value="image/jpeg">JPG (حجم خفيف)</option>
-              <option value="image/webp">WEBP (حديث للويب)</option>
-            </select>
+          ${isBgRemove ? `
+            <label class="f-label">حساسية تفريغ الخلفية (<span id="bgTolVal">48</span>)</label>
+            <input type="range" id="tBgTol" min="15" max="110" value="48" class="f-input" oninput="document.getElementById('bgTolVal').innerText=this.value" />
           ` : ''}
           ${isCompress ? `
             <label class="f-label">نسبة الجودة (10% - 90%)</label>
             <input type="range" id="tImgQual" min="10" max="90" value="60" class="f-input" />
           ` : ''}
-          <button class="btn-primary" onclick="runImageTool('${id}')">تنفيذ المعالجة الآن</button>
+          <button class="btn-primary" onclick="runImageTool('${id}')">تنفيذ المعالجة وتجهيز خيارات التصدير</button>
           <div class="result-area" id="tResult" style="display:none;"></div>
         `;
-      } else if (id === 'vid_to_mp3' || id === 'vid_compress') {
+      } else if (id === 'vid_to_mp3') {
         body.innerHTML = `
-          <label class="f-label">اختر ملف الفيديو (MP4 / WEBM / MOV)</label>
+          <label class="f-label">اختر ملف الفيديو لاستخراج الصوت وتشغيله في الخلفية</label>
           <input type="file" id="tVidFile" accept="video/*" class="f-input" />
-          <button class="btn-primary" onclick="runVideoTool('${id}')">${id === 'vid_to_mp3' ? 'استخراج الصوت الآن' : 'معالجة وضغط الفيديو'}</button>
+          <button class="btn-primary" onclick="runVideoToAudio()">استخراج الصوت الآن</button>
           <div class="result-area" id="tResult" style="display:none;"></div>
         `;
       } else if (id === 'lan_transfer') {
@@ -841,7 +1457,7 @@
         initP2P();
       } else if (id === 'voice_rec') {
         body.innerHTML = `
-          <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">سجل ملاحظاتك الصوتية بصوت نقي وحمّلها مباشرة.</p>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">سجل ملاحظاتك الصوتية واستمع إليها في خلفية الموقع أو حمّلها.</p>
           <div style="display:flex;gap:8px;">
             <button class="btn-primary" id="recStartBtn" onclick="startVoiceRec()">🎙️ بدء التسجيل</button>
             <button class="btn-outline" id="recStopBtn" disabled onclick="stopVoiceRec()">⏹️ إيقاف وحفظ</button>
@@ -876,7 +1492,7 @@
         `;
       } else if (id === 'pdf_to_img') {
         body.innerHTML = `
-          <label class="f-label">اختر ملف PDF لتحويل صفحاته إلى صور عالية الدقة</label>
+          <label class="f-label">اختر ملف PDF لتحويل صفحاته إلى صور</label>
           <input type="file" id="tPdfFile" accept="application/pdf" class="f-input" />
           <button class="btn-primary" onclick="runPDFToImages()">تحويل إلى صور</button>
           <div class="result-area" id="tResult" style="display:none;"></div>
@@ -943,10 +1559,221 @@
       modal.classList.add('open');
     }
 
-    // ==================== TOOL IMPLEMENTATIONS ====================
+    // ==================== AI VOICE CHANGER IMPLEMENTATION ====================
+    let vcRecorder = null, vcChunks = [], vcSourceBlob = null, vcStream = null;
+
+    async function vcStartRecord() {
+      try {
+        vcStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        vcChunks = [];
+        vcRecorder = new MediaRecorder(vcStream);
+        vcRecorder.ondataavailable = e => { if (e.data.size > 0) vcChunks.push(e.data); };
+        vcRecorder.onstop = () => {
+          vcSourceBlob = new Blob(vcChunks, { type: 'audio/webm' });
+          const res = document.getElementById('tResult');
+          res.style.display = 'block';
+          res.innerHTML = `<span style="color:#059669;font-weight:800;">✅ تم تسجيل صوتك بنجاح! اختر النبرة واضغط "تحويل نبرة الصوت الآن".</span>`;
+          sfx('success');
+        };
+        vcRecorder.start();
+        sfx('pop');
+        document.getElementById('vcRecBtn').disabled = true;
+        document.getElementById('vcRecBtn').innerText = '🔴 جاري التسجيل...';
+        document.getElementById('vcStopBtn').disabled = false;
+      } catch (e) {
+        sfx('error');
+        alert('⚠️ يرجى السماح بصلاحية الميكروفون في المتصفح للتسجيل.');
+      }
+    }
+
+    function vcStopRecord() {
+      if (vcRecorder && vcRecorder.state !== 'inactive') vcRecorder.stop();
+      if (vcStream) vcStream.getTracks().forEach(t => t.stop());
+      document.getElementById('vcRecBtn').disabled = false;
+      document.getElementById('vcRecBtn').innerText = '🎙️ إعادة التسجيل';
+      document.getElementById('vcStopBtn').disabled = true;
+    }
+
+    function vcLoadFile() {
+      const f = document.getElementById('vcFileInput').files[0];
+      if (f) {
+        vcSourceBlob = f;
+        const res = document.getElementById('tResult');
+        res.style.display = 'block';
+        res.innerHTML = `<span style="color:#2563EB;font-weight:800;">📁 تم تحميل الملف: ${f.name}</span>`;
+      }
+    }
+
+    function audioBufferToWavBlob(buffer) {
+      const numChannels = 1;
+      const sampleRate = buffer.sampleRate;
+      const samples = buffer.getChannelData(0);
+      const dataLength = samples.length * 2;
+      const ab = new ArrayBuffer(44 + dataLength);
+      const view = new DataView(ab);
+      const writeStr = (off, s) => { for (let i = 0; i < s.length; i++) view.setUint8(off + i, s.charCodeAt(i)); };
+      writeStr(0, 'RIFF');
+      view.setUint32(4, 36 + dataLength, true);
+      writeStr(8, 'WAVE');
+      writeStr(12, 'fmt ');
+      view.setUint32(16, 16, true);
+      view.setUint16(20, 1, true);
+      view.setUint16(22, numChannels, true);
+      view.setUint32(24, sampleRate, true);
+      view.setUint32(28, sampleRate * 2, true);
+      view.setUint16(32, 2, true);
+      view.setUint16(34, 16, true);
+      writeStr(36, 'data');
+      view.setUint32(40, dataLength, true);
+      let offset = 44;
+      for (let i = 0; i < samples.length; i++, offset += 2) {
+        const s = Math.max(-1, Math.min(1, samples[i]));
+        view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+      }
+      return new Blob([ab], { type: 'audio/wav' });
+    }
+
+    async function vcProcessVoice() {
+      if (!vcSourceBlob) { sfx('error'); return alert('سجّل صوتك أو اختر ملفاً صوتياً أولاً!'); }
+      if (!checkCanAffordTool('voice_changer')) return;
+
+      const effect = document.getElementById('vcEffectSelect').value;
+      const res = document.getElementById('tResult');
+      res.style.display = 'block';
+      res.innerText = '⏳ جاري معالجة وتغيير نبرة الصوت...';
+
+      try {
+        const arrayBuf = await vcSourceBlob.arrayBuffer();
+        const tmpCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const decoded = await tmpCtx.decodeAudioData(arrayBuf);
+
+        const rates = {
+          robot: 1.0,
+          oldman: 0.80,
+          woman: 1.26,
+          child: 1.46,
+          helium: 1.72,
+          villain: 0.66,
+          alien: 1.15
+        };
+        const rate = rates[effect] || 1.0;
+        const outLen = Math.ceil(decoded.length / rate) + Math.floor(decoded.sampleRate * 0.25);
+        const offline = new OfflineAudioContext(1, outLen, decoded.sampleRate);
+
+        const src = offline.createBufferSource();
+        src.buffer = decoded;
+        src.playbackRate.value = rate;
+
+        let lastNode = src;
+
+        if (effect === 'robot') {
+          const bp = offline.createBiquadFilter();
+          bp.type = 'bandpass';
+          bp.frequency.value = 1100;
+          bp.Q.value = 3.5;
+
+          const delay = offline.createDelay();
+          delay.delayTime.value = 0.018;
+          const fb = offline.createGain();
+          fb.gain.value = 0.65;
+          delay.connect(fb);
+          fb.connect(delay);
+
+          lastNode.connect(bp);
+          bp.connect(delay);
+          bp.connect(offline.destination);
+          delay.connect(offline.destination);
+        } else if (effect === 'oldman') {
+          const lp = offline.createBiquadFilter();
+          lp.type = 'lowpass';
+          lp.frequency.value = 1850;
+          const tremolo = offline.createGain();
+          const lfo = offline.createOscillator();
+          lfo.frequency.value = 6.5;
+          const lfoGain = offline.createGain();
+          lfoGain.gain.value = 0.18;
+          lfo.connect(lfoGain);
+          lfoGain.connect(tremolo.gain);
+          lfo.start(0);
+          lastNode.connect(lp);
+          lp.connect(tremolo);
+          tremolo.connect(offline.destination);
+        } else if (effect === 'woman' || effect === 'child' || effect === 'helium') {
+          const hp = offline.createBiquadFilter();
+          hp.type = 'highshelf';
+          hp.frequency.value = 2400;
+          hp.gain.value = 7;
+          lastNode.connect(hp);
+          hp.connect(offline.destination);
+        } else if (effect === 'villain') {
+          const bass = offline.createBiquadFilter();
+          bass.type = 'lowshelf';
+          bass.frequency.value = 280;
+          bass.gain.value = 12;
+          const echo = offline.createDelay();
+          echo.delayTime.value = 0.11;
+          const echoGain = offline.createGain();
+          echoGain.gain.value = 0.35;
+          lastNode.connect(bass);
+          bass.connect(echo);
+          echo.connect(echoGain);
+          bass.connect(offline.destination);
+          echoGain.connect(offline.destination);
+        } else if (effect === 'alien') {
+          const lfo = offline.createOscillator();
+          lfo.frequency.value = 9;
+          const lfoGain = offline.createGain();
+          lfoGain.gain.value = 0.22;
+          lfo.connect(lfoGain);
+          lfoGain.connect(src.playbackRate);
+          lfo.start(0);
+
+          const delay = offline.createDelay();
+          delay.delayTime.value = 0.045;
+          const fb = offline.createGain();
+          fb.gain.value = 0.55;
+          delay.connect(fb);
+          fb.connect(delay);
+          lastNode.connect(delay);
+          lastNode.connect(offline.destination);
+          delay.connect(offline.destination);
+        }
+
+        src.start(0);
+        const rendered = await offline.startRendering();
+        const wavBlob = audioBufferToWavBlob(rendered);
+        const wavUrl = URL.createObjectURL(wavBlob);
+
+        const labels = {
+          robot: 'إنسان آلي', oldman: 'رجل عجوز', woman: 'امرأة',
+          child: 'طفل', helium: 'هيليوم', villain: 'شرير', alien: 'فضائي'
+        };
+        const label = labels[effect] || effect;
+
+        deductCreditsAfterTask('voice_changer');
+        addHistoryItem(`تغيير الصوت (${label})`, 'ستوديو الصوت');
+        sfx('success');
+
+        res.innerHTML = `
+          <p style="font-size:13px;font-weight:900;color:#059669;">✨ تم تحويل الصوت بنبرة (${label}) بنجاح!</p>
+          <audio controls src="${wavUrl}" style="width:100%;margin-top:8px;"></audio>
+          <div class="export-bar">
+            <a class="dl-link" href="${wavUrl}" download="vixcel_voice_${effect}.wav">⬇️ تحميل الصوت WAV</a>
+            <button class="dl-link blue" onclick="playInBackground('${wavUrl}', 'صوت محوّل (${label})', 'vixcel_voice_${effect}.wav')">🎧 تشغيل في الخلفية</button>
+          </div>
+        `;
+      } catch (err) {
+        sfx('error');
+        res.innerText = 'حدث خطأ أثناء معالجة الصوت، جرب التسجيل مرة أخرى.';
+      }
+    }
+
+    // ==================== OTHER TOOL IMPLEMENTATIONS ====================
     function runImageTool(mode) {
       const file = document.getElementById('tImgFile').files[0];
-      if (!file) return alert('اختر صورة أولاً');
+      if (!file) { sfx('error'); return alert('اختر صورة أولاً'); }
+      if (!checkCanAffordTool(mode)) return;
+
       const res = document.getElementById('tResult');
       const img = new Image();
       img.onload = () => {
@@ -954,38 +1781,55 @@
         canvas.width = img.width;
         canvas.height = img.height;
         const ctx = canvas.getContext('2d');
-        if (mode === 'doc_scan' || mode === 'id_scan') ctx.filter = 'contrast(1.35) brightness(1.06) grayscale(0.2)';
+        if (mode === 'doc_scan') ctx.filter = 'contrast(1.38) brightness(1.06) grayscale(0.25)';
         ctx.drawImage(img, 0, 0);
-        let mime = 'image/jpeg';
-        let qual = 0.92;
-        if (mode === 'img_convert') mime = document.getElementById('tImgFmt').value;
-        if (mode === 'img_compress') qual = parseInt(document.getElementById('tImgQual').value, 10) / 100;
-        const url = canvas.toDataURL(mime, qual);
-        const ext = mime.split('/')[1];
+
+        if (mode === 'bg_remove') {
+          const tol = parseInt(document.getElementById('tBgTol').value || '48', 10);
+          const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const d = imgData.data;
+          const bgR = d[0], bgG = d[1], bgB = d[2];
+          for (let i = 0; i < d.length; i += 4) {
+            const dist = Math.hypot(d[i] - bgR, d[i + 1] - bgG, d[i + 2] - bgB);
+            if (dist < tol) d[i + 3] = 0;
+          }
+          ctx.putImageData(imgData, 0, 0);
+        }
+
+        const previewUrl = canvas.toDataURL('image/png');
+        deductCreditsAfterTask(mode);
+        addHistoryItem(file.name, 'معالجة الصور');
+        sfx('success');
+
         res.style.display = 'block';
-        res.innerHTML = `<img src="${url}" /><br><a class="dl-link" href="${url}" download="vixcel_image.${ext}">⬇️ تحميل الصورة الجاهزة</a>`;
-        addHistoryItem('معالجة صورة (' + ext.toUpperCase() + ')', 'أدوات الصور');
+        res.innerHTML = `
+          <img src="${previewUrl}" />
+          ${buildImageExportButtons(canvas, 'vixcel_' + mode)}
+        `;
       };
       img.src = URL.createObjectURL(file);
     }
 
-    function runVideoTool(mode) {
+    function runVideoToAudio() {
       const file = document.getElementById('tVidFile').files[0];
-      if (!file) return alert('اختر ملف فيديو أولاً');
-      const res = document.getElementById('tResult');
+      if (!file) { sfx('error'); return alert('اختر ملف فيديو أولاً'); }
+      if (!checkCanAffordTool('vid_to_mp3')) return;
+
       const url = URL.createObjectURL(file);
+      deductCreditsAfterTask('vid_to_mp3');
+      addHistoryItem(file.name + ' → MP3', 'تحويل الميديا');
+      sfx('success');
+
+      const res = document.getElementById('tResult');
       res.style.display = 'block';
-      if (mode === 'vid_to_mp3') {
-        res.innerHTML = `
-          <p style="font-size:13px;font-weight:700;color:#059669;">تم تجهيز المسار الصوتي بنجاح!</p>
-          <audio controls src="${url}" style="width:100%;margin-top:8px;"></audio><br>
-          <a class="dl-link" href="${url}" download="vixcel_audio.mp3">⬇️ تحميل الصوت MP3</a>
-        `;
-        addHistoryItem(file.name + ' → MP3', 'تحويل الميديا');
-      } else {
-        res.innerHTML = `<video controls src="${url}"></video><br><a class="dl-link" href="${url}" download="vixcel_video.mp4">⬇️ حفظ الفيديو</a>`;
-        addHistoryItem(file.name, 'فيديو');
-      }
+      res.innerHTML = `
+        <p style="font-size:13px;font-weight:800;color:#059669;">تم تجهيز المسار الصوتي بنجاح!</p>
+        <audio controls src="${url}" style="width:100%;margin-top:8px;"></audio>
+        <div class="export-bar">
+          <a class="dl-link" href="${url}" download="vixcel_audio.mp3">⬇️ تحميل MP3</a>
+          <button class="dl-link blue" onclick="playInBackground('${url}', '${file.name}', 'vixcel_audio.mp3')">🎧 تشغيل في الخلفية</button>
+        </div>
+      `;
     }
 
     function initP2P() {
@@ -1001,6 +1845,7 @@
           if (data && data.file) {
             const blob = new Blob([data.file], { type: data.type || 'application/octet-stream' });
             const url = URL.createObjectURL(blob);
+            sfx('success');
             box.innerHTML += `<div style="margin-top:10px;"><a class="dl-link" href="${url}" download="${data.name}">⬇️ استلام: ${data.name}</a></div>`;
           }
         });
@@ -1010,10 +1855,14 @@
     function sendP2PFile() {
       const target = document.getElementById('p2pTargetId').value.trim();
       const file = document.getElementById('p2pFile').files[0];
-      if (!target || !file || !activePeer) return alert('أدخل كود الجهاز المستلم واختر الملف');
+      if (!target || !file || !activePeer) { sfx('error'); return alert('أدخل كود الجهاز المستلم واختر الملف'); }
+      if (!checkCanAffordTool('lan_transfer')) return;
+
       const conn = activePeer.connect(target);
       conn.on('open', () => {
         conn.send({ file, name: file.name, type: file.type });
+        deductCreditsAfterTask('lan_transfer');
+        sfx('success');
         alert('✅ تم إرسال الملف بنجاح!');
         addHistoryItem(file.name, 'نقل P2P');
       });
@@ -1029,15 +1878,24 @@
         mediaRec.onstop = () => {
           const blob = new Blob(recChunks, { type: 'audio/webm' });
           const url = URL.createObjectURL(blob);
+          deductCreditsAfterTask('voice_rec');
+          addHistoryItem('تسجيل صوتي جديد', 'مسجل الصوت');
+          sfx('success');
           const res = document.getElementById('tResult');
           res.style.display = 'block';
-          res.innerHTML = `<audio controls src="${url}" style="width:100%;"></audio><br><a class="dl-link" href="${url}" download="vixcel_record.webm">⬇️ تحميل التسجيل</a>`;
-          addHistoryItem('تسجيل صوتي جديد', 'مسجل الصوت');
+          res.innerHTML = `
+            <audio controls src="${url}" style="width:100%;"></audio>
+            <div class="export-bar">
+              <a class="dl-link" href="${url}" download="vixcel_record.webm">⬇️ تحميل التسجيل</a>
+              <button class="dl-link blue" onclick="playInBackground('${url}', 'تسجيل صوتي', 'vixcel_record.webm')">🎧 تشغيل في الخلفية</button>
+            </div>
+          `;
         };
         mediaRec.start();
+        sfx('pop');
         document.getElementById('recStartBtn').disabled = true;
         document.getElementById('recStopBtn').disabled = false;
-      } catch (e) { alert('يرجى السماح بصلاحية الميكروفون'); }
+      } catch (e) { sfx('error'); alert('يرجى السماح بصلاحية الميكروفون'); }
     }
     function stopVoiceRec() {
       if (mediaRec) mediaRec.stop();
@@ -1047,29 +1905,43 @@
 
     async function runOCR() {
       const file = document.getElementById('tOcrFile').files[0];
-      if (!file) return alert('اختر صورة أولاً');
+      if (!file) { sfx('error'); return alert('اختر صورة أولاً'); }
+      if (!checkCanAffordTool('ocr_text')) return;
+
       const lang = document.getElementById('tOcrLang').value;
       const res = document.getElementById('tResult');
       res.style.display = 'block';
       res.innerText = 'جاري قراءة النص بالذكاء الاصطناعي...';
       const out = await Tesseract.recognize(file, lang);
+      deductCreditsAfterTask('ocr_text');
+      sfx('success');
       res.innerHTML = `<textarea rows="6" class="f-textarea">${out.data.text}</textarea>`;
       addHistoryItem('استخراج نص OCR', 'المسح الضوئي');
     }
 
     function runQR() {
       const txt = document.getElementById('tQrText').value.trim();
-      if (!txt) return alert('اكتب الرابط أو النص أولاً');
+      if (!txt) { sfx('error'); return alert('اكتب الرابط أو النص أولاً'); }
+      if (!checkCanAffordTool('qr_scan')) return;
+
       const res = document.getElementById('tResult');
       res.style.display = 'block';
-      res.innerHTML = '<div id="qrCanvasBox" style="display:inline-block;padding:10px;background:#fff;border-radius:10px;"></div>';
-      new QRCode(document.getElementById('qrCanvasBox'), { text: txt, width: 180, height: 180 });
+      res.innerHTML = '<div id="qrCanvasBox" style="display:inline-block;padding:12px;background:#fff;border-radius:12px;"></div>';
+      new QRCode(document.getElementById('qrCanvasBox'), { text: txt, width: 190, height: 190 });
+      setTimeout(() => {
+        const c = document.querySelector('#qrCanvasBox canvas');
+        if (c) res.innerHTML += buildImageExportButtons(c, 'vixcel_qr');
+      }, 150);
+      deductCreditsAfterTask('qr_scan');
+      sfx('success');
       addHistoryItem('توليد QR Code', 'أدوات QR');
     }
 
     async function runImagesToPDF() {
       const files = document.getElementById('tPdfImgs').files;
-      if (!files.length) return alert('اختر صورة واحدة على الأقل');
+      if (!files.length) { sfx('error'); return alert('اختر صورة واحدة على الأقل'); }
+      if (!checkCanAffordTool('img_to_pdf')) return;
+
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
       for (let i = 0; i < files.length; i++) {
@@ -1082,6 +1954,8 @@
         doc.addImage(dataUrl, 'JPEG', 10, 10, 190, 260);
       }
       const blobUrl = doc.output('bloburl');
+      deductCreditsAfterTask('img_to_pdf');
+      sfx('success');
       const res = document.getElementById('tResult');
       res.style.display = 'block';
       res.innerHTML = `<a class="dl-link" href="${blobUrl}" download="vixcel_images.pdf">⬇️ تحميل ملف PDF</a>`;
@@ -1090,7 +1964,9 @@
 
     async function runPDFToImages() {
       const file = document.getElementById('tPdfFile').files[0];
-      if (!file) return alert('اختر ملف PDF أولاً');
+      if (!file) { sfx('error'); return alert('اختر ملف PDF أولاً'); }
+      if (!checkCanAffordTool('pdf_to_img')) return;
+
       const res = document.getElementById('tResult');
       res.style.display = 'block';
       res.innerText = 'جاري تحويل الصفحات إلى صور...';
@@ -1105,20 +1981,26 @@
         canvas.height = vp.height;
         await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
         const url = canvas.toDataURL('image/png');
-        html += `<div style="margin-bottom:12px;"><img src="${url}" /><br><a class="dl-link" href="${url}" download="page_${p}.png">⬇️ تحميل صفحة ${p}</a></div>`;
+        html += `<div style="margin-bottom:14px;"><img src="${url}" />${buildImageExportButtons(canvas, 'page_' + p)}</div>`;
       }
+      deductCreditsAfterTask('pdf_to_img');
+      sfx('success');
       res.innerHTML = html;
       addHistoryItem(file.name + ' → صور', 'محول PDF');
     }
 
     function runTextToPDF() {
       const txt = document.getElementById('tPlainTxt').value;
-      if (!txt.trim()) return alert('اكتب النص أولاً');
+      if (!txt.trim()) { sfx('error'); return alert('اكتب النص أولاً'); }
+      if (!checkCanAffordTool('txt_to_pdf')) return;
+
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
       const lines = doc.splitTextToSize(txt, 180);
       doc.text(lines, 15, 20);
       const url = doc.output('bloburl');
+      deductCreditsAfterTask('txt_to_pdf');
+      sfx('success');
       const res = document.getElementById('tResult');
       res.style.display = 'block';
       res.innerHTML = `<a class="dl-link" href="${url}" download="vixcel_text.pdf">⬇️ تحميل PDF</a>`;
@@ -1127,13 +2009,17 @@
 
     async function runExcelConvert() {
       const file = document.getElementById('tExcelFile').files[0];
-      if (!file) return alert('اختر ملف Excel أولاً');
+      if (!file) { sfx('error'); return alert('اختر ملف Excel أولاً'); }
+      if (!checkCanAffordTool('excel_json')) return;
+
       const data = await file.arrayBuffer();
       const wb = XLSX.read(data);
       const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
       const str = JSON.stringify(json, null, 2);
       const blob = new Blob([str], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
+      deductCreditsAfterTask('excel_json');
+      sfx('success');
       const res = document.getElementById('tResult');
       res.style.display = 'block';
       res.innerHTML = `<textarea rows="5" class="f-textarea">${str}</textarea><br><a class="dl-link" href="${url}" download="data.json">⬇️ تحميل JSON</a>`;
@@ -1142,7 +2028,9 @@
 
     async function runMergePDF() {
       const files = document.getElementById('tMergePdfs').files;
-      if (files.length < 2) return alert('اختر ملفين PDF على الأقل');
+      if (files.length < 2) { sfx('error'); return alert('اختر ملفين PDF على الأقل'); }
+      if (!checkCanAffordTool('pdf_merge')) return;
+
       const merged = await PDFLib.PDFDocument.create();
       for (const f of files) {
         const doc = await PDFLib.PDFDocument.load(await f.arrayBuffer());
@@ -1151,6 +2039,8 @@
       }
       const bytes = await merged.save();
       const url = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+      deductCreditsAfterTask('pdf_merge');
+      sfx('success');
       const res = document.getElementById('tResult');
       res.style.display = 'block';
       res.innerHTML = `<a class="dl-link" href="${url}" download="vixcel_merged.pdf">⬇️ تحميل الملف المدمج</a>`;
@@ -1159,7 +2049,9 @@
 
     async function runEditPDF(mode) {
       const file = document.getElementById('tSinglePdf').files[0];
-      if (!file) return alert('اختر ملف PDF أولاً');
+      if (!file) { sfx('error'); return alert('اختر ملف PDF أولاً'); }
+      if (!checkCanAffordTool(mode)) return;
+
       const srcDoc = await PDFLib.PDFDocument.load(await file.arrayBuffer());
       let outDoc = srcDoc;
       if (mode === 'pdf_split') {
@@ -1175,6 +2067,8 @@
       }
       const bytes = await outDoc.save();
       const url = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+      deductCreditsAfterTask(mode);
+      sfx('success');
       const res = document.getElementById('tResult');
       res.style.display = 'block';
       res.innerHTML = `<a class="dl-link" href="${url}" download="vixcel_edited.pdf">⬇️ تحميل ملف PDF المعدّل</a>`;
@@ -1183,11 +2077,15 @@
 
     async function runMakeZIP() {
       const files = document.getElementById('tZipFiles').files;
-      if (!files.length) return alert('اختر الملفات أولاً');
+      if (!files.length) { sfx('error'); return alert('اختر الملفات أولاً'); }
+      if (!checkCanAffordTool('zip_maker')) return;
+
       const zip = new JSZip();
       for (const f of files) zip.file(f.name, f);
       const blob = await zip.generateAsync({ type: 'blob' });
       const url = URL.createObjectURL(blob);
+      deductCreditsAfterTask('zip_maker');
+      sfx('success');
       const res = document.getElementById('tResult');
       res.style.display = 'block';
       res.innerHTML = `<a class="dl-link" href="${url}" download="vixcel_archive.zip">⬇️ تحميل الأرشيف ZIP</a>`;
@@ -1196,7 +2094,9 @@
 
     async function runExtractZIP() {
       const file = document.getElementById('tUnzipFile').files[0];
-      if (!file) return alert('اختر ملف ZIP أولاً');
+      if (!file) { sfx('error'); return alert('اختر ملف ZIP أولاً'); }
+      if (!checkCanAffordTool('zip_extract')) return;
+
       const zip = await JSZip.loadAsync(file);
       const res = document.getElementById('tResult');
       res.style.display = 'block';
@@ -1208,6 +2108,8 @@
           html += `<div style="margin:6px 0;"><a class="dl-link" href="${url}" download="${name}">⬇️ ${name}</a></div>`;
         }
       }
+      deductCreditsAfterTask('zip_extract');
+      sfx('success');
       res.innerHTML = html || 'الأرشيف فارغ.';
       addHistoryItem('فك ضغط ' + file.name, 'أدوات الضغط');
     }
@@ -1217,6 +2119,7 @@
       const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*';
       let pass = '';
       for (let i = 0; i < len; i++) pass += chars[Math.floor(Math.random() * chars.length)];
+      sfx('success');
       const res = document.getElementById('tResult');
       res.style.display = 'block';
       res.innerHTML = `<strong style="font-size:18px;color:var(--primary);user-select:all;">${pass}</strong>`;
@@ -1244,6 +2147,12 @@
       if (APP_CFG.brandSub) document.getElementById('brandSubText').innerText = APP_CFG.brandSub;
       if (APP_CFG.heroTitle) document.getElementById('heroTitleText').innerText = APP_CFG.heroTitle;
       if (APP_CFG.heroDesc) document.getElementById('appSubDesc').innerText = APP_CFG.heroDesc;
+
+      if (APP_CFG.botName) {
+        document.getElementById('oufaBotNameBadge').innerText = APP_CFG.botName + ' AI';
+        document.getElementById('oufaHeadTitle').innerText = APP_CFG.botName + ' — المساعد الذكي';
+      }
+      renderOufaAvatars(APP_CFG.botAvatarUrl || '');
 
       const bBar = document.getElementById('broadcastBar');
       if (APP_CFG.broadcastEnabled === false) {
@@ -1283,11 +2192,6 @@
         botSlot.style.display = 'none';
       }
 
-      if (!localStorage.getItem('vixcel_credits') && APP_CFG.initialCredits) {
-        userCredits = Number(APP_CFG.initialCredits);
-        refreshCredits();
-      }
-
       renderAllTools();
     }
 
@@ -1303,6 +2207,7 @@
 
     // ==================== INIT ====================
     refreshCredits();
+    renderOufaAvatars('');
     renderAllTools();
     renderHistory();
     loadAppConfig();
