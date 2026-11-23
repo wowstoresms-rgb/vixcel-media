@@ -331,7 +331,7 @@
       <button class="hero-cta" onclick="openTool('lan_transfer')">⚡ نقل ملفات سريع</button>
     </div>
 
-    <!-- Top Ad Banner Slot (Supports Raw Adsterra Script OR Iframe Automatically) -->
+    <!-- Top Ad Banner Slot -->
     <div class="ad-banner-slot" id="topAdSlot" style="display:none;"></div>
 
     <div class="cat-tabs" id="catTabs">
@@ -461,11 +461,10 @@
       pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     }
 
-    // ==================== SMART AD RENDERER (FIXES <script> INJECTION) ====================
+    // ==================== SMART AD RENDERER ====================
     function renderSafeAdHtml(container, rawCode) {
       if (!container || !rawCode) return;
       let clean = rawCode.trim().replace(/^<<iframe/i, '<iframe');
-      // إذا كان الكود يحتوي على <script> خام بدون iframe، نغلفه تلقائياً داخل iframe آمن ليعمل فوراً
       if (clean.toLowerCase().includes('<script') && !clean.toLowerCase().includes('<iframe')) {
         const wMatch = clean.match(/['"]?width['"]?\s*:\s*(\d+)/i);
         const hMatch = clean.match(/['"]?height['"]?\s*:\s*(\d+)/i);
@@ -482,8 +481,8 @@
       }
     }
 
-    // ==================== STATE & DEFAULT CONFIG ====================
-    const DEFAULT_ADSTERRA = '<iframe style="width:300px;height:250px;border:0;overflow:hidden;display:block;margin:0 auto;border-radius:12px;" scrolling="no" srcdoc="<!DOCTYPE html><html><body style='margin:0;padding:0;background:transparent;display:flex;justify-content:center;align-items:center;'><script>atOptions={'key':'91f08312e452b635484c92c1aaf5fed9','format':'iframe','height':250,'width':300,'params':{}};<\/script><script src='https://bauval.org/22/91f08312e452b635484c92c1aaf5fed9'><\/script></body></html>"></iframe>';
+    // ==================== STATE & DEFAULT CONFIG (SYNTAX FIXED) ====================
+    const DEFAULT_ADSTERRA = `<iframe style="width:300px;height:250px;border:0;overflow:hidden;display:block;margin:0 auto;border-radius:12px;" scrolling="no" srcdoc="<!DOCTYPE html><html><body style='margin:0;padding:0;background:transparent;display:flex;justify-content:center;align-items:center;'><script>atOptions={'key':'91f08312e452b635484c92c1aaf5fed9','format':'iframe','height':250,'width':300,'params':{}};<\/script><script src='https://bauval.org/22/91f08312e452b635484c92c1aaf5fed9'><\/script></body></html>"></iframe>`;
 
     let APP_CFG = {
       brandName: 'VIXCEL',
@@ -1266,7 +1265,6 @@
       const homeAdBtn = document.getElementById('homeAdBtn');
       if (homeAdBtn) homeAdBtn.innerText = `🎁 شاهد إعلان واحصل على +${APP_CFG.rewardPoints || 15} نقطة`;
 
-      // البنر العلوي
       const topSlot = document.getElementById('topAdSlot');
       if (APP_CFG.topBannerEnabled !== false && APP_CFG.topBannerCode) {
         topSlot.style.display = 'flex';
@@ -1276,7 +1274,6 @@
         topSlot.style.display = 'none';
       }
 
-      // البنر السفلي
       const botSlot = document.getElementById('bottomAdSlot');
       if (APP_CFG.bottomBannerEnabled && APP_CFG.bottomBannerCode) {
         botSlot.style.display = 'flex';
