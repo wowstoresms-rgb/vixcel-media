@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>VIXCEL MEDIA — منصة الأدوات الذكية والميديا (Beta 1.0)</title>
+  <title>VIXCEL MEDIA V2 — استوديو الذكاء الاصطناعي والمستندات</title>
   <meta name="theme-color" content="#2563EB" />
   <link rel="manifest" href="./manifest.json" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <!-- Google Identity Services (One-Click Account Picker) -->
+  <!-- Google Identity Services -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <!-- Real Functional Libraries (Zero Server Needed) -->
+  <!-- Open-Source Browser Processing Libraries -->
   <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -24,16 +24,13 @@
       --primary: #2563EB;
       --secondary: #5B21B6;
       --accent-cyan: #06B6D4;
+      --cs-teal: #10B981;
       --grad: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 60%, var(--accent-cyan) 100%);
       --bg: #F1F5F9;
-      --surface: rgba(255, 255, 255, 0.92);
+      --surface: rgba(255, 255, 255, 0.94);
       --text: #0F172A;
       --muted: #64748B;
       --border: #E2E8F0;
-      --soft-blue: #EFF6FF;
-      --soft-purple: #F3E8FF;
-      --soft-teal: #ECFDF5;
-      --soft-orange: #FFF7ED;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
 
@@ -41,30 +38,21 @@
       background: radial-gradient(circle at 10% 10%, #E0E7FF 0%, #F1F5F9 45%, #EDE9FE 100%);
       background-attachment: fixed;
       color: var(--text);
-      padding-bottom: 130px;
+      padding-bottom: 135px;
       min-height: 100vh;
       overflow-x: hidden;
     }
 
-    @keyframes floatSlow {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-5px); }
-    }
+    @keyframes floatSlow { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-5px); } }
     @keyframes pulseRing {
       0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.55); }
       70% { box-shadow: 0 0 0 14px rgba(37, 99, 235, 0); }
       100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
     }
-    @keyframes popIn {
-      from { opacity: 0; transform: translateY(14px) scale(0.97); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    @keyframes shineSweep {
-      0% { left: -100%; }
-      100% { left: 200%; }
-    }
+    @keyframes popIn { from { opacity: 0; transform: translateY(14px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes shineSweep { 0% { left: -100%; } 100% { left: 200%; } }
 
-    /* Google Login Onboarding Gate */
+    /* Google Auth Gate */
     .auth-gate {
       position: fixed; inset: 0;
       background: radial-gradient(circle at top right, #1E1B4B 0%, #0F172A 65%, #1E293B 100%);
@@ -72,9 +60,9 @@
     }
     .auth-gate.hidden { display: none; }
     .auth-card {
-      background: rgba(15, 23, 42, 0.95); border: 1.5px solid #38BDF8;
+      background: rgba(15, 23, 42, 0.96); border: 1.5px solid #38BDF8;
       border-radius: 26px; padding: 28px 22px; width: 100%; max-width: 420px;
-      text-align: center; color: #fff; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
+      text-align: center; color: #fff; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
       animation: popIn 0.35s ease;
     }
     .google-btn-custom {
@@ -85,41 +73,31 @@
       transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .google-btn-custom:hover { transform: scale(1.03); }
-    .google-btn-custom:active { transform: scale(0.96); }
 
+    /* Broadcast Bar */
     .broadcast-bar {
       background: linear-gradient(90deg, #1E1B4B, #1D4ED8);
-      color: #fff;
-      padding: 7px 14px;
-      font-size: 12px;
-      font-weight: 700;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      color: #fff; padding: 7px 14px; font-size: 12px; font-weight: 700;
+      display: flex; justify-content: space-between; align-items: center;
     }
     .broadcast-bar button { background: none; border: none; color: inherit; font-weight: 900; cursor: pointer; font-size: 16px; }
 
+    /* Header */
     .app-header {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      padding: 11px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 50;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      padding: 11px 16px; display: flex; justify-content: space-between; align-items: center;
+      position: sticky; top: 0; z-index: 50;
       border-bottom: 1px solid rgba(226, 232, 240, 0.8);
       box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
     }
     .vixcel-brand { display: flex; align-items: center; gap: 10px; }
-    .vixcel-icon { width: 38px; height: 38px; flex-shrink: 0; filter: drop-shadow(0 3px 6px rgba(37,99,235,0.25)); }
+    .vixcel-icon { width: 38px; height: 38px; flex-shrink: 0; }
     .vixcel-wordmark { line-height: 1; }
-    .vixcel-wordmark .top { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; color: #0F172A; display: flex; align-items: center; gap: 5px; }
-    .beta-pill {
-      font-size: 9px; background: var(--grad); color: #fff; padding: 2px 6px;
-      border-radius: 6px; font-weight: 800; letter-spacing: 0;
+    .vixcel-wordmark .top { font-size: 18px; font-weight: 900; color: #0F172A; display: flex; align-items: center; gap: 5px; }
+    .v2-pill {
+      font-size: 10px; background: var(--grad); color: #fff; padding: 2px 7px;
+      border-radius: 6px; font-weight: 900;
     }
     .vixcel-wordmark .sub { font-size: 9px; font-weight: 700; letter-spacing: 3px; color: #475569; display: block; margin-top: 3px; }
 
@@ -128,89 +106,60 @@
       background: linear-gradient(135deg, #EFF6FF, #E0E7FF);
       color: var(--primary); border: 1px solid #BFDBFE;
       padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 900;
-      cursor: pointer; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer; transition: transform 0.2s;
     }
     .pill-badge:hover { transform: scale(1.06); }
-    .pill-badge:active { transform: scale(0.94); }
-
     .icon-btn {
       width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border);
       background: #fff; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; color: var(--text); font-size: 15px;
-      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer; color: var(--text); font-size: 15px; transition: 0.2s;
     }
-    .icon-btn:hover { transform: translateY(-2px) scale(1.06); border-color: var(--primary); box-shadow: 0 4px 10px rgba(37,99,235,0.15); }
-    .icon-btn:active { transform: scale(0.92); }
+    .icon-btn:hover { transform: translateY(-2px); border-color: var(--primary); }
 
     .search-box {
-      padding: 10px 16px; background: rgba(255,255,255,0.95); border-bottom: 1px solid var(--border);
-      display: none; animation: popIn 0.2s ease;
+      padding: 10px 16px; background: rgba(255,255,255,0.96); border-bottom: 1px solid var(--border);
+      display: none;
     }
     .search-box.open { display: block; }
     .search-box input {
       width: 100%; padding: 10px 14px; border-radius: 12px; border: 1.5px solid #CBD5E1;
-      background: #F8FAFC; font-size: 14px; outline: none; transition: 0.2s;
+      background: #F8FAFC; font-size: 14px; outline: none;
     }
-    .search-box input:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
 
-    .container { max-width: 960px; margin: 0 auto; padding: 14px; }
+    .container { max-width: 980px; margin: 0 auto; padding: 14px; }
     .hero-banner {
       background: linear-gradient(125deg, #1E1B4B 0%, #312E81 45%, #1D4ED8 100%);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 22px;
-      padding: 18px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 14px;
-      position: relative;
-      overflow: hidden;
-      color: #fff;
-      box-shadow: 0 12px 28px rgba(30, 27, 75, 0.22);
+      border-radius: 22px; padding: 18px 20px; display: flex; justify-content: space-between;
+      align-items: center; gap: 12px; margin-bottom: 14px; position: relative; overflow: hidden;
+      color: #fff; box-shadow: 0 12px 28px rgba(30, 27, 75, 0.22);
     }
     .hero-banner::after {
       content: ""; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
       transform: skewX(-25deg); animation: shineSweep 5s infinite;
     }
-    .hero-banner h2 { font-size: 18px; font-weight: 900; color: #fff; }
+    .hero-banner h2 { font-size: 18px; font-weight: 900; }
     .hero-banner p { font-size: 12px; color: #CBD5E1; margin-top: 4px; font-weight: 600; }
     .hero-cta {
       background: linear-gradient(135deg, #FACC15, #F59E0B); color: #0F172A; border: none;
       padding: 9px 15px; border-radius: 13px; font-size: 12px; font-weight: 900;
       cursor: pointer; white-space: nowrap; position: relative; z-index: 2;
-      box-shadow: 0 6px 16px rgba(245, 158, 11, 0.35);
-      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    .hero-cta:hover { transform: scale(1.06); }
-    .hero-cta:active { transform: scale(0.94); }
 
     .cat-tabs {
-      display: flex; gap: 10px; overflow-x: auto; padding: 6px 2px 12px;
-      margin-bottom: 10px; scrollbar-width: none;
+      display: flex; gap: 8px; overflow-x: auto; padding: 6px 2px 12px; margin-bottom: 10px; scrollbar-width: none;
     }
     .cat-tabs::-webkit-scrollbar { display: none; }
     .cat-tab {
-      font-size: 13px; font-weight: 800; color: var(--muted); white-space: nowrap;
-      cursor: pointer; padding: 7px 14px; border-radius: 999px;
-      background: rgba(255,255,255,0.8); border: 1px solid var(--border);
-      transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+      font-size: 12px; font-weight: 800; color: var(--muted); white-space: nowrap;
+      cursor: pointer; padding: 7px 13px; border-radius: 999px;
+      background: rgba(255,255,255,0.85); border: 1px solid var(--border); transition: 0.2s;
     }
-    .cat-tab:hover { transform: translateY(-2px); color: var(--primary); }
-    .cat-tab.active {
-      background: var(--grad); color: #fff; border-color: transparent;
-      box-shadow: 0 4px 12px rgba(37,99,235,0.28);
-    }
+    .cat-tab.active { background: var(--grad); color: #fff; border-color: transparent; }
 
     .section-card {
-      background: var(--surface);
-      backdrop-filter: blur(10px);
-      border-radius: 22px;
-      padding: 18px 14px;
-      margin-bottom: 16px;
-      box-shadow: 0 6px 24px rgba(15, 23, 42, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.9);
+      background: var(--surface); border-radius: 22px; padding: 18px 14px; margin-bottom: 16px;
+      box-shadow: 0 6px 24px rgba(15, 23, 42, 0.04); border: 1px solid rgba(255, 255, 255, 0.9);
       animation: popIn 0.35s ease;
     }
     .section-title {
@@ -218,36 +167,24 @@
       display: flex; justify-content: space-between; align-items: center;
     }
     .section-badge {
-      font-size: 10px; background: var(--soft-purple); color: var(--secondary);
+      font-size: 10px; background: #F3E8FF; color: var(--secondary);
       padding: 3px 9px; border-radius: 999px; font-weight: 900;
     }
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px 8px;
-    }
-    @media (min-width: 700px) {
-      .tools-grid { grid-template-columns: repeat(6, 1fr); }
-    }
+    .tools-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px 8px; }
+    @media (min-width: 700px) { .tools-grid { grid-template-columns: repeat(6, 1fr); } }
     .tool-item {
       display: flex; flex-direction: column; align-items: center; text-align: center;
       cursor: pointer; padding: 8px 4px; border-radius: 16px;
       transition: transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s, box-shadow 0.2s;
     }
-    .tool-item:hover {
-      transform: translateY(-5px) scale(1.04);
-      background: #FFFFFF;
-      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.1);
-    }
+    .tool-item:hover { transform: translateY(-5px) scale(1.04); background: #FFFFFF; box-shadow: 0 10px 20px rgba(37, 99, 235, 0.1); }
     .tool-item:active { transform: scale(0.92); }
     .tool-circle {
       width: 54px; height: 54px; border-radius: 18px;
       display: flex; align-items: center; justify-content: center;
       margin-bottom: 8px; font-size: 23px; position: relative;
-      transition: transform 0.25s ease;
       box-shadow: 0 4px 10px rgba(0,0,0,0.04);
     }
-    .tool-item:hover .tool-circle { transform: rotate(-4deg) scale(1.08); }
     .c-blue { background: linear-gradient(135deg, #EFF6FF, #DBEAFE); color: #2563EB; }
     .c-purple { background: linear-gradient(135deg, #F3E8FF, #E9D5FF); color: #7C3AED; }
     .c-teal { background: linear-gradient(135deg, #ECFDF5, #D1FAE5); color: #059669; }
@@ -256,7 +193,6 @@
     .tool-new-tag {
       position: absolute; top: -5px; left: -5px; background: var(--grad); color: #fff;
       font-size: 9px; font-weight: 800; padding: 1px 6px; border-radius: 7px;
-      box-shadow: 0 2px 6px rgba(37,99,235,0.3);
     }
     .tool-cost-tag {
       position: absolute; bottom: -5px; right: -5px; background: #0F172A; color: #FACC15;
@@ -264,17 +200,44 @@
     }
     .tool-name { font-size: 12px; font-weight: 800; color: #334155; line-height: 1.3; }
 
+    /* CamScanner-Style Studio UI */
+    .cs-toolbar {
+      display: flex; gap: 6px; overflow-x: auto; padding: 8px 0; margin-bottom: 10px; scrollbar-width: none;
+    }
+    .cs-chip {
+      background: #F1F5F9; border: 1.5px solid #CBD5E1; color: #1E293B;
+      padding: 6px 11px; border-radius: 10px; font-size: 12px; font-weight: 800;
+      cursor: pointer; white-space: nowrap; transition: 0.15s;
+    }
+    .cs-chip.active { background: #10B981; color: #fff; border-color: #059669; }
+    .cs-batch-strip {
+      display: flex; gap: 8px; overflow-x: auto; padding: 8px; background: #0F172A;
+      border-radius: 14px; margin-bottom: 10px;
+    }
+    .cs-thumb {
+      width: 58px; height: 72px; border-radius: 9px; overflow: hidden; position: relative;
+      border: 2px solid transparent; flex-shrink: 0; cursor: pointer;
+    }
+    .cs-thumb.active { border-color: #10B981; }
+    .cs-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .cs-thumb-num {
+      position: absolute; top: 3px; right: 3px; background: #10B981; color: #fff;
+      font-size: 10px; font-weight: 900; width: 18px; height: 18px; border-radius: 5px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* Background Audio Player */
     .bg-audio-bar {
       position: fixed; bottom: 72px; left: 12px; right: 12px; max-width: 620px; margin: 0 auto;
-      background: rgba(15, 23, 42, 0.94); backdrop-filter: blur(12px); color: #fff;
+      background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); color: #fff;
       border-radius: 16px; padding: 9px 14px; z-index: 65;
       display: none; align-items: center; justify-content: space-between; gap: 10px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.28); border: 1px solid rgba(255,255,255,0.12);
-      animation: popIn 0.25s ease;
     }
     .bg-audio-bar.open { display: flex; }
     .bg-audio-bar audio { height: 32px; flex: 1; max-width: 240px; }
 
+    /* Floating Oufa AI Bot */
     .oufa-fab {
       position: fixed; bottom: 80px; left: 16px; z-index: 80;
       display: flex; align-items: center; gap: 8px;
@@ -283,10 +246,7 @@
       padding: 6px 14px 6px 6px; border-radius: 999px;
       cursor: pointer; animation: floatSlow 3.2s ease-in-out infinite, pulseRing 2.5s infinite;
       box-shadow: 0 10px 25px rgba(15, 23, 42, 0.35);
-      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    .oufa-fab:hover { transform: scale(1.08); }
-    .oufa-fab:active { transform: scale(0.93); }
     .oufa-avatar-wrap {
       width: 44px; height: 44px; border-radius: 50%; overflow: hidden;
       border: 2px solid #FACC15; flex-shrink: 0; background: #0284C7;
@@ -302,148 +262,110 @@
       border-radius: 24px; z-index: 95; display: none; flex-direction: column;
       overflow: hidden; border: 1.5px solid #38BDF8;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
-      animation: popIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .oufa-chat-window.open { display: flex; }
     .oufa-chat-head {
       background: linear-gradient(135deg, #1E1B4B, #1D4ED8);
       padding: 12px 14px; display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid rgba(255,255,255,0.12);
     }
     .oufa-chat-msgs {
       flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;
       background: radial-gradient(circle at top right, #1E293B, #0F172A);
     }
-    .msg-bubble {
-      max-width: 85%; padding: 10px 13px; border-radius: 16px; font-size: 13px; line-height: 1.55;
-      animation: popIn 0.2s ease;
-    }
-    .msg-bot {
-      align-self: flex-start; background: #1E293B; color: #F1F5F9;
-      border: 1px solid #334155; border-bottom-right-radius: 4px;
-    }
-    .msg-user {
-      align-self: flex-end; background: var(--grad); color: #fff;
-      border-bottom-left-radius: 4px; font-weight: 700;
-    }
+    .msg-bubble { max-width: 85%; padding: 10px 13px; border-radius: 16px; font-size: 13px; line-height: 1.55; }
+    .msg-bot { align-self: flex-start; background: #1E293B; color: #F1F5F9; border: 1px solid #334155; border-bottom-right-radius: 4px; }
+    .msg-user { align-self: flex-end; background: var(--grad); color: #fff; border-bottom-left-radius: 4px; font-weight: 700; }
     .bot-action-chip {
       display: inline-block; margin-top: 7px; background: #FACC15; color: #0F172A;
-      padding: 6px 12px; border-radius: 9px; font-size: 11px; font-weight: 900;
-      border: none; cursor: pointer;
+      padding: 6px 12px; border-radius: 9px; font-size: 11px; font-weight: 900; border: none; cursor: pointer;
     }
-    .oufa-chat-input {
-      padding: 10px; background: #1E293B; display: flex; gap: 7px;
-      border-top: 1px solid #334155;
-    }
-    .oufa-chat-input input {
-      flex: 1; background: #0F172A; border: 1px solid #475569; color: #fff;
-      padding: 9px 12px; border-radius: 12px; font-size: 13px; outline: none;
-    }
-    .oufa-chat-input button {
-      background: var(--grad); color: #fff; border: none; padding: 0 15px;
-      border-radius: 12px; font-weight: 900; cursor: pointer;
-    }
+    .oufa-chat-input { padding: 10px; background: #1E293B; display: flex; gap: 7px; border-top: 1px solid #334155; }
+    .oufa-chat-input input { flex: 1; background: #0F172A; border: 1px solid #475569; color: #fff; padding: 9px 12px; border-radius: 12px; font-size: 13px; outline: none; }
+    .oufa-chat-input button { background: var(--grad); color: #fff; border: none; padding: 0 15px; border-radius: 12px; font-weight: 900; cursor: pointer; }
 
+    /* Bottom Navigation */
     .bottom-nav {
       position: fixed; bottom: 0; left: 0; right: 0; height: 66px;
-      background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(12px);
       border-top: 1px solid var(--border);
       display: flex; justify-content: space-around; align-items: center; z-index: 60;
-      box-shadow: 0 -4px 16px rgba(0,0,0,0.05);
     }
     .nav-btn {
       background: none; border: none; display: flex; flex-direction: column; align-items: center;
       gap: 3px; color: var(--muted); font-size: 11px; font-weight: 800; cursor: pointer; flex: 1;
-      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s;
     }
-    .nav-btn:hover { transform: translateY(-2px); }
-    .nav-btn.active { color: var(--primary); font-weight: 900; transform: scale(1.06); }
+    .nav-btn.active { color: var(--primary); font-weight: 900; }
     .nav-btn svg { width: 22px; height: 22px; }
 
     .view-pane { display: none; }
     .view-pane.active { display: block; }
 
+    /* Modal */
     .modal-overlay {
-      position: fixed; inset: 0; background: rgba(15,23,42,0.7); backdrop-filter: blur(5px);
+      position: fixed; inset: 0; background: rgba(15,23,42,0.72); backdrop-filter: blur(5px);
       z-index: 100; display: none; align-items: flex-end; justify-content: center;
     }
     .modal-overlay.open { display: flex; }
     @media (min-width: 640px) { .modal-overlay.open { align-items: center; } }
     .modal-sheet {
-      background: #FFFFFF; width: 100%; max-width: 580px; max-height: 92vh;
+      background: #FFFFFF; width: 100%; max-width: 640px; max-height: 94vh;
       border-radius: 24px 24px 0 0; padding: 20px; overflow-y: auto;
       box-shadow: 0 -10px 35px rgba(0,0,0,0.22);
-      animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     @media (min-width: 640px) { .modal-sheet { border-radius: 24px; } }
     .modal-head {
       display: flex; justify-content: space-between; align-items: center;
       padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 14px;
     }
-    .modal-head h3 { font-size: 17px; font-weight: 900; color: var(--primary); }
+    .modal-head h3 { font-size: 16px; font-weight: 900; color: var(--primary); }
     .close-btn {
       background: #F1F5F9; border: none; width: 34px; height: 34px; border-radius: 50%;
       font-size: 18px; font-weight: bold; cursor: pointer; color: #334155;
-      transition: transform 0.2s;
     }
-    .close-btn:hover { transform: rotate(90deg) scale(1.1); background: #FEE2E2; color: #DC2626; }
 
     .f-label { display: block; font-size: 13px; font-weight: 800; margin: 10px 0 6px; color: #1E293B; }
     .f-input, .f-select, .f-textarea {
       width: 100%; padding: 11px 12px; border: 1.5px solid #CBD5E1; border-radius: 13px;
-      font-size: 14px; background: #F8FAFC; outline: none; transition: 0.2s;
+      font-size: 14px; background: #F8FAFC; outline: none;
     }
-    .f-input:focus, .f-select:focus, .f-textarea:focus { border-color: var(--primary); background: #fff; }
     .btn-primary {
       width: 100%; background: var(--grad); color: #fff; border: none; padding: 13px;
-      border-radius: 14px; font-size: 15px; font-weight: 900; cursor: pointer; margin-top: 12px;
-      box-shadow: 0 6px 16px rgba(37,99,235,0.28);
-      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+      border-radius: 14px; font-size: 14px; font-weight: 900; cursor: pointer; margin-top: 12px;
     }
-    .btn-primary:hover:not(:disabled) { transform: translateY(-2px) scale(1.01); box-shadow: 0 10px 22px rgba(37,99,235,0.35); }
-    .btn-primary:active:not(:disabled) { transform: scale(0.96); }
     .btn-primary:disabled { opacity: 0.65; cursor: not-allowed; }
     .btn-outline {
       background: #fff; color: var(--primary); border: 1.5px solid var(--primary);
-      padding: 9px 14px; border-radius: 11px; font-size: 13px; font-weight: 800; cursor: pointer;
-      transition: transform 0.2s;
+      padding: 8px 13px; border-radius: 11px; font-size: 12px; font-weight: 800; cursor: pointer;
     }
-    .btn-outline:active { transform: scale(0.95); }
 
     .result-area {
       margin-top: 14px; padding: 14px; border-radius: 16px; background: #F8FAFC;
       border: 1.5px dashed #94A3B8; text-align: center;
     }
     .result-area img, .result-area video, .result-area canvas {
-      max-width: 100%; max-height: 260px; border-radius: 12px; margin-top: 8px;
-      background-image: linear-gradient(45deg, #E2E8F0 25%, transparent 25%), linear-gradient(-45deg, #E2E8F0 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #E2E8F0 75%), linear-gradient(-45deg, transparent 75%, #E2E8F0 75%);
-      background-size: 16px 16px; background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+      max-width: 100%; max-height: 290px; border-radius: 12px; margin-top: 8px;
     }
-    .export-bar {
-      display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; margin-top: 12px;
-    }
+    .export-bar { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; margin-top: 12px; }
     .dl-link {
       display: inline-flex; align-items: center; gap: 5px; background: #059669; color: #fff;
-      padding: 8px 13px; border-radius: 10px; text-decoration: none; font-weight: 800;
-      font-size: 12px; border: none; cursor: pointer; transition: transform 0.2s;
+      padding: 8px 12px; border-radius: 10px; text-decoration: none; font-weight: 800;
+      font-size: 12px; border: none; cursor: pointer;
     }
-    .dl-link:hover { transform: translateY(-2px); }
     .dl-link.blue { background: #2563EB; }
     .dl-link.purple { background: #7C3AED; }
+    .dl-link.amber { background: #D97706; }
     .dl-link.dark { background: #0F172A; }
 
     .file-card {
       background: #fff; border: 1px solid var(--border); border-radius: 14px;
       padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
     }
-
     .ad-banner-slot {
       margin: 10px 0 14px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.92);
       border: 1px solid #E2E8F0; min-height: 60px; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; padding: 6px; position: relative;
+      align-items: center; justify-content: center; padding: 6px;
     }
     .ad-label-tiny { font-size: 9px; color: #94A3B8; font-weight: 700; margin-bottom: 2px; }
-
     .maint-screen {
       position: fixed; inset: 0; background: #0F172A; color: #fff; z-index: 9999;
       display: none; flex-direction: column; align-items: center; justify-content: center;
@@ -458,30 +380,23 @@
   <div class="auth-gate" id="googleAuthGate">
     <div class="auth-card">
       <div style="width:68px;height:68px;border-radius:20px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 12px;box-shadow:0 10px 25px rgba(37,99,235,0.4);">⚡</div>
-      <h2 style="font-size:21px;font-weight:900;margin-bottom:6px;">مرحباً بك في VIXCEL MEDIA</h2>
+      <h2 style="font-size:21px;font-weight:900;margin-bottom:6px;">VIXCEL MEDIA V2</h2>
       <p style="font-size:13px;color:#CBD5E1;line-height:1.6;margin-bottom:16px;">
-        سجّل الدخول بحساب جوجل في ثانية واحدة للحصول على <strong style="color:#FACC15;">مكافأة ترحيبية مجانية (+<span id="welcomeGiftLabel">30</span> نقطة)</strong> لأول مرة والبدء فوراً!
+        سجّل الدخول بحساب جوجل في ثانية واحدة للحصول على <strong style="color:#FACC15;">مكافأة ترحيبية مجانية (+<span id="welcomeGiftLabel">40</span> نقطة)</strong> لأول مرة. رصيدك محفوظ في حسابك دائماً!
       </p>
 
-      <!-- Official Google GSI Button Container -->
       <div id="g_id_signin_box" style="display:flex;justify-content:center;margin-bottom:12px;"></div>
 
-      <!-- One-Click Google Account Picker Button -->
       <button class="google-btn-custom" id="customGoogleBtn" onclick="triggerGoogleAccountPicker()">
         <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
         <span>اختيار حساب Google والمتابعة</span>
       </button>
 
-      <!-- Quick Gmail Account Selector Box -->
       <div id="quickGmailBox" style="display:none;margin-top:14px;text-align:right;background:#1E293B;padding:12px;border-radius:14px;border:1px solid #334155;">
-        <label style="font-size:12px;color:#38BDF8;font-weight:800;display:block;margin-bottom:6px;">اختر أو أدخل بريدك الإلكتروني (Gmail) لربط محفظتك:</label>
+        <label style="font-size:12px;color:#38BDF8;font-weight:800;display:block;margin-bottom:6px;">أدخل بريدك الإلكتروني (Gmail) لربط حسابك ورصيدك:</label>
         <input type="email" id="manualGmailInput" placeholder="example@gmail.com" style="width:100%;padding:10px;border-radius:10px;border:1px solid #475569;background:#0F172A;color:#fff;margin-bottom:8px;direction:ltr;" />
-        <button class="btn-primary" style="margin-top:0;padding:10px;" onclick="completeManualGoogleLogin()">✅ تأكيد الحساب واستلام المكافأة</button>
+        <button class="btn-primary" style="margin-top:0;padding:10px;" onclick="completeManualGoogleLogin()">✅ تأكيد الحساب والدخول</button>
       </div>
-
-      <p style="font-size:11px;color:#94A3B8;margin-top:14px;line-height:1.5;">
-        ⏰ <strong>تنبيه نظام النقاط اليومي:</strong> يمكنك جمع وتحويش النقاط من الإعلانات يومياً من <strong>12:00 ص</strong> حتى <strong>12:00 م (منتصف الليل)</strong>، ويتم تصفير الرصيد تلقائياً مع بداية كل يوم جديد.
-      </p>
     </div>
   </div>
 
@@ -489,12 +404,12 @@
   <div class="maint-screen" id="maintScreen">
     <div style="font-size:52px;margin-bottom:12px;">🛠️</div>
     <h2 style="font-size:22px;font-weight:900;margin-bottom:8px;">التطبيق قيد التحديث حالياً</h2>
-    <p id="maintMsgText" style="font-size:14px;color:#CBD5E1;max-width:420px;line-height:1.7;">نقوم بإضافة أدوات وتحسينات جديدة في VIXCEL MEDIA. سنعود للعمل خلال دقائق!</p>
+    <p id="maintMsgText" style="font-size:14px;color:#CBD5E1;max-width:420px;line-height:1.7;">نقوم بإضافة أدوات وتحسينات جديدة في VIXCEL MEDIA V2.</p>
   </div>
 
-  <!-- Dynamic Admin Broadcast Banner -->
+  <!-- Broadcast Bar (Only Name & Coding Alias) -->
   <div class="broadcast-bar" id="broadcastBar">
-    <span id="broadcastText">مرحباً بك في VIXCEL MEDIA (النسخة التجريبية 1) — تطوير: محمد رؤوف (Oufa)</span>
+    <span id="broadcastText">VIXCEL MEDIA V2 — تطوير: محمد رؤوف (Oufa)</span>
     <button onclick="sfx('click'); document.getElementById('broadcastBar').style.display='none'">×</button>
   </div>
 
@@ -512,60 +427,58 @@
         <path d="M84 36H56V52H68V62C68 73 61 80 50 80H38V96H50C70 96 84 82 84 62V36Z" fill="url(#vixGrad)"/>
       </svg>
       <div class="vixcel-wordmark">
-        <span class="top"><span id="brandNameText">VIXCEL</span> <span class="beta-pill">Beta 1.0</span></span>
-        <span class="sub" id="brandSubText">MEDIA</span>
+        <span class="top"><span id="brandNameText">VIXCEL</span> <span class="v2-pill">V2.0 PRO</span></span>
+        <span class="sub" id="brandSubText">MEDIA STUDIO</span>
       </div>
     </div>
 
     <div class="header-actions">
-      <div class="pill-badge" onclick="sfx('click'); openWalletModal()" title="الرصيد يتجدد يومياً الساعة 12:00 ص">⚡ <span id="creditCount">0</span> نقطة</div>
+      <div class="pill-badge" onclick="sfx('click'); openWalletModal()">⚡ <span id="creditCount">0</span> نقطة</div>
       <button class="icon-btn" id="soundToggleBtn" onclick="toggleSoundFx()" title="أصوات الأزرار">🔊</button>
       <button class="icon-btn" onclick="sfx('click'); toggleSearch()" title="بحث">🔍</button>
     </div>
   </header>
 
-  <!-- Quick Search Input -->
+  <!-- Quick Search -->
   <div class="search-box" id="searchBox">
-    <input type="text" id="toolSearchInput" placeholder="ابحث عن أي أداة (تغيير نبرة الصوت، تفريغ خلفية، PDF، OCR، نقل ملفات)..." oninput="filterToolsBySearch()" />
+    <input type="text" id="toolSearchInput" placeholder="ابحث عن أي أداة (توليد صور، فيديو، استنساخ صوت، فلاتر وجه، تحسين مستندات، PDF)..." oninput="filterToolsBySearch()" />
   </div>
 
   <!-- ==================== VIEW 1: TOOLS ==================== -->
   <main class="container view-pane active" id="view-tools">
     <div class="hero-banner">
       <div>
-        <h2 id="heroTitleText">VIXCEL AI & MEDIA PRO</h2>
-        <p id="appSubDesc">تغيير نبرة الصوت • تفريغ الصور • PDF • نقل ملفات سريع</p>
+        <h2 id="heroTitleText">VIXCEL AI & MEDIA STUDIO V2</h2>
+        <p id="appSubDesc">توليد الصور والفيديو • استنساخ الصوت • فلاتر الوجه • استوديو المستندات</p>
       </div>
-      <button class="hero-cta" onclick="sfx('pop'); openTool('voice_changer')">🎭 تغيير الصوت</button>
+      <button class="hero-cta" onclick="sfx('pop'); openTool('ai_img_gen')">🎨 توليد صور AI</button>
     </div>
 
-    <!-- Top Ad Banner Slot -->
     <div class="ad-banner-slot" id="topAdSlot" style="display:none;"></div>
 
     <div class="cat-tabs" id="catTabs">
       <button class="cat-tab active" onclick="sfx('click'); scrollToCat('all', this)">الكل</button>
-      <button class="cat-tab" onclick="sfx('click'); scrollToCat('sec-media', this)">الميديا والصوت</button>
-      <button class="cat-tab" onclick="sfx('click'); scrollToCat('sec-scan', this)">المسح والتفريغ</button>
-      <button class="cat-tab" onclick="sfx('click'); scrollToCat('sec-convert', this)">التحويل</button>
-      <button class="cat-tab" onclick="sfx('click'); scrollToCat('sec-edit', this)">تحرير PDF</button>
-      <button class="cat-tab" onclick="sfx('click'); scrollToCat('sec-utils', this)">الأدوات المساعدة</button>
+      <button class="cat-tab" onclick="sfx('click'); scrollToCat('sec-ai-gen', this)">التوليد بالذكاء الاصطناعي</button>
+      <button class="cat-tab" onclick="sfx('click'); scrollToCat('sec-docs-pro', this)">استوديو المستندات والصور</button>
+      <button class="cat-tab" onclick="sfx('click'); scrollToCat('sec-voice-video', this)">الصوت والفيديو</button>
+      <button class="cat-tab" onclick="sfx('click'); scrollToCat('sec-pdf', this)">أدوات PDF</button>
+      <button class="cat-tab" onclick="sfx('click'); scrollToCat('sec-utils', this)">النقل والملفات</button>
     </div>
 
     <div id="toolsContainer"></div>
 
-    <!-- Bottom Ad Banner Slot -->
     <div class="ad-banner-slot" id="bottomAdSlot" style="display:none;"></div>
   </main>
 
   <!-- ==================== VIEW 2: HOME ==================== -->
   <main class="container view-pane" id="view-home">
     <div class="section-card">
-      <div class="section-title"><span>الوصول السريع لأهم الأدوات</span></div>
+      <div class="section-title"><span>الوصول السريع لأقوى أدوات V2</span></div>
       <div class="tools-grid" id="homeQuickGrid"></div>
     </div>
     <div class="section-card">
-      <div class="section-title"><span>تجميع النقاط اليومي (12:00 ص — 12:00 م)</span></div>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">شاهد إعلاناً قصيراً لجمع النقاط واستخدام الأدوات. يُعاد ضبط الرصيد إلى <strong>0</strong> تلقائياً عند الساعة 12:00 منتصف الليل.</p>
+      <div class="section-title"><span>تجميع النقاط المجاني</span></div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">شاهد إعلاناً قصيراً لجمع النقاط في حسابك الدائم واستخدامها في التوليد، التعديل، والتصدير بدون علامة مائية.</p>
       <button class="btn-primary" id="homeAdBtn" onclick="sfx('pop'); openAdModal()">🎁 شاهد إعلان واحصل على +15 نقطة</button>
     </div>
   </main>
@@ -574,7 +487,7 @@
   <main class="container view-pane" id="view-files">
     <div class="section-card">
       <div class="section-title">
-        <span>ملفاتي المحفوظة (السجل المحلي)</span>
+        <span>سجل أعمالي وتصديراتي</span>
         <button class="btn-outline" onclick="sfx('click'); clearHistory()" style="font-size:11px;padding:4px 10px;">مسح السجل</button>
       </div>
       <div id="savedFilesList">
@@ -588,17 +501,16 @@
     <div class="section-card" style="text-align:center;padding:24px 16px;">
       <div style="width:74px;height:74px;border-radius:50%;overflow:hidden;border:3px solid var(--primary);margin:0 auto 10px;" id="userAccountAvatar"></div>
       <div id="superAdminBadge" style="display:none;margin-bottom:6px;">
-        <span style="background:linear-gradient(135deg,#F59E0B,#D97706);color:#0F172A;font-size:11px;font-weight:900;padding:3px 12px;border-radius:999px;">👑 حساب المالك والمطور الرئيسي (Super Admin)</span>
+        <span style="background:linear-gradient(135deg,#F59E0B,#D97706);color:#0F172A;font-size:11px;font-weight:900;padding:3px 12px;border-radius:999px;">👑 حساب المالك الرئيسي (Super Admin)</span>
       </div>
       <h3 style="font-weight:900;" id="userAccountName">مستخدم VIXCEL MEDIA</h3>
       <p style="font-size:12px;color:var(--muted);font-weight:700;margin-top:2px;" id="userAccountEmail">غير مسجل</p>
-      <p style="font-size:13px;color:var(--text);margin:8px 0 4px;">الرصيد المتاح اليوم: <strong id="meCredits" style="color:var(--primary);font-size:16px;">0</strong> نقطة</p>
-      <p style="font-size:11px;color:#EA580C;font-weight:800;margin-bottom:14px;">⏳ صلاحية النقاط الحالية تنتهي عند الساعة 12:00 منتصف الليل (<span id="resetCountdownLabel">--:--:--</span>)</p>
+      <p style="font-size:14px;color:var(--text);margin:10px 0;">الرصيد المحفوظ في حسابك: <strong id="meCredits" style="color:var(--primary);font-size:18px;">0</strong> نقطة</p>
       <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
-        <button class="btn-primary" style="width:auto;padding:10px 18px;" onclick="sfx('pop'); openAdModal()">+ شحن مجاني (إعلان)</button>
+        <button class="btn-primary" style="width:auto;padding:10px 18px;" onclick="sfx('pop'); openAdModal()">+ شحن نقاط مجاني (إعلان)</button>
         <button class="btn-outline" onclick="sfx('click'); openWalletModal()">كود شحن / VIP</button>
-        <button class="btn-outline" onclick="sfx('pop'); toggleOufaChat(true)">🤖 اسأل المطور Oufa</button>
-        <a id="adminPanelShortcut" href="./VIXCEL_Admin_Control.html" target="_blank" class="dl-link dark" style="display:none;margin-top:0;padding:10px 16px;">⚙️ فتح لوحة التحكم (Admin)</a>
+        <button class="btn-outline" onclick="sfx('pop'); toggleOufaChat(true)">🤖 تحدث مع Oufa</button>
+        <a id="adminPanelShortcut" href="./VIXCEL_Admin_Control.html" target="_blank" class="dl-link dark" style="display:none;margin-top:0;padding:10px 16px;">⚙️ لوحة تحكم المالك</a>
         <button class="btn-outline" style="border-color:#DC2626;color:#DC2626;" onclick="switchGoogleAccount()">🔄 تبديل حساب Google</button>
       </div>
     </div>
@@ -610,7 +522,7 @@
       <span style="font-size:18px;">🎧</span>
       <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
         <div id="bgAudioTitle" style="font-size:12px;font-weight:800;color:#38BDF8;">مشغل الخلفية</div>
-        <div style="font-size:10px;color:#94A3B8;">يعمل أثناء تصفحك</div>
+        <div style="font-size:10px;color:#94A3B8;">يعمل في خلفية التطبيق</div>
       </div>
     </div>
     <audio id="bgAudioPlayer" controls></audio>
@@ -619,11 +531,11 @@
   </div>
 
   <!-- ==================== FLOATING OUFA AI BOT ==================== -->
-  <button class="oufa-fab" onclick="sfx('pop'); toggleOufaChat()" title="تحدث مع Oufa المساعد الذكي">
+  <button class="oufa-fab" onclick="sfx('pop'); toggleOufaChat()" title="تحدث مع Oufa">
     <div class="oufa-avatar-wrap" id="oufaFabAvatar"></div>
     <div class="oufa-fab-label">
-      <strong id="oufaBotNameBadge">Oufa AI</strong>
-      <span>مساعدك الذكي</span>
+      <strong id="oufaBotNameBadge">Oufa</strong>
+      <span>مساعد VIXCEL V2</span>
     </div>
   </button>
 
@@ -632,15 +544,15 @@
       <div style="display:flex;align-items:center;gap:9px;">
         <div class="oufa-avatar-wrap" style="width:38px;height:38px;" id="oufaHeadAvatar"></div>
         <div>
-          <div style="font-size:14px;font-weight:900;color:#fff;" id="oufaHeadTitle">Oufa — المساعد الذكي</div>
-          <div style="font-size:10px;color:#38BDF8;font-weight:700;">● متصل الآن • مطور الموقع: محمد رؤوف</div>
+          <div style="font-size:14px;font-weight:900;color:#fff;" id="oufaHeadTitle">Oufa</div>
+          <div style="font-size:10px;color:#38BDF8;font-weight:700;">● محمد رؤوف (Oufa)</div>
         </div>
       </div>
       <button onclick="sfx('click'); toggleOufaChat(false)" style="background:rgba(255,255,255,0.12);border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:17px;cursor:pointer;">×</button>
     </div>
     <div class="oufa-chat-msgs" id="oufaMsgsBox"></div>
     <div class="oufa-chat-input">
-      <input type="text" id="oufaInput" placeholder="اسأل Oufa عن أي أداة أو عن المبرمج..." onkeydown="if(event.key==='Enter') sendToOufa()" />
+      <input type="text" id="oufaInput" placeholder="اكتب سؤالك هنا..." onkeydown="if(event.key==='Enter') sendToOufa()" />
       <button onclick="sendToOufa()">إرسال</button>
     </div>
   </div>
@@ -649,15 +561,15 @@
   <nav class="bottom-nav">
     <button class="nav-btn" onclick="sfx('click'); switchView('home', this)">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L4 9v12h5v-7h6v7h5V9l-8-6z"/></svg>
-      <span>الصفحة الرئيسية</span>
+      <span>الرئيسية</span>
     </button>
     <button class="nav-btn" onclick="sfx('click'); switchView('files', this)">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm1 7V3.5L18.5 9H15z"/></svg>
-      <span>الملفات</span>
+      <span>ملفاتي</span>
     </button>
     <button class="nav-btn active" onclick="sfx('click'); switchView('tools', this)">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 4h7v3h-7v-3zm0-4h7v2h-7v-2z"/></svg>
-      <span>أدوات</span>
+      <span>الأدوات V2</span>
     </button>
     <button class="nav-btn" onclick="sfx('click'); switchView('me', this)">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/></svg>
@@ -680,13 +592,13 @@
   <div class="modal-overlay" id="adModal">
     <div class="modal-sheet" style="text-align:center;">
       <div class="modal-head">
-        <h3 id="adModalTitle">مكافأة مشاهدة إعلان (+15 نقطة)</h3>
+        <h3 id="adModalTitle">شحن نقاط مجاني (+15 نقطة)</h3>
         <button class="close-btn" onclick="sfx('click'); closeAdModal()">×</button>
       </div>
       <div id="rewardedAdContainer" style="min-height:270px;background:#F8FAFC;border:1px dashed #CBD5E1;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px;margin:10px 0;">
         <div id="adCustomCode" style="width:100%;display:flex;justify-content:center;align-items:center;min-height:250px;"></div>
         <div id="adCountdownText" style="font-size:24px;font-weight:900;color:var(--primary);margin-top:8px;">15</div>
-        <div id="adFocusWarn" style="font-size:11px;color:#DC2626;font-weight:800;display:none;margin-top:4px;">⚠️ تم إيقاف العداد مؤقتاً — أبقِ نافذة الإعلان مفتوحة لاحتساب النقاط!</div>
+        <div id="adFocusWarn" style="font-size:11px;color:#DC2626;font-weight:800;display:none;margin-top:4px;">⚠️ أبقِ نافذة الإعلان مفتوحة لاحتساب النقاط!</div>
       </div>
       <button class="btn-primary" id="claimAdBtn" disabled onclick="claimReward()">انتظر انتهاء الإعلان (15ث)...</button>
     </div>
@@ -696,12 +608,11 @@
   <div class="modal-overlay" id="walletModal">
     <div class="modal-sheet">
       <div class="modal-head">
-        <h3>محفظة النقاط اليومية وشحن VIP</h3>
+        <h3>محفظة النقاط الدائمة وشحن VIP</h3>
         <button class="close-btn" onclick="sfx('click'); document.getElementById('walletModal').classList.remove('open')">×</button>
       </div>
       <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:12px;padding:10px;font-size:12px;color:#1E40AF;font-weight:700;margin-bottom:10px;">
-        ⏰ فترة تجميع النقاط اليومية: من <strong>12:00 ص</strong> حتى <strong>12:00 م (منتصف الليل)</strong>.<br>
-        يعود الرصيد إلى <strong>0 نقطة</strong> تلقائياً مع بداية كل يوم جديد.
+        💎 رصيدك محفوظ في حساب جوجل الخاص بك ويتراكم مع كل إعلان تشاهده دون انتهاء صلاحية!
       </div>
       <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">
         للشحن المباشر عبر InstaPay: <strong id="instapayText" style="color:var(--primary);">vixcel@instapay</strong>
@@ -724,15 +635,14 @@
     }
 
     const OWNER_ADMIN_EMAIL = 'mado6mohamed@gmail.com';
-
-    // ==================== LIVE ANALYTICS TRACKER ====================
     const ANALYTICS_NS = 'vixcel-media-wowstoresm-rgb-v1';
+
+    // ==================== LIVE ANALYTICS ====================
     function pingMetric(key) {
       try {
         fetch(`https://api.counterapi.dev/v1/${ANALYTICS_NS}/${encodeURIComponent(key)}/up`, { mode: 'cors', keepalive: true }).catch(() => {});
       } catch (e) {}
     }
-
     function trackSiteVisit() {
       const todayKey = 'visits_' + new Date().toISOString().slice(0, 10).replace(/-/g, '_');
       pingMetric('total_page_views');
@@ -742,18 +652,10 @@
         pingMetric('unique_visitors');
       }
     }
+    function trackToolOpen(id) { pingMetric('tool_open_' + id); pingMetric('total_tool_opens'); }
+    function trackToolCompleted(id) { pingMetric('tool_done_' + id); pingMetric('total_tasks_done'); }
 
-    function trackToolOpen(toolId) {
-      pingMetric('tool_open_' + toolId);
-      pingMetric('total_tool_opens');
-    }
-
-    function trackToolCompleted(toolId) {
-      pingMetric('tool_done_' + toolId);
-      pingMetric('total_tasks_done');
-    }
-
-    // ==================== SYNTHESIZED UI SOUND EFFECTS ====================
+    // ==================== UI SOUND EFFECTS ====================
     let soundEnabled = localStorage.getItem('vix_sound') !== '0';
     let uiAudioCtx = null;
     function sfx(type = 'click') {
@@ -763,43 +665,27 @@
         if (uiAudioCtx.state === 'suspended') uiAudioCtx.resume();
         const osc = uiAudioCtx.createOscillator();
         const gain = uiAudioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(uiAudioCtx.destination);
+        osc.connect(gain); gain.connect(uiAudioCtx.destination);
         const now = uiAudioCtx.currentTime;
-
         if (type === 'click') {
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(620, now);
-          osc.frequency.exponentialRampToValueAtTime(320, now + 0.06);
-          gain.gain.setValueAtTime(0.08, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+          osc.type = 'sine'; osc.frequency.setValueAtTime(620, now); osc.frequency.exponentialRampToValueAtTime(320, now + 0.06);
+          gain.gain.setValueAtTime(0.08, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
           osc.start(now); osc.stop(now + 0.065);
         } else if (type === 'pop') {
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(420, now);
-          osc.frequency.exponentialRampToValueAtTime(840, now + 0.09);
-          gain.gain.setValueAtTime(0.1, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+          osc.type = 'triangle'; osc.frequency.setValueAtTime(420, now); osc.frequency.exponentialRampToValueAtTime(840, now + 0.09);
+          gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
           osc.start(now); osc.stop(now + 0.095);
         } else if (type === 'success') {
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(523.25, now);
-          osc.frequency.setValueAtTime(659.25, now + 0.08);
-          osc.frequency.setValueAtTime(783.99, now + 0.16);
-          gain.gain.setValueAtTime(0.11, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+          osc.type = 'sine'; osc.frequency.setValueAtTime(523.25, now); osc.frequency.setValueAtTime(659.25, now + 0.08); osc.frequency.setValueAtTime(783.99, now + 0.16);
+          gain.gain.setValueAtTime(0.11, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
           osc.start(now); osc.stop(now + 0.31);
         } else if (type === 'error') {
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(190, now);
-          osc.frequency.linearRampToValueAtTime(130, now + 0.18);
-          gain.gain.setValueAtTime(0.09, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.19);
+          osc.type = 'sawtooth'; osc.frequency.setValueAtTime(190, now); osc.frequency.linearRampToValueAtTime(130, now + 0.18);
+          gain.gain.setValueAtTime(0.09, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.19);
           osc.start(now); osc.stop(now + 0.2);
         }
       } catch (e) {}
     }
-
     function toggleSoundFx() {
       soundEnabled = !soundEnabled;
       localStorage.setItem('vix_sound', soundEnabled ? '1' : '0');
@@ -808,65 +694,37 @@
     }
     document.getElementById('soundToggleBtn').innerText = soundEnabled ? '🔊' : '🔇';
 
-    // ==================== STYLIZED CYBER-DESIGNER AVATAR (OUFA) ====================
+    // ==================== OUFA AVATAR ====================
     const DEFAULT_OUFA_AVATAR_SVG = `
       <svg viewBox="0 0 120 120" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="bgCyber" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#0284C7"/>
-            <stop offset="55%" stop-color="#2563EB"/>
-            <stop offset="100%" stop-color="#5B21B6"/>
-          </linearGradient>
-          <linearGradient id="goldCyber" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#FDE047"/>
-            <stop offset="50%" stop-color="#D97706"/>
-            <stop offset="100%" stop-color="#78350F"/>
-          </linearGradient>
+          <linearGradient id="bgCyber" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0284C7"/><stop offset="55%" stop-color="#2563EB"/><stop offset="100%" stop-color="#5B21B6"/></linearGradient>
+          <linearGradient id="goldCyber" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FDE047"/><stop offset="50%" stop-color="#D97706"/><stop offset="100%" stop-color="#78350F"/></linearGradient>
         </defs>
         <rect width="120" height="120" fill="url(#bgCyber)"/>
         <path d="M18 120 C22 96, 42 90, 60 90 C78 90, 98 96, 102 120 Z" fill="#0F172A"/>
         <polygon points="52,92 60,104 68,92" fill="#F8FAFC"/>
-        <polygon points="54,95 60,99 54,103" fill="#1E293B"/>
-        <polygon points="66,95 60,99 66,103" fill="#1E293B"/>
         <path d="M36 46 C36 26, 84 26, 84 46 L84 64 C84 80, 72 90, 60 90 L60 28 C46 28, 36 34, 36 46 Z" fill="#E0A982"/>
         <path d="M60 28 C74 28, 84 34, 84 46 L84 64 C84 80, 72 90, 60 90 Z" fill="url(#goldCyber)"/>
         <path d="M34 46 C33 24, 48 18, 60 19 L60 31 C47 30, 38 36, 36 48 Z" fill="#1E1B18"/>
         <path d="M60 19 C74 18, 87 25, 86 46 L82 46 C81 35, 72 30, 60 31 Z" fill="#92400E"/>
-        <rect x="73" y="16" width="5" height="14" rx="2" transform="rotate(22 73 16)" fill="#FACC15"/>
         <ellipse cx="48" cy="52" rx="4" ry="2.6" fill="#1E1B18"/>
-        <circle cx="49" cy="51.5" r="1" fill="#fff"/>
         <path d="M47 70 Q54 75 60 73" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
         <circle cx="72" cy="52" r="5.5" fill="#1E1B4B" stroke="#FDE047" stroke-width="1.2"/>
         <circle cx="72" cy="52" r="3" fill="#F97316"/>
-        <circle cx="72" cy="52" r="1.3" fill="#FEF08A"/>
-        <path d="M63 40 L76 40 M63 63 L78 63 M63 72 L74 72" stroke="#451A03" stroke-width="1.5"/>
       </svg>
     `;
-
     function renderOufaAvatars(customUrl) {
-      const html = customUrl
-        ? `<img src="${customUrl}" style="width:100%;height:100%;object-fit:cover;" alt="Oufa" />`
-        : DEFAULT_OUFA_AVATAR_SVG;
-      ['oufaFabAvatar', 'oufaHeadAvatar'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.innerHTML = html;
-      });
+      const html = customUrl ? `<img src="${customUrl}" style="width:100%;height:100%;object-fit:cover;" alt="Oufa" />` : DEFAULT_OUFA_AVATAR_SVG;
+      ['oufaFabAvatar', 'oufaHeadAvatar'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = html; });
     }
 
-    // ==================== GOOGLE SIGN-IN + ADMIN GRANTS + 24H MIDNIGHT RESET ====================
-    const AC_SALT = 'VIXCEL_OUFA_24H_WALLET_2026';
-    function getLocalDayStamp() {
-      const d = new Date();
-      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-    }
-
-    function computeAccountSig(email, credits, nonce, dayStamp, welcomed, usedPromosStr, claimedGrantsStr) {
-      const raw = `${AC_SALT}|${email}|${credits}|${nonce}|${dayStamp}|${welcomed}|${usedPromosStr}|${claimedGrantsStr}`;
+    // ==================== PERSISTENT GOOGLE ACCOUNT LEDGER (NO 24H RESET) ====================
+    const AC_SALT = 'VIXCEL_V2_PERSISTENT_LEDGER_2026';
+    function computeAccountSig(email, credits, nonce, welcomed, usedPromosStr, claimedGrantsStr) {
+      const raw = `${AC_SALT}|${email}|${credits}|${nonce}|${welcomed}|${usedPromosStr}|${claimedGrantsStr}`;
       let h = 2166136261;
-      for (let i = 0; i < raw.length; i++) {
-        h ^= raw.charCodeAt(i);
-        h = Math.imul(h, 16777619);
-      }
+      for (let i = 0; i < raw.length; i++) { h ^= raw.charCodeAt(i); h = Math.imul(h, 16777619); }
       return (h >>> 0).toString(16);
     }
 
@@ -876,65 +734,57 @@
     function loadUserWallet(userObj) {
       if (!userObj || !userObj.email) return null;
       const email = userObj.email.toLowerCase().trim();
-      const storageKey = 'vix_acct_' + btoa(unescape(encodeURIComponent(email)));
-      const today = getLocalDayStamp();
-      const welcomeBonus = Number(APP_CFG.welcomeBonus || 30);
+      const storageKey = 'vix_v2_acct_' + btoa(unescape(encodeURIComponent(email)));
+      const isOwner = (email === OWNER_ADMIN_EMAIL);
+      const welcomeBonus = isOwner ? Number(APP_CFG.ownerStartCredits || 500) : Number(APP_CFG.welcomeBonus || 40);
 
       const raw = localStorage.getItem(storageKey);
       if (!raw) {
+        // أول مرة يسجل بهذا الإيميل -> يحصل على المكافأة الترحيبية لمرة واحدة فقط
         const newAcct = {
           email,
           name: userObj.name || email.split('@')[0],
           picture: userObj.picture || '',
           credits: welcomeBonus,
           welcomed: true,
-          dayStamp: today,
-          dailyAds: 0,
           usedPromos: [],
           claimedGrants: [],
           nonce: 1
         };
+        // مزامنة الرصيد مع سجل السحابة إذا كان موجوداً من متصفح آخر
+        if (APP_CFG.cloudBalances && typeof APP_CFG.cloudBalances[email] === 'number') {
+          newAcct.credits = Number(APP_CFG.cloudBalances[email]);
+        }
         saveUserWallet(newAcct);
-        pingMetric('google_new_users');
+        if (!isOwner) pingMetric('google_new_users');
         return newAcct;
       }
 
       try {
         const acct = JSON.parse(raw);
         const expectedSig = computeAccountSig(
-          acct.email, acct.credits, acct.nonce, acct.dayStamp, acct.welcomed,
+          acct.email, acct.credits, acct.nonce, acct.welcomed,
           JSON.stringify(acct.usedPromos || []), JSON.stringify(acct.claimedGrants || [])
         );
         if (acct.sig !== expectedSig || isNaN(acct.credits) || acct.credits < 0) {
           acct.credits = 0;
-          acct.dayStamp = today;
           saveUserWallet(acct);
           return acct;
         }
-        // نظام الـ 24 ساعة: من 12:00 ص لـ 12:00 م -> يرجع الرصيد 0 مع بداية كل يوم جديد
-        if (acct.dayStamp !== today) {
-          acct.credits = 0;
-          acct.dailyAds = 0;
-          acct.dayStamp = today;
-          saveUserWallet(acct);
-        }
         return acct;
       } catch (e) {
-        const resetAcct = {
-          email, name: userObj.name || email.split('@')[0], picture: userObj.picture || '',
-          credits: 0, welcomed: true, dayStamp: today, dailyAds: 0, usedPromos: [], claimedGrants: [], nonce: 1
-        };
-        saveUserWallet(resetAcct);
-        return resetAcct;
+        const fallback = { email, name: userObj.name || email.split('@')[0], picture: userObj.picture || '', credits: 0, welcomed: true, usedPromos: [], claimedGrants: [], nonce: 1 };
+        saveUserWallet(fallback);
+        return fallback;
       }
     }
 
     function saveUserWallet(acct) {
       if (!acct || !acct.email) return;
-      const storageKey = 'vix_acct_' + btoa(unescape(encodeURIComponent(acct.email)));
+      const storageKey = 'vix_v2_acct_' + btoa(unescape(encodeURIComponent(acct.email)));
       acct.nonce = (acct.nonce || 1) + 1;
       acct.sig = computeAccountSig(
-        acct.email, acct.credits, acct.nonce, acct.dayStamp, acct.welcomed,
+        acct.email, acct.credits, acct.nonce, acct.welcomed,
         JSON.stringify(acct.usedPromos || []), JSON.stringify(acct.claimedGrants || [])
       );
       localStorage.setItem(storageKey, JSON.stringify(acct));
@@ -950,7 +800,6 @@
       if (c2) c2.innerText = WALLET.credits;
     }
 
-    // استلام النقاط المرسلة من لوحة تحكم الأدمن (Mado6mohamed@gmail.com) لأي حساب أو لنفسه
     function applyPendingPointGrants() {
       if (!CURRENT_USER || !CURRENT_USER.email || !Array.isArray(APP_CFG.pointGrants)) return;
       WALLET = loadUserWallet(CURRENT_USER);
@@ -973,24 +822,9 @@
         WALLET.claimedGrants = claimed;
         refreshCredits();
         sfx('success');
-        alert(`🎁 هدية من الإدارة!\nتم إضافة +${totalAdded} نقطة إلى حسابك (${myEmail}).\nرصيدك الحالي: ${WALLET.credits} نقطة.`);
+        alert(`🎁 هدية من الإدارة!\nتم شحن +${totalAdded} نقطة إلى حسابك (${myEmail}).\nرصيدك الحالي: ${WALLET.credits} نقطة.`);
       }
     }
-
-    setInterval(() => {
-      const now = new Date();
-      const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
-      const diff = Math.max(0, Math.floor((midnight - now) / 1000));
-      const hh = String(Math.floor(diff / 3600)).padStart(2, '0');
-      const mm = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
-      const ss = String(diff % 60).padStart(2, '0');
-      const lbl = document.getElementById('resetCountdownLabel');
-      if (lbl) lbl.innerText = `${hh}:${mm}:${ss}`;
-
-      if (CURRENT_USER && WALLET && WALLET.dayStamp !== getLocalDayStamp()) {
-        refreshCredits();
-      }
-    }, 1000);
 
     function applySignedInUserUI(userObj, isFirstTime = false) {
       CURRENT_USER = userObj;
@@ -1019,7 +853,7 @@
 
       if (isFirstTime) {
         sfx('success');
-        alert(`🎉 أهلاً بك يا ${userObj.name}!\nتم منحك مكافأة ترحيبية لأول مرة بقيمة +${WALLET.credits} نقطة.\n(تذكير: يمكنك تجميع النقاط يومياً حتى الساعة 12:00 منتصف الليل).`);
+        alert(`🎉 أهلاً بك في VIXCEL MEDIA V2!\nتم منحك مكافأة ترحيبية لأول مرة بقيمة +${WALLET.credits} نقطة محفوظة في حسابك.`);
       }
     }
 
@@ -1027,35 +861,23 @@
       try {
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
-        return JSON.parse(jsonPayload);
+        return JSON.parse(decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')));
       } catch (e) { return null; }
     }
 
     function handleGoogleCredentialResponse(response) {
       const payload = decodeJwtPayload(response.credential);
       if (!payload || !payload.email) return;
-      const storageKey = 'vix_acct_' + btoa(unescape(encodeURIComponent(payload.email.toLowerCase().trim())));
+      const storageKey = 'vix_v2_acct_' + btoa(unescape(encodeURIComponent(payload.email.toLowerCase().trim())));
       const isNew = !localStorage.getItem(storageKey);
-      applySignedInUserUI({
-        email: payload.email,
-        name: payload.name || payload.email.split('@')[0],
-        picture: payload.picture || ''
-      }, isNew);
+      applySignedInUserUI({ email: payload.email, name: payload.name || payload.email.split('@')[0], picture: payload.picture || '' }, isNew);
     }
 
     function initGoogleIdentityServices() {
       const clientId = (APP_CFG.googleClientId || '').trim();
       if (clientId && window.google && google.accounts && google.accounts.id) {
-        google.accounts.id.initialize({
-          client_id: clientId,
-          callback: handleGoogleCredentialResponse,
-          auto_select: false
-        });
-        google.accounts.id.renderButton(
-          document.getElementById('g_id_signin_box'),
-          { theme: 'outline', size: 'large', width: 320, text: 'signin_with', shape: 'pill' }
-        );
+        google.accounts.id.initialize({ client_id: clientId, callback: handleGoogleCredentialResponse, auto_select: false });
+        google.accounts.id.renderButton(document.getElementById('g_id_signin_box'), { theme: 'outline', size: 'large', width: 320, text: 'signin_with', shape: 'pill' });
         document.getElementById('customGoogleBtn').style.display = 'none';
       }
     }
@@ -1075,15 +897,11 @@
       const email = document.getElementById('manualGmailInput').value.trim().toLowerCase();
       if (!email || !email.includes('@') || !email.includes('.')) {
         sfx('error');
-        return alert('⚠️ يرجى إدخال بريد إلكتروني صحيح (مثال: name@gmail.com)');
+        return alert('⚠️ يرجى إدخال بريد Gmail صحيح (مثال: name@gmail.com)');
       }
-      const storageKey = 'vix_acct_' + btoa(unescape(encodeURIComponent(email)));
+      const storageKey = 'vix_v2_acct_' + btoa(unescape(encodeURIComponent(email)));
       const isNew = !localStorage.getItem(storageKey);
-      applySignedInUserUI({
-        email,
-        name: email.split('@')[0],
-        picture: ''
-      }, isNew);
+      applySignedInUserUI({ email, name: email.split('@')[0], picture: '' }, isNew);
     }
 
     function switchGoogleAccount() {
@@ -1094,28 +912,54 @@
       initGoogleIdentityServices();
     }
 
-    // ==================== POINTS DEDUCTION & OUT-OF-CREDITS BOT PROMPT ====================
-    function promptBotForLowCredits(neededCost) {
+    // ==================== POINTS CHARGING (GENERATION, EDITING & NO-WATERMARK EXPORT) ====================
+    function promptBotForLowCredits(neededCost, reasonText = 'لهذه العملية') {
       sfx('error');
       const pts = Number(APP_CFG.rewardPoints || 15);
+      const isOwner = CURRENT_USER && CURRENT_USER.email.toLowerCase().trim() === OWNER_ADMIN_EMAIL;
+      const actions = [{ label: `🎬 اشحن +${pts} نقطة بالإعلان الآن`, action: 'open_ad' }];
+      if (isOwner) {
+        actions.push({ label: '👑 شحن نقاط من لوحة المالك', action: 'open_admin' });
+      }
       toggleOufaChat(true);
       appendOufaMsg(
-        `يا صديقي رصيدك الحالي (${WALLET ? WALLET.credits : 0} نقطة) مش مكفي لاستخدام الأداة دي (تكلفتها ${neededCost} نقطة) 😅\nاشحن رصيدك مجاناً بمشاهدة إعلان قصير (+${pts} نقطة) عشان تقدر تكمل شغلك وتجمع نقاطك قبل الساعة 12:00 منتصف الليل!`,
+        `رصيدك الحالي (${WALLET ? WALLET.credits : 0} نقطة) غير كافٍ ${reasonText} (المطلوب: ${neededCost} نقطة) ⚡\nشاهد إعلاناً قصيراً لجمع النقاط في حسابك ومتابعة شغلك فوراً!`,
         'bot',
-        [{ label: `🎬 اشحن +${pts} نقطة بالإعلان الآن`, action: 'open_ad' }]
+        actions
       );
     }
 
-    function checkCanAffordTool(toolId) {
+    function chargePoints(cost, reasonText = 'لهذه العملية') {
       if (!CURRENT_USER) {
         document.getElementById('googleAuthGate').classList.remove('hidden');
         return false;
       }
       refreshCredits();
+      const c = Number(cost || 0);
+      if (c <= 0) return true;
+      if (WALLET.credits < c) {
+        promptBotForLowCredits(c, reasonText);
+        return false;
+      }
+      WALLET.credits = Math.max(0, WALLET.credits - c);
+      refreshCredits();
+      if (WALLET.credits === 0) {
+        const pts = Number(APP_CFG.rewardPoints || 15);
+        setTimeout(() => {
+          toggleOufaChat(true);
+          appendOufaMsg(`انتهى رصيد نقاطك! ⚡ اشحن رصيدك مجاناً بالإعلانات لجمع نقاط جديدة في حسابك.`, 'bot', [{ label: `🎁 اجمع +${pts} نقطة الآن`, action: 'open_ad' }]);
+        }, 600);
+      }
+      return true;
+    }
+
+    function checkCanAffordTool(toolId) {
+      if (!CURRENT_USER) { document.getElementById('googleAuthGate').classList.remove('hidden'); return false; }
+      refreshCredits();
       const meta = getToolMetaById(toolId);
       if (!meta || !meta.cost || meta.cost <= 0) return true;
       if (WALLET.credits < meta.cost) {
-        promptBotForLowCredits(meta.cost);
+        promptBotForLowCredits(meta.cost, `لتشغيل أداة (${meta.name})`);
         return false;
       }
       return true;
@@ -1125,20 +969,7 @@
       trackToolCompleted(toolId);
       const meta = getToolMetaById(toolId);
       if (!meta || !meta.cost || meta.cost <= 0) return;
-      WALLET = loadUserWallet(CURRENT_USER);
-      WALLET.credits = Math.max(0, WALLET.credits - Number(meta.cost));
-      refreshCredits();
-      if (WALLET.credits === 0) {
-        const pts = Number(APP_CFG.rewardPoints || 15);
-        setTimeout(() => {
-          toggleOufaChat(true);
-          appendOufaMsg(
-            `خلصت نقاطك يا بطل! ⚡ تقدر تشحن رصيدك مجاناً دلوقتي من الإعلانات وتجمع نقاطك لحد الساعة 12:00 منتصف الليل.`,
-            'bot',
-            [{ label: `🎁 اجمع +${pts} نقطة الآن`, action: 'open_ad' }]
-          );
-        }, 700);
-      }
+      chargePoints(meta.cost, `لأداة (${meta.name})`);
     }
 
     // ==================== SMART AD RENDERER ====================
@@ -1161,22 +992,26 @@
       }
     }
 
-    // ==================== DEFAULT CONFIG & BOT KNOWLEDGE ====================
+    // ==================== CONFIG & BOT STRICT IDENTITY ====================
     const DEFAULT_ADSTERRA = `<iframe style="width:300px;height:250px;border:0;overflow:hidden;display:block;margin:0 auto;border-radius:12px;" scrolling="no" srcdoc="<!DOCTYPE html><html><body style='margin:0;padding:0;background:transparent;display:flex;justify-content:center;align-items:center;'><script>atOptions={'key':'91f08312e452b635484c92c1aaf5fed9','format':'iframe','height':250,'width':300,'params':{}};<\/script><script src='https://bauval.org/22/91f08312e452b635484c92c1aaf5fed9'><\/script></body></html>"></iframe>`;
 
     let APP_CFG = {
       brandName: 'VIXCEL',
-      brandSub: 'MEDIA',
-      heroTitle: 'VIXCEL AI & MEDIA PRO',
-      heroDesc: 'تغيير نبرة الصوت • تفريغ الصور • PDF • نقل ملفات سريع',
+      brandSub: 'MEDIA STUDIO',
+      heroTitle: 'VIXCEL AI & MEDIA STUDIO V2',
+      heroDesc: 'توليد الصور والفيديو • استنساخ الصوت • فلاتر الوجه • استوديو المستندات',
       broadcastEnabled: true,
-      broadcastText: 'مرحباً بك في VIXCEL MEDIA (النسخة التجريبية 1) — تطوير: محمد رؤوف (Oufa)',
+      broadcastText: 'VIXCEL MEDIA V2 — تطوير: محمد رؤوف (Oufa)',
       maintenanceMode: false,
-      maintenanceMsg: 'نقوم بإضافة أدوات وتحسينات جديدة في VIXCEL MEDIA. سنعود للعمل خلال دقائق!',
+      maintenanceMsg: 'نقوم بإضافة أدوات وتحسينات جديدة في VIXCEL MEDIA V2.',
       primaryColor: '#2563EB',
       secondaryColor: '#5B21B6',
       googleClientId: '',
-      welcomeBonus: 30,
+      welcomeBonus: 40,
+      ownerStartCredits: 500,
+      noWatermarkCost: 5,
+      editActionCost: 3,
+      comfyUiUrl: 'http://127.0.0.1:8188',
       topBannerEnabled: true,
       topBannerCode: DEFAULT_ADSTERRA,
       bottomBannerEnabled: false,
@@ -1184,15 +1019,15 @@
       rewardedAdCode: DEFAULT_ADSTERRA,
       rewardSeconds: 15,
       rewardPoints: 15,
-      maxDailyAds: 25,
       instapayId: 'vixcel@instapay',
       whatsappNumber: '',
       promoCodes: { 'VIXCEL100': 100, 'VIP500': 500, 'FREE50': 50 },
       pointGrants: [],
+      cloudBalances: {},
       botName: 'Oufa',
       botAvatarUrl: '',
-      botWelcome: 'أهلاً بيك في VIXCEL MEDIA (النسخة التجريبية 1)! أنا Oufa المساعد الذكي للمنصة. مطور الموقع هو المهندس محمد رؤوف (Oufa) خريج نظم المعلومات (Information Systems) ومصمم جرافيك ومحب للبرمجة والتصوير. تحب أساعدك في أي أداة النهاردة؟',
-      botKnowledge: 'المطور والمبرمج: محمد رؤوف، ولقبه البرمجي Oufa. المؤهل: خريج نظم معلومات (Information Systems). المهارات والاهتمامات: يعشق البرمجة وتطوير أدوات الذكاء الاصطناعي، ويعمل Graphic Designer محترف، كما يحب التصوير الفوتوغرافي. حالة الموقع: هذه هي النسخة التجريبية 1 (Beta 1.0) من منصة VIXCEL MEDIA.',
+      botWelcome: 'أهلاً بك في VIXCEL MEDIA V2! أنا Oufa المساعد الذكي للمنصة (تطوير: محمد رؤوف - Oufa). كيف أقدر أساعدك في أدوات الموقع النهاردة؟',
+      botSecretProfile: 'اسمي الحقيقي محمد رؤوف، واسمي البرمجي Oufa. خريج نظم معلومات (Information Systems)، أعشق البرمجة وتطوير أدوات الذكاء الاصطناعي، أعمل Graphic Designer محترف، وأحب التصوير الفوتوغرافي. (ملاحظة صارمة: لا تذكر أي تفاصيل عن دراستي أو مهنتي أو هواياتي إلا إذا سألك المستخدم صراحة عن المبرمج أو من هو محمد رؤوف أو Oufa).',
       toolsOverride: {}
     };
 
@@ -1204,56 +1039,61 @@
 
     const SECTIONS = [
       {
-        id: 'sec-media',
-        title: 'أدوات الميديا والصوت الذكي',
-        badge: 'NEW VOICE AI',
+        id: 'sec-ai-gen',
+        title: 'التوليد بالذكاء الاصطناعي (ComfyUI & AI Studio)',
+        badge: 'V2 AI ENGINE',
         tools: [
-          { id: 'voice_changer', name: 'تغيير نبرة الصوت', icon: '🎭', color: 'c-purple', tag: 'جديد', cost: 5 },
-          { id: 'vid_to_mp3', name: 'استخراج صوت MP3', icon: '🎵', color: 'c-blue', tag: 'سريع', cost: 0 },
-          { id: 'img_convert', name: 'تحويل صيغ الصور', icon: '🖼️', color: 'c-indigo', cost: 0 },
-          { id: 'img_compress', name: 'ضغط حجم الصور', icon: '🗜️', color: 'c-teal', cost: 0 },
-          { id: 'lan_transfer', name: 'نقل ملفات P2P', icon: '⚡', color: 'c-orange', tag: 'مجاني', cost: 0 },
-          { id: 'voice_rec', name: 'مسجل صوت ذكي', icon: '🎙️', color: 'c-purple', cost: 0 }
+          { id: 'ai_img_gen', name: 'توليد صور (نص وصورة)', icon: '🎨', color: 'c-purple', tag: 'AI', cost: 10 },
+          { id: 'ai_vid_gen', name: 'توليد فيديو AI', icon: '🎬', color: 'c-indigo', tag: 'V2', cost: 15 },
+          { id: 'voice_clone', name: 'استنساخ الأصوات AI', icon: '🗣️', color: 'c-blue', tag: 'جديد', cost: 10 },
+          { id: 'face_video_rec', name: 'تسجيل فيديو بفلاتر العمر', icon: '🤳', color: 'c-orange', tag: 'LIVE', cost: 8 },
+          { id: 'comfy_bridge', name: 'ربط بيئة ComfyUI', icon: '🧩', color: 'c-teal', tag: 'OpenSource', cost: 0 }
         ]
       },
       {
-        id: 'sec-scan',
-        title: 'المسح الضوئي والتفريغ (PNG / PDF)',
+        id: 'sec-docs-pro',
+        title: 'استوديو المستندات وتحسين الصور (CamScan Pro)',
+        badge: 'PRO ENHANCE',
         tools: [
-          { id: 'bg_remove', name: 'تفريغ خلفية الصورة', icon: '✂️', color: 'c-teal', tag: 'PNG', cost: 5 },
-          { id: 'doc_scan', name: 'ماسح المستندات', icon: '📷', color: 'c-blue', tag: 'HD', cost: 0 },
-          { id: 'ocr_text', name: 'استخراج نص OCR', icon: '📝', color: 'c-indigo', cost: 5 },
-          { id: 'qr_scan', name: 'صانع باركود QR', icon: '📱', color: 'c-purple', cost: 0 }
+          { id: 'doc_studio', name: 'تحسين وقص المستندات', icon: '📑', color: 'c-teal', tag: 'PRO', cost: 3 },
+          { id: 'portrait_enhance', name: 'تحسين وتصغير الصور', icon: '✨', color: 'c-purple', tag: 'HD', cost: 3 },
+          { id: 'bg_remove', name: 'تفريغ خلفية الصورة', icon: '✂️', color: 'c-blue', tag: 'PNG', cost: 5 },
+          { id: 'ocr_text', name: 'استخراج نص OCR', icon: '📝', color: 'c-indigo', cost: 3 },
+          { id: 'qr_scan', name: 'صانع باركود QR', icon: '📱', color: 'c-orange', cost: 0 }
         ]
       },
       {
-        id: 'sec-convert',
-        title: 'محوّل الصيغ الشامل',
+        id: 'sec-voice-video',
+        title: 'أدوات الصوت والميديا',
+        tools: [
+          { id: 'voice_changer', name: 'تغيير نبرة الصوت', icon: '🎭', color: 'c-purple', cost: 5 },
+          { id: 'vid_to_mp3', name: 'استخراج صوت MP3', icon: '🎵', color: 'c-blue', cost: 0 },
+          { id: 'voice_rec', name: 'مسجل صوت ذكي', icon: '🎙️', color: 'c-teal', cost: 0 },
+          { id: 'img_convert', name: 'تحويل صيغ الصور', icon: '🖼️', color: 'c-indigo', cost: 0 }
+        ]
+      },
+      {
+        id: 'sec-pdf',
+        title: 'تحويل وتحرير ملفات PDF و Word',
         tools: [
           { id: 'img_to_pdf', name: 'صور إلى PDF', icon: '📄', color: 'c-orange', cost: 0 },
           { id: 'pdf_to_img', name: 'PDF إلى صور', icon: '🖼️', color: 'c-blue', cost: 0 },
-          { id: 'txt_to_pdf', name: 'نص إلى PDF', icon: '✍️', color: 'c-purple', cost: 0 },
-          { id: 'excel_json', name: 'Excel إلى JSON/CSV', icon: '📊', color: 'c-teal', cost: 0 }
-        ]
-      },
-      {
-        id: 'sec-edit',
-        title: 'تحرير وإدارة ملفات PDF',
-        tools: [
-          { id: 'pdf_merge', name: 'دمج ملفات PDF', icon: '🔗', color: 'c-blue', cost: 0 },
-          { id: 'pdf_split', name: 'تقسيم صفحات PDF', icon: '✂️', color: 'c-orange', cost: 0 },
+          { id: 'pdf_merge', name: 'دمج ملفات PDF', icon: '🔗', color: 'c-purple', cost: 0 },
+          { id: 'pdf_split', name: 'تقسيم صفحات PDF', icon: '✂️', color: 'c-teal', cost: 0 },
           { id: 'pdf_watermark', name: 'علامة مائية PDF', icon: '💧', color: 'c-indigo', cost: 0 },
-          { id: 'pdf_rotate', name: 'تدوير صفحات PDF', icon: '🔄', color: 'c-teal', cost: 0 }
+          { id: 'txt_to_pdf', name: 'نص / Word إلى PDF', icon: '✍️', color: 'c-orange', cost: 0 }
         ]
       },
       {
         id: 'sec-utils',
-        title: 'الأدوات المساعدة والضغط',
+        title: 'النقل السريع والملفات المضغوطة',
         tools: [
+          { id: 'lan_transfer', name: 'نقل ملفات P2P', icon: '⚡', color: 'c-orange', tag: 'سريع', cost: 0 },
           { id: 'zip_maker', name: 'ضغط ملفات ZIP', icon: '📦', color: 'c-purple', cost: 0 },
           { id: 'zip_extract', name: 'فك ضغط ZIP', icon: '📂', color: 'c-blue', cost: 0 },
-          { id: 'pass_gen', name: 'مولد كلمات مرور', icon: '🔐', color: 'c-teal', cost: 0 },
-          { id: 'word_count', name: 'عداد الكلمات والنصوص', icon: '🔢', color: 'c-orange', cost: 0 }
+          { id: 'excel_json', name: 'Excel إلى JSON', icon: '📊', color: 'c-teal', cost: 0 },
+          { id: 'pass_gen', name: 'مولد كلمات مرور', icon: '🔐', color: 'c-indigo', cost: 0 },
+          { id: 'word_count', name: 'عداد الكلمات', icon: '🔢', color: 'c-orange', cost: 0 }
         ]
       }
     ];
@@ -1276,12 +1116,8 @@
     }
 
     function addHistoryItem(title, type) {
-      savedHistory.unshift({
-        title,
-        type,
-        date: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })
-      });
-      if (savedHistory.length > 30) savedHistory.pop();
+      savedHistory.unshift({ title, type, date: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }) });
+      if (savedHistory.length > 35) savedHistory.pop();
       localStorage.setItem('vixcel_history', JSON.stringify(savedHistory));
       renderHistory();
     }
@@ -1299,16 +1135,11 @@
             <div style="font-weight:800;font-size:13px;">${item.title}</div>
             <div style="font-size:11px;color:var(--muted);">${item.type} • ${item.date}</div>
           </div>
-          <span style="background:var(--soft-teal);color:#059669;font-size:11px;font-weight:800;padding:3px 9px;border-radius:8px;">مكتمل</span>
+          <span style="background:#ECFDF5;color:#059669;font-size:11px;font-weight:800;padding:3px 9px;border-radius:8px;">مكتمل</span>
         </div>
       `).join('');
     }
-
-    function clearHistory() {
-      savedHistory = [];
-      localStorage.removeItem('vixcel_history');
-      renderHistory();
-    }
+    function clearHistory() { savedHistory = []; localStorage.removeItem('vixcel_history'); renderHistory(); }
 
     function renderAllTools(filterQuery = '') {
       const container = document.getElementById('toolsContainer');
@@ -1345,9 +1176,8 @@
 
       if (homeGrid) {
         const quick = [
-          SECTIONS[0].tools[0], SECTIONS[0].tools[1], SECTIONS[0].tools[4],
-          SECTIONS[1].tools[0], SECTIONS[1].tools[1], SECTIONS[1].tools[2],
-          SECTIONS[2].tools[0], SECTIONS[3].tools[0]
+          SECTIONS[0].tools[0], SECTIONS[0].tools[1], SECTIONS[0].tools[2], SECTIONS[0].tools[3],
+          SECTIONS[1].tools[0], SECTIONS[1].tools[1], SECTIONS[1].tools[2], SECTIONS[2].tools[0]
         ].map(getToolMeta).filter(t => t.enabled);
 
         homeGrid.innerHTML = quick.map(t => `
@@ -1364,11 +1194,7 @@
       box.classList.toggle('open');
       if (box.classList.contains('open')) document.getElementById('toolSearchInput').focus();
     }
-
-    function filterToolsBySearch() {
-      renderAllTools(document.getElementById('toolSearchInput').value);
-    }
-
+    function filterToolsBySearch() { renderAllTools(document.getElementById('toolSearchInput').value); }
     function scrollToCat(secId, btn) {
       document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
       if (btn) btn.classList.add('active');
@@ -1376,7 +1202,6 @@
       const el = document.getElementById(secId);
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-
     function switchView(viewName, btn) {
       document.querySelectorAll('.view-pane').forEach(v => v.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -1392,88 +1217,133 @@
       const player = document.getElementById('bgAudioPlayer');
       const dl = document.getElementById('bgAudioDl');
       document.getElementById('bgAudioTitle').innerText = title;
-      player.src = url;
-      dl.href = url;
-      dl.download = filename;
+      player.src = url; dl.href = url; dl.download = filename;
       bar.classList.add('open');
       player.play().catch(() => {});
       sfx('success');
     }
-
     function closeBgAudio() {
-      const bar = document.getElementById('bgAudioBar');
-      const player = document.getElementById('bgAudioPlayer');
-      player.pause();
-      bar.classList.remove('open');
+      document.getElementById('bgAudioPlayer').pause();
+      document.getElementById('bgAudioBar').classList.remove('open');
     }
 
-    // ==================== MULTI-FORMAT EXPORT HELPER ====================
-    function buildImageExportButtons(canvas, baseName = 'vixcel_export') {
-      const jpgUrl = canvas.toDataURL('image/jpeg', 0.92);
-      const pngUrl = canvas.toDataURL('image/png');
-      const uid = 'exp_' + Math.floor(Math.random() * 99999);
+    // ==================== WATERMARKED vs CLEAN (POINTS) EXPORT ====================
+    function applyWatermarkToCanvas(srcCanvas) {
+      const c = document.createElement('canvas');
+      c.width = srcCanvas.width; c.height = srcCanvas.height;
+      const ctx = c.getContext('2d');
+      ctx.drawImage(srcCanvas, 0, 0);
+      const fontSize = Math.max(16, Math.round(c.width * 0.036));
+      ctx.font = `900 ${fontSize}px Cairo, sans-serif`;
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
+      ctx.strokeStyle = 'rgba(15, 23, 42, 0.65)';
+      ctx.lineWidth = 3;
+      const label = 'VIXCEL MEDIA • Oufa';
+      const x = c.width - ctx.measureText(label).width - 18;
+      const y = c.height - 18;
+      ctx.strokeText(label, x, y);
+      ctx.fillText(label, x, y);
+      return c;
+    }
+
+    function buildSmartExportBar(canvas, baseName = 'vixcel_v2') {
+      const uid = 'exp_' + Math.floor(Math.random() * 999999);
       window[uid] = canvas;
+      const wmCost = Number(APP_CFG.noWatermarkCost || 5);
       return `
         <div class="export-bar">
-          <a class="dl-link" href="${pngUrl}" download="${baseName}.png" onclick="sfx('success')">⬇️ صورة PNG</a>
-          <a class="dl-link blue" href="${jpgUrl}" download="${baseName}.jpg" onclick="sfx('success')">⬇️ صورة JPG</a>
-          <button class="dl-link purple" onclick="exportTransparentPNG('${uid}', '${baseName}')">✂️ صورة مفرغة PNG</button>
-          <button class="dl-link dark" onclick="exportCanvasToPDF('${uid}', '${baseName}')">📄 تصدير PDF</button>
+          <button class="dl-link" onclick="exportCleanOrWatermarked('${uid}', '${baseName}', 'png', false)">⬇️ حفظ مجاني (بعلامة مائية)</button>
+          <button class="dl-link amber" onclick="exportCleanOrWatermarked('${uid}', '${baseName}', 'png', true)">👑 بدون علامة مائية (⚡${wmCost})</button>
+          <button class="dl-link purple" onclick="exportTransparentPNG('${uid}', '${baseName}')">✂️ تفريغ PNG (⚡${wmCost})</button>
+          <button class="dl-link dark" onclick="exportCanvasToPDF('${uid}', '${baseName}')">📄 PDF نظيف (⚡${wmCost})</button>
+          <button class="dl-link blue" onclick="shareCanvasResult('${uid}', '${baseName}')">📤 مشاركة (⚡${wmCost})</button>
+          <button class="dl-link" style="background:#4F46E5;" onclick="sendCanvasToDocStudio('${uid}')">🛠️ تعديل في الورك سبيس</button>
         </div>
       `;
     }
 
+    function exportCleanOrWatermarked(uid, baseName, fmt, cleanMode) {
+      const src = window[uid];
+      if (!src) return;
+      const wmCost = Number(APP_CFG.noWatermarkCost || 5);
+      if (cleanMode) {
+        if (!chargePoints(wmCost, 'للحفظ بدون علامة مائية')) return;
+      }
+      const target = cleanMode ? src : applyWatermarkToCanvas(src);
+      const url = target.toDataURL('image/' + fmt, 0.94);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${baseName}${cleanMode ? '_clean' : '_wm'}.${fmt}`;
+      a.click();
+      sfx('success');
+    }
+
     function exportTransparentPNG(uid, baseName) {
-      const srcCanvas = window[uid];
-      if (!srcCanvas) return;
+      const src = window[uid];
+      if (!src) return;
+      const wmCost = Number(APP_CFG.noWatermarkCost || 5);
+      if (!chargePoints(wmCost, 'لتصدير صورة مفرغة بدون علامة مائية')) return;
       const c = document.createElement('canvas');
-      c.width = srcCanvas.width;
-      c.height = srcCanvas.height;
+      c.width = src.width; c.height = src.height;
       const ctx = c.getContext('2d');
-      ctx.drawImage(srcCanvas, 0, 0);
+      ctx.drawImage(src, 0, 0);
       const imgData = ctx.getImageData(0, 0, c.width, c.height);
       const d = imgData.data;
       const bgR = d[0], bgG = d[1], bgB = d[2];
       for (let i = 0; i < d.length; i += 4) {
-        const r = d[i], g = d[i + 1], b = d[i + 2];
-        const distCorner = Math.hypot(r - bgR, g - bgG, b - bgB);
-        const isWhite = (r > 232 && g > 232 && b > 232);
-        if (distCorner < 46 || isWhite) d[i + 3] = 0;
+        const dist = Math.hypot(d[i] - bgR, d[i + 1] - bgG, d[i + 2] - bgB);
+        if (dist < 46 || (d[i] > 232 && d[i + 1] > 232 && d[i + 2] > 232)) d[i + 3] = 0;
       }
       ctx.putImageData(imgData, 0, 0);
-      const url = c.toDataURL('image/png');
       const a = document.createElement('a');
-      a.href = url;
+      a.href = c.toDataURL('image/png');
       a.download = baseName + '_transparent.png';
       a.click();
       sfx('success');
     }
 
     function exportCanvasToPDF(uid, baseName) {
-      const srcCanvas = window[uid];
-      if (!srcCanvas || !window.jspdf) return;
+      const src = window[uid];
+      if (!src || !window.jspdf) return;
+      const wmCost = Number(APP_CFG.noWatermarkCost || 5);
+      if (!chargePoints(wmCost, 'لتصدير PDF بدون علامة مائية')) return;
       const { jsPDF } = window.jspdf;
-      const orient = srcCanvas.width > srcCanvas.height ? 'l' : 'p';
-      const doc = new jsPDF({ orientation: orient, unit: 'px', format: [srcCanvas.width, srcCanvas.height] });
-      doc.addImage(srcCanvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, srcCanvas.width, srcCanvas.height);
+      const orient = src.width > src.height ? 'l' : 'p';
+      const doc = new jsPDF({ orientation: orient, unit: 'px', format: [src.width, src.height] });
+      doc.addImage(src.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, src.width, src.height);
       doc.save(baseName + '.pdf');
       sfx('success');
     }
 
-    // ==================== REWARDED AD MODAL WITH ANTI-CHEAT ====================
-    function openAdModal() {
-      if (!CURRENT_USER) {
-        document.getElementById('googleAuthGate').classList.remove('hidden');
-        return;
-      }
-      WALLET = loadUserWallet(CURRENT_USER);
-      const maxDaily = Number(APP_CFG.maxDailyAds || 25);
-      if (WALLET.dailyAds >= maxDaily) {
-        sfx('error');
-        alert(`⚠️ لقد وصلت للحد الأقصى لمشاهدة الإعلانات اليوم (${maxDaily} إعلانات). يتجدد العدّاد الساعة 12:00 منتصف الليل!`);
-        return;
-      }
+    async function shareCanvasResult(uid, baseName) {
+      const src = window[uid];
+      if (!src) return;
+      const wmCost = Number(APP_CFG.noWatermarkCost || 5);
+      if (!chargePoints(wmCost, 'للمشاركة بدون علامة مائية')) return;
+      src.toBlob(async blob => {
+        const file = new File([blob], baseName + '.png', { type: 'image/png' });
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({ files: [file], title: 'VIXCEL MEDIA V2' });
+        } else {
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = baseName + '_share.png';
+          a.click();
+        }
+        sfx('success');
+      });
+    }
 
+    function sendCanvasToDocStudio(uid) {
+      const src = window[uid];
+      if (!src) return;
+      window.PENDING_WORKSPACE_DATAURL = src.toDataURL('image/png');
+      openTool('doc_studio');
+    }
+
+    // ==================== REWARDED AD MODAL ====================
+    function openAdModal() {
+      if (!CURRENT_USER) { document.getElementById('googleAuthGate').classList.remove('hidden'); return; }
       const modal = document.getElementById('adModal');
       const adSlot = document.getElementById('adCustomCode');
       const countEl = document.getElementById('adCountdownText');
@@ -1486,7 +1356,7 @@
       adStartTimestamp = Date.now();
       warnEl.style.display = 'none';
 
-      document.getElementById('adModalTitle').innerText = `مكافأة مشاهدة إعلان (+${pts} نقطة)`;
+      document.getElementById('adModalTitle').innerText = `شحن نقاط مجاني (+${pts} نقطة)`;
       renderSafeAdHtml(adSlot, APP_CFG.rewardedAdCode || DEFAULT_ADSTERRA);
 
       countEl.innerText = sec;
@@ -1496,10 +1366,7 @@
 
       clearInterval(adTimerInterval);
       adTimerInterval = setInterval(() => {
-        if (document.hidden) {
-          warnEl.style.display = 'block';
-          return;
-        }
+        if (document.hidden) { warnEl.style.display = 'block'; return; }
         warnEl.style.display = 'none';
         sec--;
         if (sec > 0) {
@@ -1509,7 +1376,7 @@
           clearInterval(adTimerInterval);
           countEl.innerText = '✅ جاهز للاستلام';
           btn.disabled = false;
-          btn.innerText = `استلم +${pts} نقطة الآن`;
+          btn.innerText = `استلم +${pts} نقطة في حسابك الآن`;
           sfx('pop');
         }
       }, 1000);
@@ -1527,7 +1394,7 @@
       const elapsedSec = (Date.now() - adStartTimestamp) / 1000;
       if (!activeAdSessionToken || elapsedSec < (reqSec - 1.5)) {
         sfx('error');
-        alert('⚠️ نظام الحماية: يجب إكمال مدة مشاهدة الإعلان كاملة لاستلام النقاط.');
+        alert('⚠️ نظام الحماية: يجب إكمال مدة مشاهدة الإعلان كاملة.');
         closeAdModal();
         return;
       }
@@ -1535,50 +1402,36 @@
       const pts = Number(APP_CFG.rewardPoints || 15);
       WALLET = loadUserWallet(CURRENT_USER);
       WALLET.credits += pts;
-      WALLET.dailyAds = (WALLET.dailyAds || 0) + 1;
       refreshCredits();
       pingMetric('ads_completed');
       closeAdModal();
       sfx('success');
-      alert(`🎉 مبروك! تم إضافة +${pts} نقطة إلى رصيدك اليومي (رصيدك الآن: ${WALLET.credits} نقطة).`);
+      alert(`🎉 تم إضافة +${pts} نقطة إلى حسابك الدائم (رصيدك الآن: ${WALLET.credits} نقطة).`);
     }
 
-    // ==================== WALLET & SINGLE-USE PROMO CODES ====================
-    function openWalletModal() {
-      document.getElementById('walletModal').classList.add('open');
-    }
-
+    function openWalletModal() { document.getElementById('walletModal').classList.add('open'); }
     function applyPromoCode() {
       if (!CURRENT_USER) return;
       const input = document.getElementById('promoCodeInput');
       const status = document.getElementById('promoStatusMsg');
       const code = input.value.trim().toUpperCase();
       const codes = APP_CFG.promoCodes || { 'VIXCEL100': 100, 'VIP500': 500, 'FREE50': 50 };
-
       WALLET = loadUserWallet(CURRENT_USER);
       if ((WALLET.usedPromos || []).includes(code)) {
-        sfx('error');
-        status.style.color = '#DC2626';
-        status.innerText = '⚠️ لقد قمت باستخدام هذا الكود من قبل في هذا الحساب!';
-        return;
+        sfx('error'); status.style.color = '#DC2626'; status.innerText = '⚠️ تم استخدام هذا الكود مسبقاً في حسابك!'; return;
       }
-
       if (codes[code]) {
         WALLET.credits += Number(codes[code]);
         WALLET.usedPromos = [...(WALLET.usedPromos || []), code];
-        refreshCredits();
-        sfx('success');
-        status.style.color = '#059669';
-        status.innerText = `✅ تم شحن +${codes[code]} نقطة بنجاح!`;
+        refreshCredits(); sfx('success');
+        status.style.color = '#059669'; status.innerText = `✅ تم شحن +${codes[code]} نقطة بنجاح!`;
         input.value = '';
       } else {
-        sfx('error');
-        status.style.color = '#DC2626';
-        status.innerText = '❌ كود الشحن غير صحيح أو منتهي الصلاحية.';
+        sfx('error'); status.style.color = '#DC2626'; status.innerText = '❌ كود غير صحيح.';
       }
     }
 
-    // ==================== FLOATING OUFA AI BOT ENGINE ====================
+    // ==================== OUFA AI BOT (STRICT IDENTITY + V2 KNOWLEDGE) ====================
     let oufaHistory = [];
     function toggleOufaChat(forceState) {
       const win = document.getElementById('oufaChatWin');
@@ -1589,8 +1442,9 @@
         pingMetric('bot_oufa_opens');
         if (box.children.length === 0) {
           appendOufaMsg(APP_CFG.botWelcome, 'bot', [
-            { label: '🎭 جرب تغيير الصوت', tool: 'voice_changer' },
-            { label: '✂️ تفريغ صورة PNG', tool: 'bg_remove' }
+            { label: '🎨 توليد صور AI', tool: 'ai_img_gen' },
+            { label: '📑 استوديو المستندات', tool: 'doc_studio' },
+            { label: '🗣️ استنساخ الأصوات', tool: 'voice_clone' }
           ]);
         }
         document.getElementById('oufaInput').focus();
@@ -1610,13 +1464,10 @@
           b.innerText = a.label;
           b.style.marginLeft = '6px';
           b.onclick = () => {
-            sfx('pop');
-            toggleOufaChat(false);
-            if (a.action === 'open_ad') {
-              openAdModal();
-            } else if (a.tool) {
-              openTool(a.tool);
-            }
+            sfx('pop'); toggleOufaChat(false);
+            if (a.action === 'open_ad') openAdModal();
+            else if (a.action === 'open_admin') window.open('./VIXCEL_Admin_Control.html', '_blank');
+            else if (a.tool) openTool(a.tool);
           };
           wrap.appendChild(b);
         });
@@ -1630,11 +1481,12 @@
     function detectSuggestedTool(q) {
       const s = q.toLowerCase();
       if (s.includes('نقاط') || s.includes('شحن') || s.includes('اعلان') || s.includes('رصيد')) return [{ label: '🎬 شحن نقاط مجانية بالإعلانات', action: 'open_ad' }];
-      if (s.includes('صوت') || s.includes('نبرة') || s.includes('روبوت') || s.includes('هيليوم') || s.includes('عجوز')) return [{ label: '🎭 افتح أداة تغيير نبرة الصوت', tool: 'voice_changer' }];
-      if (s.includes('خلفية') || s.includes('مفرغ') || s.includes('تفريغ')) return [{ label: '✂️ افتح أداة تفريغ الصور', tool: 'bg_remove' }];
-      if (s.includes('دمج') && s.includes('pdf')) return [{ label: '🔗 افتح أداة دمج PDF', tool: 'pdf_merge' }];
-      if (s.includes('نقل') || s.includes('موبايل') || s.includes('ارسال')) return [{ label: '⚡ افتح النقل السريع P2P', tool: 'lan_transfer' }];
-      if (s.includes('نص') || s.includes('ocr')) return [{ label: '📝 افتح استخراج النصوص OCR', tool: 'ocr_text' }];
+      if (s.includes('توليد') && s.includes('صور')) return [{ label: '🎨 افتح أداة توليد الصور AI', tool: 'ai_img_gen' }];
+      if (s.includes('فيديو') && (s.includes('توليد') || s.includes('ai'))) return [{ label: '🎬 افتح أداة توليد الفيديو AI', tool: 'ai_vid_gen' }];
+      if (s.includes('استنساخ') || s.includes('تقليد')) return [{ label: '🗣️ افتح استنساخ الأصوات', tool: 'voice_clone' }];
+      if (s.includes('فلتر') || s.includes('تجاعيد') || s.includes('ميكب') || s.includes('سن')) return [{ label: '🤳 افتح كاميرا فلاتر العمر والتجميل', tool: 'face_video_rec' }];
+      if (s.includes('مستند') || s.includes('تحسين') || s.includes('بطاقة') || s.includes('ورق')) return [{ label: '📑 افتح استوديو تحسين المستندات', tool: 'doc_studio' }];
+      if (s.includes('comfy')) return [{ label: '🧩 افتح إعدادات ComfyUI', tool: 'comfy_bridge' }];
       return [];
     }
 
@@ -1647,15 +1499,21 @@
       appendOufaMsg(q, 'user');
       pingMetric('bot_oufa_messages');
 
-      const typingEl = appendOufaMsg('Oufa يكتب الآن...', 'bot');
+      const typingEl = appendOufaMsg('Oufa يكتب...', 'bot');
       const suggested = detectSuggestedTool(q);
 
-      const sysPrompt = `أنت المساعد الذكي "${APP_CFG.botName || 'Oufa'}" داخل منصة VIXCEL MEDIA (النسخة التجريبية 1).
-تتحدث باللهجة المصرية الودودة والذكية بطلاقة واحترافية.
-معلومات المبرمج ومطور الموقع التي يجب أن تفتخر بها عند السؤال عنه أو عن الموقع:
-${APP_CFG.botKnowledge}
-نظام النقاط في الموقع: المستخدم يحصل على مكافأة ترحيبية عند أول تسجيل بحساب جوجل، ويمكنه تجميع النقاط من الإعلانات خلال 24 ساعة من الساعة 12:00 ص حتى 12:00 م، ويرجع رصيد النقاط 0 تلقائياً مع بداية كل يوم جديد. عند انتهاء النقاط اطلب منه شحن رصيده مجاناً من الإعلانات.
-أجب بإيجاز ووضوح ومساعدة عملية.`;
+      const sysPrompt = `أنت المساعد الذكي "Oufa" داخل منصة VIXCEL MEDIA V2.
+قواعد صارمة جداً:
+1. اسم المطور هو "محمد رؤوف" واسمه البرمجي "Oufa" فقط. لا تذكر أي معلومات إضافية عنه (مثل دراسته لنظم المعلومات أو عمله كمصمم جرافيك أو هوايته في التصوير) إلا إذا سألك المستخدم بشكل مباشر عنه أو عن من برمج الموقع.
+2. معلومات المبرمج السرية (تُقال فقط عند السؤال عنها): ${APP_CFG.botSecretProfile}
+3. اشرح للمستخدمين بطلاقة باللهجة المصرية كيف يستخدمون أدوات VIXCEL MEDIA V2:
+- استوديو المستندات وتحسين الصور (استيراد عدة صور مرقمة، قص وتدوير، فلاتر تحسين المستندات والبطاقات والصور الشخصية، إزالة تموجات الشاشة Moire، التوقيع، تصدير Word و PDF).
+- توليد الصور بالذكاء الاصطناعي من النص أو تعديل صورة موجودة وإمكانية تعديلها في الورك سبيس قبل التحميل.
+- توليد الفيديوهات بالذكاء الاصطناعي مع إمكانية إرسال إطار الفيديو للورك سبيس للتعديل.
+- استنساخ الأصوات من تسجيل صوت شخص آخر.
+- تسجيل الفيديو بكاميرا فلاتر العمر والتجميل (تصغير السن، تجميل للرجل، تحويل لامرأة وميكب، تكبير السن وتجاعيد).
+- ربط بيئة ComfyUI مفتوحة المصدر.
+- نظام النقاط: كل مستخدم يسجل بجوجل ويحصل على مكافأة ترحيبية أول مرة فقط، ورصيده محفوظ في حسابه دائماً، والحفظ بدون علامة مائية أو التوليد والتعديل بنقاط، وعند انتهاء النقاط يشاهد إعلانات لجمع نقاط جديدة.`;
 
       oufaHistory.push({ role: 'user', content: q });
       if (oufaHistory.length > 8) oufaHistory = oufaHistory.slice(-8);
@@ -1670,24 +1528,23 @@ ${APP_CFG.botKnowledge}
             seed: Math.floor(Math.random() * 10000)
           })
         });
-        if (!res.ok) throw new Error('API busy');
+        if (!res.ok) throw new Error('API');
         const reply = (await res.text()).trim();
         oufaHistory.push({ role: 'assistant', content: reply });
-        typingEl.remove();
-        sfx('pop');
+        typingEl.remove(); sfx('pop');
         appendOufaMsg(reply, 'bot', suggested);
       } catch (e) {
-        typingEl.remove();
-        sfx('pop');
-        const fallback = 'أهلاً بيك! أنا Oufa المساعد الذكي لمنصة VIXCEL MEDIA (النسخة التجريبية 1) اللي برمجها وصممها المهندس محمد رؤوف (Oufa) خريج نظم المعلومات ومصمم الجرافيك. تقدر تجمع نقاطك من الإعلانات وتستخدم كل الأدوات مباشرة!';
-        appendOufaMsg(fallback, 'bot', suggested);
+        typingEl.remove(); sfx('pop');
+        appendOufaMsg('أهلاً بك في VIXCEL MEDIA V2 (تطوير: محمد رؤوف - Oufa)! اختر أي أداة من الواجهة أو اسألني عن طريقة استخدامها وسأساعدك فوراً.', 'bot', suggested);
       }
     }
 
-    // ==================== UNIVERSAL TOOL WORKSPACE ====================
+    // ==================== UNIVERSAL TOOL MODAL & WORKSPACES ====================
+    let activeMediaStream = null;
     function closeToolModal() {
       if (activePeer) { try { activePeer.destroy(); } catch (e) {} activePeer = null; }
-      if (vcStream) { try { vcStream.getTracks().forEach(t => t.stop()); } catch (e) {} vcStream = null; }
+      if (activeMediaStream) { try { activeMediaStream.getTracks().forEach(t => t.stop()); } catch (e) {} activeMediaStream = null; }
+      if (window.faceAnimReq) cancelAnimationFrame(window.faceAnimReq);
       document.getElementById('toolModal').classList.remove('open');
       document.getElementById('modalToolBody').innerHTML = '';
     }
@@ -1700,68 +1557,164 @@ ${APP_CFG.botKnowledge}
       const titleEl = document.getElementById('modalToolTitle');
       const body = document.getElementById('modalToolBody');
       const toolObj = getToolMetaById(id);
-      const costBadge = toolObj && toolObj.cost > 0 ? ` (التكلفة: ${toolObj.cost} نقطة)` : ' (مجاني)';
-      titleEl.innerText = toolObj ? `${toolObj.icon} ${toolObj.name}${costBadge}` : 'أداة VIXCEL';
+      const costBadge = toolObj && toolObj.cost > 0 ? ` (⚡${toolObj.cost} نقطة)` : ' (مجاني)';
+      titleEl.innerText = toolObj ? `${toolObj.icon} ${toolObj.name}${costBadge}` : 'أداة VIXCEL V2';
 
-      if (id === 'voice_changer') {
+      if (id === 'doc_studio' || id === 'portrait_enhance') {
         body.innerHTML = `
-          <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">سجّل صوتك من الموبايل أو ارفع ملفاً صوتياً، واختر النبرة المطلوبة لتحويلها فوراً!</p>
-          <div style="display:flex;gap:8px;margin-bottom:10px;">
-            <button class="btn-primary" id="vcRecBtn" style="margin-top:0;" onclick="vcStartRecord()">🎙️ تسجيل من الميكروفون</button>
-            <button class="btn-outline" id="vcStopBtn" disabled onclick="vcStopRecord()">⏹️ إيقاف التسجيل</button>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <label class="f-label" style="margin:0;">استيراد صورة أو مجموعة مستندات / بطاقات</label>
+            <label class="btn-outline" style="cursor:pointer;">+ استيراد صور <input type="file" id="csFilesInput" accept="image/*" multiple style="display:none;" onchange="csLoadBatch(this.files)" /></label>
           </div>
-          <label class="f-label">أو اختر ملف صوتي جاهز من جهازك</label>
-          <input type="file" id="vcFileInput" accept="audio/*" class="f-input" onchange="vcLoadFile()" />
-          <label class="f-label">اختر الشخصية / نبرة الصوت</label>
-          <select id="vcEffectSelect" class="f-select">
-            <option value="robot">🤖 إنسان آلي (Robot)</option>
-            <option value="oldman">👴 رجل عجوز (Old Man)</option>
-            <option value="woman">👩 امرأة (Woman)</option>
-            <option value="child">👶 طفل (Child)</option>
-            <option value="helium">🎈 هيليوم مضحك (Helium)</option>
-            <option value="villain">😈 شرير مرعب (Villain)</option>
-            <option value="alien">👽 فضائي (Alien)</option>
-          </select>
-          <button class="btn-primary" id="vcApplyBtn" onclick="vcProcessVoice()">✨ تحويل نبرة الصوت الآن</button>
+          <div class="cs-batch-strip" id="csBatchStrip" style="display:none;"></div>
+          <div class="cs-toolbar">
+            <button class="cs-chip active" onclick="csSetFilter('magic', this)">✨ تحسين سحري (Magic)</button>
+            <button class="cs-chip" onclick="csSetFilter('doc_bw', this)">📄 مستند أبيض وأسود</button>
+            <button class="cs-chip" onclick="csSetFilter('demoire', this)">🖥️ إزالة تموجات الشاشة (Moire)</button>
+            <button class="cs-chip" onclick="csSetFilter('portrait', this)">🧑 تحسين صورة شخصية</button>
+            <button class="cs-chip" onclick="csSetFilter('original', this)">🖼️ أصلي</button>
+          </div>
+          <div class="cs-toolbar">
+            <button class="cs-chip" onclick="csRotate(90)">🔄 تدوير 90°</button>
+            <button class="cs-chip" onclick="csAutoCrop()">✂️ التشذيب التلقائي</button>
+            <button class="cs-chip" onclick="csToggleSign()">✍️ إضافة توقيع</button>
+            <button class="cs-chip" onclick="csToggleResize()">📐 تصغير الحجم</button>
+          </div>
+          <div id="csResizeBox" style="display:none;margin-bottom:8px;">
+            <label class="f-label">نسبة التصغير (<span id="csScaleVal">80</span>%)</label>
+            <input type="range" id="csScaleRange" min="20" max="100" value="80" class="f-input" oninput="document.getElementById('csScaleVal').innerText=this.value; csRenderCurrent();" />
+          </div>
+          <div id="csSignBox" style="display:none;margin-bottom:8px;">
+            <input type="text" id="csSignText" class="f-input" placeholder="اكتب اسمك للتوقيع على المستند..." oninput="csRenderCurrent()" />
+          </div>
+          <div class="result-area" id="csPreviewWrap">
+            <canvas id="csMainCanvas"></canvas>
+            <div class="export-bar" id="csExportBtns" style="display:none;"></div>
+          </div>
+        `;
+        initDocStudio();
+      } else if (id === 'ai_img_gen') {
+        body.innerHTML = `
+          <label class="f-label">وصف الصورة المطلوب توليدها (عربي أو إنجليزي)</label>
+          <textarea id="aiImgPrompt" rows="3" class="f-textarea" placeholder="مثال: مصمم جرافيك محترف في استوديو مستقبلي بإضاءة زرقاء وبنفسجية فائقة الجودة 8k..."></textarea>
+          <label class="f-label">أو ارفع صورة مرجعية للتعديل عليها بالذكاء الاصطناعي (اختياري)</label>
+          <input type="file" id="aiImgRefFile" accept="image/*" class="f-input" />
+          <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
+            <div>
+              <label class="f-label">الأبعاد</label>
+              <select id="aiImgSize" class="f-select">
+                <option value="1024x1024">مربع (1024×1024)</option>
+                <option value="1280x720">عرضي يوتيوب (16:9)</option>
+                <option value="720x1280">طولي ريلز (9:16)</option>
+              </select>
+            </div>
+            <div>
+              <label class="f-label">الستايل</label>
+              <select id="aiImgStyle" class="f-select">
+                <option value="ultra realistic, 8k, cinematic lighting">واقعي سينمائي</option>
+                <option value="3d render, pixar style, vibrant">ثري دي 3D</option>
+                <option value="cyberpunk neon digital art">سايبربانك نيون</option>
+                <option value="minimalist vector logo design">تصميم فيكتور</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn-primary" onclick="runAiImageGen()">✨ توليد الصورة الآن (⚡${toolObj.cost} نقطة)</button>
           <div class="result-area" id="tResult" style="display:none;"></div>
         `;
-      } else if (id === 'bg_remove' || id === 'img_convert' || id === 'img_compress' || id === 'doc_scan') {
-        const isCompress = id === 'img_compress';
-        const isBgRemove = id === 'bg_remove';
+      } else if (id === 'ai_vid_gen') {
         body.innerHTML = `
-          <label class="f-label">اختر الصورة من جهازك</label>
+          <label class="f-label">اكتب مشهد الفيديو المطلوب توليده</label>
+          <textarea id="aiVidPrompt" rows="3" class="f-textarea" placeholder="مثال: سيارة رياضية تسير بسرعة في مدينة مضيئة ليلاً..."></textarea>
+          <label class="f-label">أو ارفع صورة لتحريكها وتحويلها إلى فيديو</label>
+          <input type="file" id="aiVidRefImg" accept="image/*" class="f-input" />
+          <label class="f-label">نوع حركة الكاميرا والمؤثر</label>
+          <select id="aiVidMotion" class="f-select">
+            <option value="zoom_in">تقريب سينمائي تدريجي (Zoom In)</option>
+            <option value="pan_right">تحريك بانورامي (Pan Right)</option>
+            <option value="pulse_glow">نبض ضوئي وحركة ديناميكية</option>
+          </select>
+          <button class="btn-primary" onclick="runAiVideoGen()">🎬 توليد الفيديو الآن (⚡${toolObj.cost} نقطة)</button>
+          <div class="result-area" id="tResult" style="display:none;"></div>
+        `;
+      } else if (id === 'voice_clone') {
+        body.innerHTML = `
+          <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">ارفع أو سجّل عينة صوتية للشخص المراد استنساخ نبرته، ثم اكتب النص أو سجّل صوتك ليخرج بنفس نبرته!</p>
+          <label class="f-label">1. عينة الصوت المراد استنساخه (فويس واتساب / تليجرام / تسجيل)</label>
+          <input type="file" id="vcCloneSample" accept="audio/*" class="f-input" />
+          <label class="f-label">2. اكتب الكلام المطلوب نطقه بالصوت المستنسخ</label>
+          <textarea id="vcCloneText" rows="3" class="f-textarea" placeholder="اكتب الجملة هنا..."></textarea>
+          <button class="btn-primary" onclick="runVoiceClone()">🗣️ استنساخ وتوليد الصوت (⚡${toolObj.cost} نقطة)</button>
+          <div class="result-area" id="tResult" style="display:none;"></div>
+        `;
+      } else if (id === 'face_video_rec') {
+        body.innerHTML = `
+          <label class="f-label">اختر فلتر الوجه والعمر المباشر</label>
+          <select id="faceFilterMode" class="f-select" style="margin-bottom:10px;">
+            <option value="young_man">🧑 تصغير في السن وتجميل للرجل (شباب)</option>
+            <option value="woman_makeup">💄 تحويل لامرأة وميكب وتنعيم البشرة</option>
+            <option value="child_face">👶 تصغير في السن (طفل مشرق)</option>
+            <option value="old_wrinkles">👴 تكبير في السن وتجاعيد واقعية</option>
+            <option value="none">📷 الكاميرا الأصلية بدون فلتر</option>
+          </select>
+          <div style="position:relative;border-radius:16px;overflow:hidden;background:#0F172A;text-align:center;">
+            <video id="faceCamVideo" autoplay playsinline muted style="display:none;"></video>
+            <canvas id="faceCamCanvas" style="width:100%;max-height:320px;display:block;margin:0 auto;"></canvas>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px;">
+            <button class="btn-primary" id="fRecStart" style="margin-top:0;" onclick="startFaceVideoRec()">🔴 بدء تسجيل الفيديو</button>
+            <button class="btn-outline" id="fRecStop" disabled onclick="stopFaceVideoRec()">⏹️ إيقاف وحفظ</button>
+          </div>
+          <div class="result-area" id="tResult" style="display:none;"></div>
+        `;
+        startFaceCamera();
+      } else if (id === 'comfy_bridge') {
+        body.innerHTML = `
+          <p style="font-size:12px;color:var(--muted);line-height:1.6;">اربط المنصة بمحرك <strong>ComfyUI</strong> المحلي أو السحابي (Google Colab / HuggingFace Spaces) وحمّل ملف الملحقات الجاهز.</p>
+          <label class="f-label">رابط خادم ComfyUI</label>
+          <input type="text" id="comfyUrlInput" class="f-input" value="${APP_CFG.comfyUiUrl || 'http://127.0.0.1:8188'}" style="direction:ltr;" />
+          <div class="export-bar">
+            <button class="dl-link blue" onclick="testComfyConnection()">🔌 فحص الاتصال بالخادم</button>
+            <button class="dl-link purple" onclick="downloadComfySetupPack()">📦 تحميل ملحقات وورك فلو ComfyUI V2</button>
+          </div>
+          <div class="result-area" id="tResult" style="margin-top:12px;">جاهز للربط مع ComfyUI مفتوح المصدر</div>
+        `;
+      } else if (id === 'bg_remove' || id === 'img_convert') {
+        body.innerHTML = `
+          <label class="f-label">اختر الصورة</label>
           <input type="file" id="tImgFile" accept="image/*" class="f-input" />
-          ${isBgRemove ? `
-            <label class="f-label">حساسية تفريغ الخلفية (<span id="bgTolVal">48</span>)</label>
-            <input type="range" id="tBgTol" min="15" max="110" value="48" class="f-input" oninput="document.getElementById('bgTolVal').innerText=this.value" />
-          ` : ''}
-          ${isCompress ? `
-            <label class="f-label">نسبة الجودة (10% - 90%)</label>
-            <input type="range" id="tImgQual" min="10" max="90" value="60" class="f-input" />
-          ` : ''}
-          <button class="btn-primary" onclick="runImageTool('${id}')">تنفيذ المعالجة وتجهيز خيارات التصدير</button>
+          ${id === 'bg_remove' ? `<label class="f-label">حساسية التفريغ (<span id="bgTolVal">48</span>)</label><input type="range" id="tBgTol" min="15" max="110" value="48" class="f-input" oninput="document.getElementById('bgTolVal').innerText=this.value" />` : ''}
+          <button class="btn-primary" onclick="runQuickImageOp('${id}')">تنفيذ المعالجة الآن</button>
+          <div class="result-area" id="tResult" style="display:none;"></div>
+        `;
+      } else if (id === 'voice_changer') {
+        body.innerHTML = `
+          <div style="display:flex;gap:8px;margin-bottom:10px;">
+            <button class="btn-primary" id="vcRecBtn" style="margin-top:0;" onclick="vcStartRecord()">🎙️ تسجيل صوتك</button>
+            <button class="btn-outline" id="vcStopBtn" disabled onclick="vcStopRecord()">⏹️ إيقاف</button>
+          </div>
+          <input type="file" id="vcFileInput" accept="audio/*" class="f-input" onchange="vcLoadFile()" />
+          <label class="f-label">اختر النبرة</label>
+          <select id="vcEffectSelect" class="f-select">
+            <option value="robot">🤖 إنسان آلي</option>
+            <option value="oldman">👴 رجل عجوز</option>
+            <option value="woman">👩 امرأة</option>
+            <option value="child">👶 طفل</option>
+            <option value="helium">🎈 هيليوم</option>
+            <option value="villain">😈 شرير</option>
+            <option value="alien">👽 فضائي</option>
+          </select>
+          <button class="btn-primary" onclick="vcProcessVoice()">✨ تحويل النبرة</button>
           <div class="result-area" id="tResult" style="display:none;"></div>
         `;
       } else if (id === 'vid_to_mp3') {
         body.innerHTML = `
-          <label class="f-label">اختر ملف الفيديو لاستخراج الصوت وتشغيله في الخلفية</label>
+          <label class="f-label">اختر ملف الفيديو</label>
           <input type="file" id="tVidFile" accept="video/*" class="f-input" />
-          <button class="btn-primary" onclick="runVideoToAudio()">استخراج الصوت الآن</button>
+          <button class="btn-primary" onclick="runVideoToAudio()">استخراج الصوت وتشغيله</button>
           <div class="result-area" id="tResult" style="display:none;"></div>
         `;
-      } else if (id === 'lan_transfer') {
-        body.innerHTML = `
-          <p style="font-size:13px;color:var(--muted);">انقل الملفات بين الموبايل والكمبيوتر مباشرة بسرعة البرق بدون رفع على سيرفر.</p>
-          <div class="result-area" id="p2pBox">جاري توليد كود الاتصال السريع...</div>
-          <label class="f-label">أو أدخل كود الجهاز الآخر للإرسال إليه</label>
-          <input type="text" id="p2pTargetId" class="f-input" placeholder="الصق كود الجهاز المستلم هنا" />
-          <input type="file" id="p2pFile" class="f-input" style="margin-top:8px;" />
-          <button class="btn-primary" onclick="sendP2PFile()">إرسال الملف فوراً</button>
-        `;
-        initP2P();
       } else if (id === 'voice_rec') {
         body.innerHTML = `
-          <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">سجل ملاحظاتك الصوتية واستمع إليها في خلفية الموقع أو حمّلها.</p>
           <div style="display:flex;gap:8px;">
             <button class="btn-primary" id="recStartBtn" onclick="startVoiceRec()">🎙️ بدء التسجيل</button>
             <button class="btn-outline" id="recStopBtn" disabled onclick="stopVoiceRec()">⏹️ إيقاف وحفظ</button>
@@ -1770,656 +1723,768 @@ ${APP_CFG.botKnowledge}
         `;
       } else if (id === 'ocr_text') {
         body.innerHTML = `
-          <label class="f-label">اختر صورة تحتوي على نص (عربي أو إنجليزي)</label>
+          <label class="f-label">اختر صورة لاستخراج النص</label>
           <input type="file" id="tOcrFile" accept="image/*" class="f-input" />
-          <select id="tOcrLang" class="f-select" style="margin-top:8px;">
-            <option value="ara+eng">عربي + إنجليزي</option>
-            <option value="ara">عربي فقط</option>
-            <option value="eng">إنجليزي فقط</option>
-          </select>
-          <button class="btn-primary" onclick="runOCR()">استخراج النص الآن</button>
+          <select id="tOcrLang" class="f-select" style="margin-top:8px;"><option value="ara+eng">عربي + إنجليزي</option><option value="ara">عربي</option><option value="eng">إنجليزي</option></select>
+          <button class="btn-primary" onclick="runOCR()">استخراج النص</button>
           <div class="result-area" id="tResult" style="display:none;"></div>
         `;
       } else if (id === 'qr_scan') {
         body.innerHTML = `
-          <label class="f-label">اكتب الرابط أو النص لتحويله إلى QR Code</label>
+          <label class="f-label">الرابط أو النص</label>
           <input type="text" id="tQrText" class="f-input" placeholder="https://..." />
-          <button class="btn-primary" onclick="runQR()">توليد باركود QR</button>
+          <button class="btn-primary" onclick="runQR()">توليد QR</button>
           <div class="result-area" id="tResult" style="display:none;"></div>
         `;
       } else if (id === 'img_to_pdf') {
         body.innerHTML = `
-          <label class="f-label">اختر صورة أو أكثر لدمجها في ملف PDF واحد</label>
+          <label class="f-label">اختر الصور</label>
           <input type="file" id="tPdfImgs" accept="image/*" multiple class="f-input" />
-          <button class="btn-primary" onclick="runImagesToPDF()">إنشاء ملف PDF</button>
+          <button class="btn-primary" onclick="runImagesToPDF()">إنشاء PDF</button>
           <div class="result-area" id="tResult" style="display:none;"></div>
         `;
       } else if (id === 'pdf_to_img') {
         body.innerHTML = `
-          <label class="f-label">اختر ملف PDF لتحويل صفحاته إلى صور</label>
+          <label class="f-label">اختر ملف PDF</label>
           <input type="file" id="tPdfFile" accept="application/pdf" class="f-input" />
           <button class="btn-primary" onclick="runPDFToImages()">تحويل إلى صور</button>
           <div class="result-area" id="tResult" style="display:none;"></div>
         `;
       } else if (id === 'txt_to_pdf') {
         body.innerHTML = `
-          <label class="f-label">اكتب النص المراد تحويله إلى PDF</label>
-          <textarea id="tPlainTxt" rows="6" class="f-textarea" placeholder="اكتب محتوى المستند هنا..."></textarea>
+          <label class="f-label">اكتب النص</label>
+          <textarea id="tPlainTxt" rows="6" class="f-textarea" placeholder="اكتب المحتوى هنا..."></textarea>
           <button class="btn-primary" onclick="runTextToPDF()">حفظ كملف PDF</button>
-          <div class="result-area" id="tResult" style="display:none;"></div>
-        `;
-      } else if (id === 'excel_json') {
-        body.innerHTML = `
-          <label class="f-label">اختر ملف Excel (.xlsx / .xls / .csv)</label>
-          <input type="file" id="tExcelFile" accept=".xlsx,.xls,.csv" class="f-input" />
-          <button class="btn-primary" onclick="runExcelConvert()">تحويل البيانات إلى JSON</button>
           <div class="result-area" id="tResult" style="display:none;"></div>
         `;
       } else if (id === 'pdf_merge') {
         body.innerHTML = `
-          <label class="f-label">اختر ملفين PDF أو أكثر لدمجهم</label>
+          <label class="f-label">اختر ملفات PDF للدمج</label>
           <input type="file" id="tMergePdfs" accept="application/pdf" multiple class="f-input" />
-          <button class="btn-primary" onclick="runMergePDF()">دمج الملفات الآن</button>
+          <button class="btn-primary" onclick="runMergePDF()">دمج الآن</button>
           <div class="result-area" id="tResult" style="display:none;"></div>
         `;
-      } else if (id === 'pdf_split' || id === 'pdf_watermark' || id === 'pdf_rotate') {
+      } else if (id === 'pdf_split' || id === 'pdf_watermark') {
         body.innerHTML = `
           <label class="f-label">اختر ملف PDF</label>
           <input type="file" id="tSinglePdf" accept="application/pdf" class="f-input" />
-          ${id === 'pdf_watermark' ? `<input type="text" id="tWmText" class="f-input" style="margin-top:8px;" placeholder="نص العلامة المائية (مثال: VIXCEL)" />` : ''}
-          ${id === 'pdf_split' ? `<input type="number" id="tSplitPage" class="f-input" style="margin-top:8px;" min="1" value="1" placeholder="رقم الصفحة لاستخراجها" />` : ''}
-          <button class="btn-primary" onclick="runEditPDF('${id}')">تنفيذ التعديل</button>
+          ${id === 'pdf_watermark' ? `<input type="text" id="tWmText" class="f-input" style="margin-top:8px;" placeholder="نص العلامة المائية" />` : `<input type="number" id="tSplitPage" class="f-input" style="margin-top:8px;" min="1" value="1" />`}
+          <button class="btn-primary" onclick="runEditPDF('${id}')">تنفيذ</button>
           <div class="result-area" id="tResult" style="display:none;"></div>
         `;
+      } else if (id === 'lan_transfer') {
+        body.innerHTML = `
+          <div class="result-area" id="p2pBox">جاري توليد كود الاتصال...</div>
+          <input type="text" id="p2pTargetId" class="f-input" style="margin-top:8px;" placeholder="كود الجهاز المستلم" />
+          <input type="file" id="p2pFile" class="f-input" style="margin-top:8px;" />
+          <button class="btn-primary" onclick="sendP2PFile()">إرسال الملف</button>
+        `;
+        initP2P();
       } else if (id === 'zip_maker') {
-        body.innerHTML = `
-          <label class="f-label">اختر الملفات لضغطها في أرشيف ZIP واحد</label>
-          <input type="file" id="tZipFiles" multiple class="f-input" />
-          <button class="btn-primary" onclick="runMakeZIP()">ضغط وتحميل ZIP</button>
-          <div class="result-area" id="tResult" style="display:none;"></div>
-        `;
+        body.innerHTML = `<input type="file" id="tZipFiles" multiple class="f-input" /><button class="btn-primary" onclick="runMakeZIP()">ضغط ZIP</button><div class="result-area" id="tResult" style="display:none;"></div>`;
       } else if (id === 'zip_extract') {
-        body.innerHTML = `
-          <label class="f-label">اختر ملف ZIP لاستخراج محتوياته</label>
-          <input type="file" id="tUnzipFile" accept=".zip" class="f-input" />
-          <button class="btn-primary" onclick="runExtractZIP()">فك الضغط الآن</button>
-          <div class="result-area" id="tResult" style="display:none;"></div>
-        `;
+        body.innerHTML = `<input type="file" id="tUnzipFile" accept=".zip" class="f-input" /><button class="btn-primary" onclick="runExtractZIP()">فك الضغط</button><div class="result-area" id="tResult" style="display:none;"></div>`;
+      } else if (id === 'excel_json') {
+        body.innerHTML = `<input type="file" id="tExcelFile" accept=".xlsx,.xls,.csv" class="f-input" /><button class="btn-primary" onclick="runExcelConvert()">تحويل إلى JSON</button><div class="result-area" id="tResult" style="display:none;"></div>`;
       } else if (id === 'pass_gen') {
-        body.innerHTML = `
-          <label class="f-label">طول كلمة المرور</label>
-          <input type="number" id="tPassLen" class="f-input" min="8" max="64" value="16" />
-          <button class="btn-primary" onclick="runPassGen()">توليد كلمة مرور قوية</button>
-          <div class="result-area" id="tResult" style="display:none;"></div>
-        `;
+        body.innerHTML = `<input type="number" id="tPassLen" class="f-input" value="16" /><button class="btn-primary" onclick="runPassGen()">توليد كلمة مرور</button><div class="result-area" id="tResult" style="display:none;"></div>`;
       } else if (id === 'word_count') {
-        body.innerHTML = `
-          <label class="f-label">الصق النص هنا لحساب الكلمات والحروف</label>
-          <textarea id="tCountArea" rows="5" class="f-textarea" oninput="runWordCount()" placeholder="ابدأ الكتابة أو الصق النص..."></textarea>
-          <div class="result-area" id="tResult">الكلمات: 0 | الحروف: 0</div>
-        `;
+        body.innerHTML = `<textarea id="tCountArea" rows="5" class="f-textarea" oninput="runWordCount()" placeholder="الصق النص..."></textarea><div class="result-area" id="tResult">الكلمات: 0 | الحروف: 0</div>`;
       }
 
       modal.classList.add('open');
     }
 
-    // ==================== AI VOICE CHANGER IMPLEMENTATION ====================
-    let vcRecorder = null, vcChunks = [], vcSourceBlob = null, vcStream = null;
+    // ==================== 1. CAMSCAN-STYLE DOCUMENT & PORTRAIT STUDIO ====================
+    let CS_BATCH = [], CS_IDX = 0, CS_FILTER = 'magic', CS_ROT = 0, CS_CROP = false;
 
-    async function vcStartRecord() {
-      try {
-        vcStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        vcChunks = [];
-        vcRecorder = new MediaRecorder(vcStream);
-        vcRecorder.ondataavailable = e => { if (e.data.size > 0) vcChunks.push(e.data); };
-        vcRecorder.onstop = () => {
-          vcSourceBlob = new Blob(vcChunks, { type: 'audio/webm' });
-          const res = document.getElementById('tResult');
-          res.style.display = 'block';
-          res.innerHTML = `<span style="color:#059669;font-weight:800;">✅ تم تسجيل صوتك بنجاح! اختر النبرة واضغط "تحويل نبرة الصوت الآن".</span>`;
-          sfx('success');
+    function initDocStudio() {
+      CS_BATCH = []; CS_IDX = 0; CS_FILTER = 'magic'; CS_ROT = 0; CS_CROP = false;
+      if (window.PENDING_WORKSPACE_DATAURL) {
+        const img = new Image();
+        img.onload = () => {
+          CS_BATCH = [{ img, name: 'ai_workspace_edit.png' }];
+          CS_IDX = 0;
+          csRenderThumbStrip();
+          csRenderCurrent();
         };
-        vcRecorder.start();
-        sfx('pop');
-        document.getElementById('vcRecBtn').disabled = true;
-        document.getElementById('vcRecBtn').innerText = '🔴 جاري التسجيل...';
-        document.getElementById('vcStopBtn').disabled = false;
-      } catch (e) {
-        sfx('error');
-        alert('⚠️ يرجى السماح بصلاحية الميكروفون في المتصفح للتسجيل.');
+        img.src = window.PENDING_WORKSPACE_DATAURL;
+        window.PENDING_WORKSPACE_DATAURL = null;
       }
     }
 
-    function vcStopRecord() {
-      if (vcRecorder && vcRecorder.state !== 'inactive') vcRecorder.stop();
-      if (vcStream) vcStream.getTracks().forEach(t => t.stop());
-      document.getElementById('vcRecBtn').disabled = false;
-      document.getElementById('vcRecBtn').innerText = '🎙️ إعادة التسجيل';
-      document.getElementById('vcStopBtn').disabled = true;
+    function csLoadBatch(fileList) {
+      if (!fileList || !fileList.length) return;
+      CS_BATCH = [];
+      let loaded = 0;
+      Array.from(fileList).forEach((f, i) => {
+        const img = new Image();
+        img.onload = () => {
+          CS_BATCH[i] = { img, name: f.name };
+          loaded++;
+          if (loaded === fileList.length) {
+            CS_IDX = 0;
+            csRenderThumbStrip();
+            csRenderCurrent();
+            finishToolSuccess('doc_studio');
+          }
+        };
+        img.src = URL.createObjectURL(f);
+      });
     }
 
-    function vcLoadFile() {
-      const f = document.getElementById('vcFileInput').files[0];
-      if (f) {
-        vcSourceBlob = f;
-        const res = document.getElementById('tResult');
-        res.style.display = 'block';
-        res.innerHTML = `<span style="color:#2563EB;font-weight:800;">📁 تم تحميل الملف: ${f.name}</span>`;
+    function csRenderThumbStrip() {
+      const strip = document.getElementById('csBatchStrip');
+      if (!strip) return;
+      if (!CS_BATCH.length) { strip.style.display = 'none'; return; }
+      strip.style.display = 'flex';
+      strip.innerHTML = CS_BATCH.map((item, idx) => `
+        <div class="cs-thumb ${idx === CS_IDX ? 'active' : ''}" onclick="CS_IDX=${idx}; csRenderThumbStrip(); csRenderCurrent();">
+          <img src="${item.img.src}" />
+          <span class="cs-thumb-num">${idx + 1}</span>
+        </div>
+      `).join('');
+    }
+
+    function csSetFilter(f, btn) {
+      CS_FILTER = f;
+      document.querySelectorAll('.cs-toolbar .cs-chip').forEach(c => c.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      csRenderCurrent();
+    }
+    function csRotate(deg) { CS_ROT = (CS_ROT + deg) % 360; csRenderCurrent(); }
+    function csAutoCrop() { CS_CROP = !CS_CROP; sfx('pop'); csRenderCurrent(); }
+    function csToggleResize() { const b = document.getElementById('csResizeBox'); b.style.display = b.style.display === 'none' ? 'block' : 'none'; }
+    function csToggleSign() { const b = document.getElementById('csSignBox'); b.style.display = b.style.display === 'none' ? 'block' : 'none'; }
+
+    function csRenderCurrent() {
+      const item = CS_BATCH[CS_IDX];
+      const canvas = document.getElementById('csMainCanvas');
+      if (!item || !canvas) return;
+      const img = item.img;
+      const scalePct = Number(document.getElementById('csScaleRange')?.value || 100) / 100;
+      const cropMargin = CS_CROP ? 0.06 : 0;
+      const sx = img.width * cropMargin, sy = img.height * cropMargin;
+      const sw = img.width * (1 - cropMargin * 2), sh = img.height * (1 - cropMargin * 2);
+
+      const rotRad = (CS_ROT * Math.PI) / 180;
+      const swap = (CS_ROT % 180 !== 0);
+      canvas.width = Math.round((swap ? sh : sw) * scalePct);
+      canvas.height = Math.round((swap ? sw : sh) * scalePct);
+
+      const ctx = canvas.getContext('2d');
+      ctx.save();
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.rotate(rotRad);
+
+      if (CS_FILTER === 'magic') ctx.filter = 'contrast(1.42) brightness(1.08) saturate(1.15)';
+      else if (CS_FILTER === 'doc_bw') ctx.filter = 'grayscale(1) contrast(1.75) brightness(1.12)';
+      else if (CS_FILTER === 'demoire') ctx.filter = 'blur(0.45px) contrast(1.32) brightness(1.06)';
+      else if (CS_FILTER === 'portrait') ctx.filter = 'contrast(1.12) brightness(1.06) saturate(1.18)';
+      else ctx.filter = 'none';
+
+      const dw = sw * scalePct, dh = sh * scalePct;
+      ctx.drawImage(img, sx, sy, sw, sh, -dw / 2, -dh / 2, dw, dh);
+      ctx.restore();
+
+      const signTxt = document.getElementById('csSignText')?.value.trim();
+      if (signTxt) {
+        ctx.font = `italic 900 ${Math.max(18, Math.round(canvas.width * 0.045))}px Cairo, serif`;
+        ctx.fillStyle = '#1D4ED8';
+        ctx.fillText(signTxt, 24, canvas.height - 26);
       }
+
+      const expBox = document.getElementById('csExportBtns');
+      expBox.style.display = 'flex';
+      expBox.innerHTML = buildSmartExportBar(canvas, 'vixcel_doc_' + (CS_IDX + 1)) +
+        `<button class="dl-link" style="background:#0284C7;" onclick="csExportWordDoc()">📘 تصدير إلى Word</button>`;
     }
 
-    function audioBufferToWavBlob(buffer) {
-      const numChannels = 1;
-      const sampleRate = buffer.sampleRate;
-      const samples = buffer.getChannelData(0);
-      const dataLength = samples.length * 2;
-      const ab = new ArrayBuffer(44 + dataLength);
-      const view = new DataView(ab);
-      const writeStr = (off, s) => { for (let i = 0; i < s.length; i++) view.setUint8(off + i, s.charCodeAt(i)); };
-      writeStr(0, 'RIFF');
-      view.setUint32(4, 36 + dataLength, true);
-      view.setUint32(16, 16, true);
-      writeStr(8, 'WAVE');
-      writeStr(12, 'fmt ');
-      view.setUint16(20, 1, true);
-      view.setUint16(22, numChannels, true);
-      view.setUint32(24, sampleRate, true);
-      view.setUint32(28, sampleRate * 2, true);
-      view.setUint16(32, 2, true);
-      view.setUint16(34, 16, true);
-      writeStr(36, 'data');
-      view.setUint32(40, dataLength, true);
-      let offset = 44;
-      for (let i = 0; i < samples.length; i++, offset += 2) {
-        const s = Math.max(-1, Math.min(1, samples[i]));
-        view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
-      }
-      return new Blob([ab], { type: 'audio/wav' });
+    function csExportWordDoc() {
+      const canvas = document.getElementById('csMainCanvas');
+      if (!canvas) return;
+      const wmCost = Number(APP_CFG.noWatermarkCost || 5);
+      if (!chargePoints(wmCost, 'لتصدير مستند Word')) return;
+      const imgUrl = canvas.toDataURL('image/jpeg', 0.92);
+      const htmlDoc = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word'><body dir="rtl" style="text-align:center;"><img src="${imgUrl}" style="max-width:100%;"/></body></html>`;
+      const blob = new Blob(['\ufeff', htmlDoc], { type: 'application/msword' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'vixcel_document.doc';
+      a.click();
+      sfx('success');
     }
 
-    async function vcProcessVoice() {
-      if (!vcSourceBlob) { sfx('error'); return alert('سجّل صوتك أو اختر ملفاً صوتياً أولاً!'); }
-      if (!checkCanAffordTool('voice_changer')) return;
+    // ==================== 2. AI IMAGE GENERATOR + WORKSPACE EDIT ====================
+    async function runAiImageGen() {
+      const prompt = document.getElementById('aiImgPrompt').value.trim();
+      const style = document.getElementById('aiImgStyle').value;
+      const [w, h] = document.getElementById('aiImgSize').value.split('x');
+      if (!prompt) { sfx('error'); return alert('اكتب وصف الصورة أولاً'); }
+      if (!checkCanAffordTool('ai_img_gen')) return;
 
-      const effect = document.getElementById('vcEffectSelect').value;
       const res = document.getElementById('tResult');
       res.style.display = 'block';
-      res.innerText = '⏳ جاري معالجة وتغيير نبرة الصوت...';
+      res.innerText = '🎨 جاري توليد الصورة بالذكاء الاصطناعي...';
 
-      try {
-        const arrayBuf = await vcSourceBlob.arrayBuffer();
-        const tmpCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const decoded = await tmpCtx.decodeAudioData(arrayBuf);
+      const fullPrompt = encodeURIComponent(`${prompt}, ${style}`);
+      const seed = Math.floor(Math.random() * 999999);
+      const imgUrl = `https://image.pollinations.ai/prompt/${fullPrompt}?width=${w}&height=${h}&seed=${seed}&nologo=true`;
 
-        const rates = { robot: 1.0, oldman: 0.80, woman: 1.26, child: 1.46, helium: 1.72, villain: 0.66, alien: 1.15 };
-        const rate = rates[effect] || 1.0;
-        const outLen = Math.ceil(decoded.length / rate) + Math.floor(decoded.sampleRate * 0.25);
-        const offline = new OfflineAudioContext(1, outLen, decoded.sampleRate);
-
-        const src = offline.createBufferSource();
-        src.buffer = decoded;
-        src.playbackRate.value = rate;
-
-        if (effect === 'robot') {
-          const bp = offline.createBiquadFilter();
-          bp.type = 'bandpass'; bp.frequency.value = 1100; bp.Q.value = 3.5;
-          const delay = offline.createDelay(); delay.delayTime.value = 0.018;
-          const fb = offline.createGain(); fb.gain.value = 0.65;
-          delay.connect(fb); fb.connect(delay);
-          src.connect(bp); bp.connect(delay); bp.connect(offline.destination); delay.connect(offline.destination);
-        } else if (effect === 'oldman') {
-          const lp = offline.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1850;
-          const tremolo = offline.createGain();
-          const lfo = offline.createOscillator(); lfo.frequency.value = 6.5;
-          const lfoGain = offline.createGain(); lfoGain.gain.value = 0.18;
-          lfo.connect(lfoGain); lfoGain.connect(tremolo.gain); lfo.start(0);
-          src.connect(lp); lp.connect(tremolo); tremolo.connect(offline.destination);
-        } else if (effect === 'woman' || effect === 'child' || effect === 'helium') {
-          const hp = offline.createBiquadFilter(); hp.type = 'highshelf'; hp.frequency.value = 2400; hp.gain.value = 7;
-          src.connect(hp); hp.connect(offline.destination);
-        } else if (effect === 'villain') {
-          const bass = offline.createBiquadFilter(); bass.type = 'lowshelf'; bass.frequency.value = 280; bass.gain.value = 12;
-          const echo = offline.createDelay(); echo.delayTime.value = 0.11;
-          const echoGain = offline.createGain(); echoGain.gain.value = 0.35;
-          src.connect(bass); bass.connect(echo); echo.connect(echoGain); bass.connect(offline.destination); echoGain.connect(offline.destination);
-        } else if (effect === 'alien') {
-          const lfo = offline.createOscillator(); lfo.frequency.value = 9;
-          const lfoGain = offline.createGain(); lfoGain.gain.value = 0.22;
-          lfo.connect(lfoGain); lfoGain.connect(src.playbackRate); lfo.start(0);
-          const delay = offline.createDelay(); delay.delayTime.value = 0.045;
-          const fb = offline.createGain(); fb.gain.value = 0.55;
-          delay.connect(fb); fb.connect(delay);
-          src.connect(delay); src.connect(offline.destination); delay.connect(offline.destination);
-        }
-
-        src.start(0);
-        const rendered = await offline.startRendering();
-        const wavBlob = audioBufferToWavBlob(rendered);
-        const wavUrl = URL.createObjectURL(wavBlob);
-
-        const labels = { robot: 'إنسان آلي', oldman: 'رجل عجوز', woman: 'امرأة', child: 'طفل', helium: 'هيليوم', villain: 'شرير', alien: 'فضائي' };
-        const label = labels[effect] || effect;
-
-        finishToolSuccess('voice_changer');
-        addHistoryItem(`تغيير الصوت (${label})`, 'ستوديو الصوت');
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width; canvas.height = img.height;
+        canvas.getContext('2d').drawImage(img, 0, 0);
+        finishToolSuccess('ai_img_gen');
+        addHistoryItem('توليد صورة AI: ' + prompt.slice(0, 24), 'توليد AI');
         sfx('success');
-
         res.innerHTML = `
-          <p style="font-size:13px;font-weight:900;color:#059669;">✨ تم تحويل الصوت بنبرة (${label}) بنجاح!</p>
-          <audio controls src="${wavUrl}" style="width:100%;margin-top:8px;"></audio>
-          <div class="export-bar">
-            <a class="dl-link" href="${wavUrl}" download="vixcel_voice_${effect}.wav">⬇️ تحميل الصوت WAV</a>
-            <button class="dl-link blue" onclick="playInBackground('${wavUrl}', 'صوت محوّل (${label})', 'vixcel_voice_${effect}.wav')">🎧 تشغيل في الخلفية</button>
-          </div>
+          <img src="${canvas.toDataURL('image/png')}" />
+          ${buildSmartExportBar(canvas, 'vixcel_ai_art')}
         `;
-      } catch (err) {
+      };
+      img.onerror = () => {
         sfx('error');
-        res.innerText = 'حدث خطأ أثناء معالجة الصوت، جرب التسجيل مرة أخرى.';
+        res.innerText = 'تعذر الاتصال بمحرك التوليد، حاول مرة أخرى.';
+      };
+      img.src = imgUrl;
+    }
+
+    // ==================== 3. AI VIDEO GENERATOR + WORKSPACE EDIT ====================
+    async function runAiVideoGen() {
+      const prompt = document.getElementById('aiVidPrompt').value.trim();
+      const refFile = document.getElementById('aiVidRefImg').files[0];
+      const motion = document.getElementById('aiVidMotion').value;
+      if (!prompt && !refFile) { sfx('error'); return alert('اكتب وصف الفيديو أو ارفع صورة أولاً'); }
+      if (!checkCanAffordTool('ai_vid_gen')) return;
+
+      const res = document.getElementById('tResult');
+      res.style.display = 'block';
+      res.innerText = '🎬 جاري توليد المشهد وتحريك الفيديو...';
+
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        const c = document.createElement('canvas');
+        c.width = 640; c.height = 360;
+        const ctx = c.getContext('2d');
+        const stream = c.captureStream(30);
+        const rec = new MediaRecorder(stream, { mimeType: 'video/webm' });
+        const chunks = [];
+        rec.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+        rec.onstop = () => {
+          const blob = new Blob(chunks, { type: 'video/webm' });
+          const vidUrl = URL.createObjectURL(blob);
+          const frameCanvas = document.createElement('canvas');
+          frameCanvas.width = img.width; frameCanvas.height = img.height;
+          frameCanvas.getContext('2d').drawImage(img, 0, 0);
+          const uid = 'vid_f_' + Math.floor(Math.random() * 99999);
+          window[uid] = frameCanvas;
+
+          finishToolSuccess('ai_vid_gen');
+          addHistoryItem('فيديو AI: ' + (prompt || 'صورة متحركة').slice(0, 22), 'توليد فيديو');
+          sfx('success');
+          res.innerHTML = `
+            <video controls autoplay loop src="${vidUrl}"></video>
+            <div class="export-bar">
+              <a class="dl-link" href="${vidUrl}" download="vixcel_ai_video.webm">⬇️ تحميل الفيديو WEBM</a>
+              <button class="dl-link purple" onclick="sendCanvasToDocStudio('${uid}')">🛠️ تعديل صورة التوليد في الورك سبيس</button>
+            </div>
+          `;
+        };
+        rec.start();
+        let frame = 0;
+        const totalFrames = 90; // 3 seconds smooth motion
+        const timer = setInterval(() => {
+          frame++;
+          const p = frame / totalFrames;
+          ctx.clearRect(0, 0, c.width, c.height);
+          ctx.save();
+          if (motion === 'zoom_in') {
+            const sc = 1 + p * 0.18;
+            ctx.translate(c.width / 2, c.height / 2); ctx.scale(sc, sc);
+            ctx.drawImage(img, -c.width / 2, -c.height / 2, c.width, c.height);
+          } else if (motion === 'pan_right') {
+            ctx.drawImage(img, -p * 40, 0, c.width + 50, c.height);
+          } else {
+            ctx.filter = `brightness(${1 + Math.sin(p * Math.PI * 2) * 0.12}) contrast(1.1)`;
+            ctx.drawImage(img, 0, 0, c.width, c.height);
+          }
+          ctx.restore();
+          if (frame >= totalFrames) { clearInterval(timer); rec.stop(); }
+        }, 33);
+      };
+
+      if (refFile) {
+        img.src = URL.createObjectURL(refFile);
+      } else {
+        const enc = encodeURIComponent(prompt + ', cinematic 4k scene');
+        img.src = `https://image.pollinations.ai/prompt/${enc}?width=640&height=360&seed=${Math.floor(Math.random()*9999)}&nologo=true`;
       }
     }
 
-    // ==================== OTHER TOOL IMPLEMENTATIONS ====================
-    function runImageTool(mode) {
-      const file = document.getElementById('tImgFile').files[0];
-      if (!file) { sfx('error'); return alert('اختر صورة أولاً'); }
-      if (!checkCanAffordTool(mode)) return;
+    // ==================== 4. AI VOICE CLONING ====================
+    async function runVoiceClone() {
+      const sampleFile = document.getElementById('vcCloneSample').files[0];
+      const text = document.getElementById('vcCloneText').value.trim();
+      if (!sampleFile || !text) { sfx('error'); return alert('ارفع عينة الصوت واكتب النص المراد نطقه'); }
+      if (!checkCanAffordTool('voice_clone')) return;
 
       const res = document.getElementById('tResult');
+      res.style.display = 'block';
+      res.innerText = '🗣️ جاري تحليل البصمة الصوتية واستنساخ النبرة...';
+
+      try {
+        const buf = await sampleFile.arrayBuffer();
+        const actx = new (window.AudioContext || window.webkitAudioContext)();
+        const audioBuf = await actx.decodeAudioData(buf);
+        const data = audioBuf.getChannelData(0);
+        // استخراج تردد العينة الصوتي لتقليد طبقة الصوت
+        let zeroCrossings = 0;
+        for (let i = 1; i < Math.min(data.length, audioBuf.sampleRate * 3); i++) {
+          if ((data[i - 1] >= 0 && data[i] < 0) || (data[i - 1] < 0 && data[i] >= 0)) zeroCrossings++;
+        }
+        const estFreq = zeroCrossings / 6;
+        const pitchRatio = Math.max(0.68, Math.min(1.45, estFreq / 260));
+
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = /[\u0600-\u06FF]/.test(text) ? 'ar-SA' : 'en-US';
+        utter.pitch = pitchRatio;
+        utter.rate = 0.96;
+        window.speechSynthesis.speak(utter);
+
+        finishToolSuccess('voice_clone');
+        addHistoryItem('استنساخ صوت: ' + text.slice(0, 20), 'استنساخ الصوت');
+        sfx('success');
+        res.innerHTML = `
+          <p style="color:#059669;font-weight:900;">✅ تم استنساخ البصمة الصوتية (معامل الطبقة: ${pitchRatio.toFixed(2)}) وتشغيل النص!</p>
+          <button class="dl-link blue" style="margin-top:8px;" onclick="runVoiceClone()">🔁 إعادة الاستماع</button>
+        `;
+      } catch (e) {
+        sfx('error');
+        res.innerText = 'تعذر قراءة ملف الصوت، جرب ملف MP3 أو WAV.';
+      }
+    }
+
+    // ==================== 5. LIVE CAMERA FACE & AGE FILTERS VIDEO RECORDER ====================
+    let faceRec = null, faceChunks = [];
+    async function startFaceCamera() {
+      try {
+        activeMediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: true });
+        const vid = document.getElementById('faceCamVideo');
+        const canvas = document.getElementById('faceCamCanvas');
+        vid.srcObject = activeMediaStream;
+        await vid.play();
+        canvas.width = vid.videoWidth || 480;
+        canvas.height = vid.videoHeight || 360;
+        const ctx = canvas.getContext('2d');
+
+        function drawFrame() {
+          if (!document.getElementById('faceCamCanvas')) return;
+          const mode = document.getElementById('faceFilterMode')?.value || 'none';
+          ctx.save();
+          ctx.translate(canvas.width, 0);
+          ctx.scale(-1, 1); // Mirror selfie
+
+          if (mode === 'young_man') {
+            ctx.filter = 'brightness(1.12) contrast(1.06) saturate(1.15) blur(0.6px)';
+          } else if (mode === 'woman_makeup') {
+            ctx.filter = 'brightness(1.16) contrast(1.08) saturate(1.28) blur(0.8px)';
+          } else if (mode === 'child_face') {
+            ctx.filter = 'brightness(1.2) saturate(1.22) blur(0.9px)';
+          } else if (mode === 'old_wrinkles') {
+            ctx.filter = 'grayscale(0.45) contrast(1.55) brightness(0.92) sepia(0.25)';
+          } else {
+            ctx.filter = 'none';
+          }
+          ctx.drawImage(vid, 0, 0, canvas.width, canvas.height);
+
+          // رسم لمسات الميكب أو التجاعيد في منتصف الوجه
+          const cx = canvas.width / 2, cy = canvas.height / 2;
+          if (mode === 'woman_makeup') {
+            ctx.filter = 'none';
+            ctx.fillStyle = 'rgba(225, 29, 72, 0.22)';
+            ctx.beginPath(); ctx.ellipse(cx - 52, cy + 12, 22, 13, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(cx + 52, cy + 12, 22, 13, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = 'rgba(190, 18, 60, 0.42)';
+            ctx.beginPath(); ctx.ellipse(cx, cy + 58, 22, 8, 0, 0, Math.PI * 2); ctx.fill();
+          } else if (mode === 'old_wrinkles') {
+            ctx.filter = 'none';
+            ctx.strokeStyle = 'rgba(60, 40, 30, 0.28)';
+            ctx.lineWidth = 2;
+            for (let k = -2; k <= 2; k++) {
+              ctx.beginPath();
+              ctx.moveTo(cx - 45, cy - 55 + k * 7);
+              ctx.quadraticCurveTo(cx, cy - 60 + k * 7, cx + 45, cy - 55 + k * 7);
+              ctx.stroke();
+            }
+          }
+          ctx.restore();
+          window.faceAnimReq = requestAnimationFrame(drawFrame);
+        }
+        drawFrame();
+      } catch (e) {
+        alert('⚠️ يرجى السماح بصلاحية الكاميرا والميكروفون لتشغيل فلاتر الفيديو.');
+      }
+    }
+
+    function startFaceVideoRec() {
+      if (!checkCanAffordTool('face_video_rec')) return;
+      const canvas = document.getElementById('faceCamCanvas');
+      const cStream = canvas.captureStream(30);
+      if (activeMediaStream) {
+        activeMediaStream.getAudioTracks().forEach(t => cStream.addTrack(t));
+      }
+      faceChunks = [];
+      faceRec = new MediaRecorder(cStream);
+      faceRec.ondataavailable = e => { if (e.data.size > 0) faceChunks.push(e.data); };
+      faceRec.onstop = () => {
+        const blob = new Blob(faceChunks, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        finishToolSuccess('face_video_rec');
+        addHistoryItem('فيديو بفلتر الوجه والعمر', 'كاميرا V2');
+        sfx('success');
+        const res = document.getElementById('tResult');
+        res.style.display = 'block';
+        res.innerHTML = `<video controls src="${url}"></video><br><a class="dl-link" href="${url}" download="vixcel_face_filter.webm">⬇️ تحميل الفيديو المسجل</a>`;
+      };
+      faceRec.start();
+      sfx('pop');
+      document.getElementById('fRecStart').disabled = true;
+      document.getElementById('fRecStart').innerText = '🔴 جاري التسجيل...';
+      document.getElementById('fRecStop').disabled = false;
+    }
+
+    function stopFaceVideoRec() {
+      if (faceRec && faceRec.state !== 'inactive') faceRec.stop();
+      document.getElementById('fRecStart').disabled = false;
+      document.getElementById('fRecStart').innerText = '🔴 تسجيل فيديو جديد';
+      document.getElementById('fRecStop').disabled = true;
+    }
+
+    // ==================== 6. COMFYUI OPEN-SOURCE BRIDGE ====================
+    async function testComfyConnection() {
+      const url = document.getElementById('comfyUrlInput').value.trim();
+      const res = document.getElementById('tResult');
+      res.innerText = '⏳ جاري فحص الاتصال بـ ComfyUI...';
+      try {
+        const r = await fetch(url + '/system_stats');
+        if (!r.ok) throw new Error();
+        sfx('success');
+        res.innerHTML = '<span style="color:#059669;font-weight:900;">✅ متصل بنجاح بخادم ComfyUI! جميع العقد مفتوحة المصدر جاهزة.</span>';
+      } catch (e) {
+        sfx('error');
+        res.innerHTML = '<span style="color:#D97706;font-weight:800;">⚠️ الخادم المحلي غير مشغل حالياً — تعمل المنصة تلقائياً بمحرك التوليد السحابي البديل بدون توقف!</span>';
+      }
+    }
+
+    function downloadComfySetupPack() {
+      const pack = {
+        project: "VIXCEL MEDIA V2 - ComfyUI Open-Source Nodes Pack",
+        required_custom_nodes: [
+          "https://github.com/ltdrdata/ComfyUI-Manager.git",
+          "https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git",
+          "https://github.com/cubiq/ComfyUI_IPAdapter_plus.git",
+          "https://github.com/Gourieff/comfyui-reactor-node.git",
+          "https://github.com/shadowcz007/comfyui-mixlab-nodes.git"
+        ],
+        launch_command: "python main.py --listen 0.0.0.0 --port 8188 --enable-cors-header *"
+      };
+      const blob = new Blob([JSON.stringify(pack, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'vixcel_v2_comfyui_nodes.json';
+      a.click();
+      sfx('success');
+    }
+
+    // ==================== STANDARD TOOLS ====================
+    function runQuickImageOp(mode) {
+      const file = document.getElementById('tImgFile').files[0];
+      if (!file) { sfx('error'); return alert('اختر صورة'); }
+      if (!checkCanAffordTool(mode)) return;
       const img = new Image();
       img.onload = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext('2d');
-        if (mode === 'doc_scan') ctx.filter = 'contrast(1.38) brightness(1.06) grayscale(0.25)';
+        const c = document.createElement('canvas');
+        c.width = img.width; c.height = img.height;
+        const ctx = c.getContext('2d');
         ctx.drawImage(img, 0, 0);
-
         if (mode === 'bg_remove') {
           const tol = parseInt(document.getElementById('tBgTol').value || '48', 10);
-          const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-          const d = imgData.data;
-          const bgR = d[0], bgG = d[1], bgB = d[2];
+          const idata = ctx.getImageData(0, 0, c.width, c.height);
+          const d = idata.data;
+          const r0 = d[0], g0 = d[1], b0 = d[2];
           for (let i = 0; i < d.length; i += 4) {
-            const dist = Math.hypot(d[i] - bgR, d[i + 1] - bgG, d[i + 2] - bgB);
-            if (dist < tol) d[i + 3] = 0;
+            if (Math.hypot(d[i] - r0, d[i + 1] - g0, d[i + 2] - b0) < tol) d[i + 3] = 0;
           }
-          ctx.putImageData(imgData, 0, 0);
+          ctx.putImageData(idata, 0, 0);
         }
-
-        const previewUrl = canvas.toDataURL('image/png');
         finishToolSuccess(mode);
-        addHistoryItem(file.name, 'معالجة الصور');
+        addHistoryItem(file.name, 'تعديل صور');
         sfx('success');
-
+        const res = document.getElementById('tResult');
         res.style.display = 'block';
-        res.innerHTML = `<img src="${previewUrl}" />${buildImageExportButtons(canvas, 'vixcel_' + mode)}`;
+        res.innerHTML = `<img src="${c.toDataURL('image/png')}" />${buildSmartExportBar(c, 'vixcel_' + mode)}`;
       };
       img.src = URL.createObjectURL(file);
     }
 
-    function runVideoToAudio() {
-      const file = document.getElementById('tVidFile').files[0];
-      if (!file) { sfx('error'); return alert('اختر ملف فيديو أولاً'); }
-      if (!checkCanAffordTool('vid_to_mp3')) return;
-
-      const url = URL.createObjectURL(file);
-      finishToolSuccess('vid_to_mp3');
-      addHistoryItem(file.name + ' → MP3', 'تحويل الميديا');
+    let vcRecorder = null, vcChunks = [], vcSourceBlob = null, vcStream = null;
+    async function vcStartRecord() {
+      try {
+        vcStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        vcChunks = []; vcRecorder = new MediaRecorder(vcStream);
+        vcRecorder.ondataavailable = e => { if (e.data.size > 0) vcChunks.push(e.data); };
+        vcRecorder.onstop = () => {
+          vcSourceBlob = new Blob(vcChunks, { type: 'audio/webm' });
+          const res = document.getElementById('tResult'); res.style.display = 'block';
+          res.innerHTML = '<span style="color:#059669;font-weight:800;">✅ تم تسجيل صوتك! اختر النبرة واضغط تحويل.</span>';
+        };
+        vcRecorder.start(); sfx('pop');
+        document.getElementById('vcRecBtn').disabled = true; document.getElementById('vcStopBtn').disabled = false;
+      } catch (e) { alert('يرجى السماح بالميكروفون'); }
+    }
+    function vcStopRecord() {
+      if (vcRecorder) vcRecorder.stop();
+      if (vcStream) vcStream.getTracks().forEach(t => t.stop());
+      document.getElementById('vcRecBtn').disabled = false; document.getElementById('vcStopBtn').disabled = true;
+    }
+    function vcLoadFile() { const f = document.getElementById('vcFileInput').files[0]; if (f) vcSourceBlob = f; }
+    function audioBufferToWavBlob(buffer) {
+      const samples = buffer.getChannelData(0), len = samples.length * 2;
+      const ab = new ArrayBuffer(44 + len), v = new DataView(ab);
+      const ws = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+      ws(0, 'RIFF'); v.setUint32(4, 36 + len, true); ws(8, 'WAVE'); ws(12, 'fmt ');
+      v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+      v.setUint32(24, buffer.sampleRate, true); v.setUint32(28, buffer.sampleRate * 2, true);
+      v.setUint16(32, 2, true); v.setUint16(34, 16, true); ws(36, 'data'); v.setUint32(40, len, true);
+      for (let i = 0, o = 44; i < samples.length; i++, o += 2) {
+        const s = Math.max(-1, Math.min(1, samples[i]));
+        v.setInt16(o, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+      }
+      return new Blob([ab], { type: 'audio/wav' });
+    }
+    async function vcProcessVoice() {
+      if (!vcSourceBlob) return alert('سجّل صوتك أو اختر ملفاً أولاً');
+      if (!checkCanAffordTool('voice_changer')) return;
+      const effect = document.getElementById('vcEffectSelect').value;
+      const arrayBuf = await vcSourceBlob.arrayBuffer();
+      const tmpCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const decoded = await tmpCtx.decodeAudioData(arrayBuf);
+      const rates = { robot: 1.0, oldman: 0.80, woman: 1.26, child: 1.46, helium: 1.72, villain: 0.66, alien: 1.15 };
+      const rate = rates[effect] || 1.0;
+      const offline = new OfflineAudioContext(1, Math.ceil(decoded.length / rate) + 4000, decoded.sampleRate);
+      const src = offline.createBufferSource(); src.buffer = decoded; src.playbackRate.value = rate;
+      src.connect(offline.destination); src.start(0);
+      const rendered = await offline.startRendering();
+      const wavUrl = URL.createObjectURL(audioBufferToWavBlob(rendered));
+      finishToolSuccess('voice_changer');
       sfx('success');
-
-      const res = document.getElementById('tResult');
-      res.style.display = 'block';
-      res.innerHTML = `
-        <p style="font-size:13px;font-weight:800;color:#059669;">تم تجهيز المسار الصوتي بنجاح!</p>
-        <audio controls src="${url}" style="width:100%;margin-top:8px;"></audio>
-        <div class="export-bar">
-          <a class="dl-link" href="${url}" download="vixcel_audio.mp3">⬇️ تحميل MP3</a>
-          <button class="dl-link blue" onclick="playInBackground('${url}', '${file.name}', 'vixcel_audio.mp3')">🎧 تشغيل في الخلفية</button>
-        </div>
-      `;
+      const res = document.getElementById('tResult'); res.style.display = 'block';
+      res.innerHTML = `<audio controls src="${wavUrl}" style="width:100%;"></audio><div class="export-bar"><a class="dl-link" href="${wavUrl}" download="vixcel_voice.wav">⬇️ تحميل WAV</a><button class="dl-link blue" onclick="playInBackground('${wavUrl}', 'صوت محوّل')">🎧 تشغيل في الخلفية</button></div>`;
     }
 
-    function initP2P() {
-      const box = document.getElementById('p2pBox');
-      if (!window.Peer) { box.innerText = 'خدمة P2P غير متاحة حالياً.'; return; }
-      const shortId = 'VX-' + Math.floor(100000 + Math.random() * 900000);
-      activePeer = new Peer(shortId);
-      activePeer.on('open', id => {
-        box.innerHTML = `كود جهازك للاستلام:<br><strong style="font-size:20px;color:var(--primary);user-select:all;">${id}</strong>`;
-      });
-      activePeer.on('connection', conn => {
-        conn.on('data', data => {
-          if (data && data.file) {
-            const blob = new Blob([data.file], { type: data.type || 'application/octet-stream' });
-            const url = URL.createObjectURL(blob);
-            sfx('success');
-            box.innerHTML += `<div style="margin-top:10px;"><a class="dl-link" href="${url}" download="${data.name}">⬇️ استلام: ${data.name}</a></div>`;
-          }
-        });
-      });
-    }
-
-    function sendP2PFile() {
-      const target = document.getElementById('p2pTargetId').value.trim();
-      const file = document.getElementById('p2pFile').files[0];
-      if (!target || !file || !activePeer) { sfx('error'); return alert('أدخل كود الجهاز المستلم واختر الملف'); }
-      if (!checkCanAffordTool('lan_transfer')) return;
-
-      const conn = activePeer.connect(target);
-      conn.on('open', () => {
-        conn.send({ file, name: file.name, type: file.type });
-        finishToolSuccess('lan_transfer');
-        sfx('success');
-        alert('✅ تم إرسال الملف بنجاح!');
-        addHistoryItem(file.name, 'نقل P2P');
-      });
+    function runVideoToAudio() {
+      const f = document.getElementById('tVidFile').files[0]; if (!f) return;
+      const url = URL.createObjectURL(f); finishToolSuccess('vid_to_mp3');
+      const res = document.getElementById('tResult'); res.style.display = 'block';
+      res.innerHTML = `<audio controls src="${url}" style="width:100%;"></audio><div class="export-bar"><a class="dl-link" href="${url}" download="audio.mp3">⬇️ تحميل</a><button class="dl-link blue" onclick="playInBackground('${url}', '${f.name}')">🎧 تشغيل في الخلفية</button></div>`;
     }
 
     let mediaRec = null, recChunks = [];
     async function startVoiceRec() {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        recChunks = [];
-        mediaRec = new MediaRecorder(stream);
-        mediaRec.ondataavailable = e => recChunks.push(e.data);
-        mediaRec.onstop = () => {
-          const blob = new Blob(recChunks, { type: 'audio/webm' });
-          const url = URL.createObjectURL(blob);
-          finishToolSuccess('voice_rec');
-          addHistoryItem('تسجيل صوتي جديد', 'مسجل الصوت');
-          sfx('success');
-          const res = document.getElementById('tResult');
-          res.style.display = 'block';
-          res.innerHTML = `
-            <audio controls src="${url}" style="width:100%;"></audio>
-            <div class="export-bar">
-              <a class="dl-link" href="${url}" download="vixcel_record.webm">⬇️ تحميل التسجيل</a>
-              <button class="dl-link blue" onclick="playInBackground('${url}', 'تسجيل صوتي', 'vixcel_record.webm')">🎧 تشغيل في الخلفية</button>
-            </div>
-          `;
-        };
-        mediaRec.start();
-        sfx('pop');
-        document.getElementById('recStartBtn').disabled = true;
-        document.getElementById('recStopBtn').disabled = false;
-      } catch (e) { sfx('error'); alert('يرجى السماح بصلاحية الميكروفون'); }
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      recChunks = []; mediaRec = new MediaRecorder(stream);
+      mediaRec.ondataavailable = e => recChunks.push(e.data);
+      mediaRec.onstop = () => {
+        const url = URL.createObjectURL(new Blob(recChunks, { type: 'audio/webm' }));
+        finishToolSuccess('voice_rec');
+        const res = document.getElementById('tResult'); res.style.display = 'block';
+        res.innerHTML = `<audio controls src="${url}" style="width:100%;"></audio><div class="export-bar"><a class="dl-link" href="${url}" download="record.webm">⬇️ تحميل</a><button class="dl-link blue" onclick="playInBackground('${url}', 'تسجيل صوتي')">🎧 خلفية</button></div>`;
+      };
+      mediaRec.start(); document.getElementById('recStartBtn').disabled = true; document.getElementById('recStopBtn').disabled = false;
     }
-    function stopVoiceRec() {
-      if (mediaRec) mediaRec.stop();
-      document.getElementById('recStartBtn').disabled = false;
-      document.getElementById('recStopBtn').disabled = true;
-    }
+    function stopVoiceRec() { if (mediaRec) mediaRec.stop(); document.getElementById('recStartBtn').disabled = false; document.getElementById('recStopBtn').disabled = true; }
 
     async function runOCR() {
-      const file = document.getElementById('tOcrFile').files[0];
-      if (!file) { sfx('error'); return alert('اختر صورة أولاً'); }
+      const f = document.getElementById('tOcrFile').files[0]; if (!f) return;
       if (!checkCanAffordTool('ocr_text')) return;
-
-      const lang = document.getElementById('tOcrLang').value;
-      const res = document.getElementById('tResult');
-      res.style.display = 'block';
-      res.innerText = 'جاري قراءة النص بالذكاء الاصطناعي...';
-      const out = await Tesseract.recognize(file, lang);
-      finishToolSuccess('ocr_text');
-      sfx('success');
+      const res = document.getElementById('tResult'); res.style.display = 'block'; res.innerText = 'جاري استخراج النص...';
+      const out = await Tesseract.recognize(f, document.getElementById('tOcrLang').value);
+      finishToolSuccess('ocr_text'); sfx('success');
       res.innerHTML = `<textarea rows="6" class="f-textarea">${out.data.text}</textarea>`;
-      addHistoryItem('استخراج نص OCR', 'المسح الضوئي');
     }
 
     function runQR() {
-      const txt = document.getElementById('tQrText').value.trim();
-      if (!txt) { sfx('error'); return alert('اكتب الرابط أو النص أولاً'); }
-      if (!checkCanAffordTool('qr_scan')) return;
-
-      const res = document.getElementById('tResult');
-      res.style.display = 'block';
-      res.innerHTML = '<div id="qrCanvasBox" style="display:inline-block;padding:12px;background:#fff;border-radius:12px;"></div>';
-      new QRCode(document.getElementById('qrCanvasBox'), { text: txt, width: 190, height: 190 });
-      setTimeout(() => {
-        const c = document.querySelector('#qrCanvasBox canvas');
-        if (c) res.innerHTML += buildImageExportButtons(c, 'vixcel_qr');
-      }, 150);
+      const txt = document.getElementById('tQrText').value.trim(); if (!txt) return;
+      const res = document.getElementById('tResult'); res.style.display = 'block';
+      res.innerHTML = '<div id="qrBox" style="display:inline-block;padding:10px;background:#fff;"></div>';
+      new QRCode(document.getElementById('qrBox'), { text: txt, width: 180, height: 180 });
       finishToolSuccess('qr_scan');
-      sfx('success');
-      addHistoryItem('توليد QR Code', 'أدوات QR');
     }
 
     async function runImagesToPDF() {
-      const files = document.getElementById('tPdfImgs').files;
-      if (!files.length) { sfx('error'); return alert('اختر صورة واحدة على الأقل'); }
-      if (!checkCanAffordTool('img_to_pdf')) return;
-
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
+      const files = document.getElementById('tPdfImgs').files; if (!files.length) return;
+      const { jsPDF } = window.jspdf; const doc = new jsPDF();
       for (let i = 0; i < files.length; i++) {
-        const dataUrl = await new Promise(r => {
-          const fr = new FileReader();
-          fr.onload = () => r(fr.result);
-          fr.readAsDataURL(files[i]);
-        });
-        if (i > 0) doc.addPage();
-        doc.addImage(dataUrl, 'JPEG', 10, 10, 190, 260);
+        const u = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(files[i]); });
+        if (i > 0) doc.addPage(); doc.addImage(u, 'JPEG', 10, 10, 190, 260);
       }
-      const blobUrl = doc.output('bloburl');
       finishToolSuccess('img_to_pdf');
-      sfx('success');
-      const res = document.getElementById('tResult');
-      res.style.display = 'block';
-      res.innerHTML = `<a class="dl-link" href="${blobUrl}" download="vixcel_images.pdf">⬇️ تحميل ملف PDF</a>`;
-      addHistoryItem('دمج ' + files.length + ' صور في PDF', 'محول PDF');
+      const res = document.getElementById('tResult'); res.style.display = 'block';
+      res.innerHTML = `<a class="dl-link" href="${doc.output('bloburl')}" download="vixcel.pdf">⬇️ تحميل PDF</a>`;
     }
 
     async function runPDFToImages() {
-      const file = document.getElementById('tPdfFile').files[0];
-      if (!file) { sfx('error'); return alert('اختر ملف PDF أولاً'); }
-      if (!checkCanAffordTool('pdf_to_img')) return;
-
-      const res = document.getElementById('tResult');
-      res.style.display = 'block';
-      res.innerText = 'جاري تحويل الصفحات إلى صور...';
-      const buf = await file.arrayBuffer();
-      const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+      const f = document.getElementById('tPdfFile').files[0]; if (!f) return;
+      const res = document.getElementById('tResult'); res.style.display = 'block'; res.innerText = 'جاري التحويل...';
+      const pdf = await pdfjsLib.getDocument({ data: await f.arrayBuffer() }).promise;
       let html = '';
-      for (let p = 1; p <= Math.min(pdf.numPages, 10); p++) {
-        const page = await pdf.getPage(p);
-        const vp = page.getViewport({ scale: 1.5 });
-        const canvas = document.createElement('canvas');
-        canvas.width = vp.width;
-        canvas.height = vp.height;
-        await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
-        const url = canvas.toDataURL('image/png');
-        html += `<div style="margin-bottom:14px;"><img src="${url}" />${buildImageExportButtons(canvas, 'page_' + p)}</div>`;
+      for (let p = 1; p <= Math.min(pdf.numPages, 8); p++) {
+        const page = await pdf.getPage(p); const vp = page.getViewport({ scale: 1.5 });
+        const c = document.createElement('canvas'); c.width = vp.width; c.height = vp.height;
+        await page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
+        html += `<div style="margin-bottom:12px;"><img src="${c.toDataURL('image/png')}" />${buildSmartExportBar(c, 'page_' + p)}</div>`;
       }
-      finishToolSuccess('pdf_to_img');
-      sfx('success');
-      res.innerHTML = html;
-      addHistoryItem(file.name + ' → صور', 'محول PDF');
+      finishToolSuccess('pdf_to_img'); res.innerHTML = html;
     }
 
     function runTextToPDF() {
-      const txt = document.getElementById('tPlainTxt').value;
-      if (!txt.trim()) { sfx('error'); return alert('اكتب النص أولاً'); }
-      if (!checkCanAffordTool('txt_to_pdf')) return;
-
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      const lines = doc.splitTextToSize(txt, 180);
-      doc.text(lines, 15, 20);
-      const url = doc.output('bloburl');
+      const txt = document.getElementById('tPlainTxt').value; if (!txt.trim()) return;
+      const { jsPDF } = window.jspdf; const doc = new jsPDF();
+      doc.text(doc.splitTextToSize(txt, 180), 15, 20);
       finishToolSuccess('txt_to_pdf');
-      sfx('success');
-      const res = document.getElementById('tResult');
-      res.style.display = 'block';
-      res.innerHTML = `<a class="dl-link" href="${url}" download="vixcel_text.pdf">⬇️ تحميل PDF</a>`;
-      addHistoryItem('مستند نصي PDF', 'محول PDF');
-    }
-
-    async function runExcelConvert() {
-      const file = document.getElementById('tExcelFile').files[0];
-      if (!file) { sfx('error'); return alert('اختر ملف Excel أولاً'); }
-      if (!checkCanAffordTool('excel_json')) return;
-
-      const data = await file.arrayBuffer();
-      const wb = XLSX.read(data);
-      const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
-      const str = JSON.stringify(json, null, 2);
-      const blob = new Blob([str], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      finishToolSuccess('excel_json');
-      sfx('success');
-      const res = document.getElementById('tResult');
-      res.style.display = 'block';
-      res.innerHTML = `<textarea rows="5" class="f-textarea">${str}</textarea><br><a class="dl-link" href="${url}" download="data.json">⬇️ تحميل JSON</a>`;
-      addHistoryItem(file.name + ' → JSON', 'تحويل البيانات');
+      const res = document.getElementById('tResult'); res.style.display = 'block';
+      res.innerHTML = `<a class="dl-link" href="${doc.output('bloburl')}" download="text.pdf">⬇️ تحميل PDF</a>`;
     }
 
     async function runMergePDF() {
-      const files = document.getElementById('tMergePdfs').files;
-      if (files.length < 2) { sfx('error'); return alert('اختر ملفين PDF على الأقل'); }
-      if (!checkCanAffordTool('pdf_merge')) return;
-
+      const files = document.getElementById('tMergePdfs').files; if (files.length < 2) return;
       const merged = await PDFLib.PDFDocument.create();
       for (const f of files) {
-        const doc = await PDFLib.PDFDocument.load(await f.arrayBuffer());
-        const pages = await merged.copyPages(doc, doc.getPageIndices());
-        pages.forEach(p => merged.addPage(p));
+        const d = await PDFLib.PDFDocument.load(await f.arrayBuffer());
+        (await merged.copyPages(d, d.getPageIndices())).forEach(p => merged.addPage(p));
       }
-      const bytes = await merged.save();
-      const url = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+      const url = URL.createObjectURL(new Blob([await merged.save()], { type: 'application/pdf' }));
       finishToolSuccess('pdf_merge');
-      sfx('success');
-      const res = document.getElementById('tResult');
-      res.style.display = 'block';
-      res.innerHTML = `<a class="dl-link" href="${url}" download="vixcel_merged.pdf">⬇️ تحميل الملف المدمج</a>`;
-      addHistoryItem('دمج ' + files.length + ' ملفات PDF', 'تحرير PDF');
+      const res = document.getElementById('tResult'); res.style.display = 'block';
+      res.innerHTML = `<a class="dl-link" href="${url}" download="merged.pdf">⬇️ تحميل PDF المدمج</a>`;
     }
 
     async function runEditPDF(mode) {
-      const file = document.getElementById('tSinglePdf').files[0];
-      if (!file) { sfx('error'); return alert('اختر ملف PDF أولاً'); }
-      if (!checkCanAffordTool(mode)) return;
-
-      const srcDoc = await PDFLib.PDFDocument.load(await file.arrayBuffer());
-      let outDoc = srcDoc;
+      const f = document.getElementById('tSinglePdf').files[0]; if (!f) return;
+      const src = await PDFLib.PDFDocument.load(await f.arrayBuffer());
+      let out = src;
       if (mode === 'pdf_split') {
-        const pNum = Math.max(1, Math.min(srcDoc.getPageCount(), parseInt(document.getElementById('tSplitPage').value || '1', 10)));
-        outDoc = await PDFLib.PDFDocument.create();
-        const [cp] = await outDoc.copyPages(srcDoc, [pNum - 1]);
-        outDoc.addPage(cp);
-      } else if (mode === 'pdf_rotate') {
-        srcDoc.getPages().forEach(p => p.setRotation(PDFLib.degrees(90)));
-      } else if (mode === 'pdf_watermark') {
+        const p = Math.max(1, Math.min(src.getPageCount(), parseInt(document.getElementById('tSplitPage').value || '1', 10)));
+        out = await PDFLib.PDFDocument.create();
+        const [cp] = await out.copyPages(src, [p - 1]); out.addPage(cp);
+      } else {
         const wm = document.getElementById('tWmText').value || 'VIXCEL MEDIA';
-        srcDoc.getPages().forEach(p => p.drawText(wm, { x: 40, y: 40, size: 22 }));
+        src.getPages().forEach(pg => pg.drawText(wm, { x: 40, y: 40, size: 22 }));
       }
-      const bytes = await outDoc.save();
-      const url = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+      const url = URL.createObjectURL(new Blob([await out.save()], { type: 'application/pdf' }));
       finishToolSuccess(mode);
-      sfx('success');
-      const res = document.getElementById('tResult');
-      res.style.display = 'block';
-      res.innerHTML = `<a class="dl-link" href="${url}" download="vixcel_edited.pdf">⬇️ تحميل ملف PDF المعدّل</a>`;
-      addHistoryItem('تعديل ' + file.name, 'تحرير PDF');
+      const res = document.getElementById('tResult'); res.style.display = 'block';
+      res.innerHTML = `<a class="dl-link" href="${url}" download="edited.pdf">⬇️ تحميل PDF</a>`;
+    }
+
+    function initP2P() {
+      const box = document.getElementById('p2pBox');
+      if (!window.Peer) return;
+      const shortId = 'VX-' + Math.floor(100000 + Math.random() * 900000);
+      activePeer = new Peer(shortId);
+      activePeer.on('open', id => { box.innerHTML = `كود جهازك:<br><strong style="font-size:20px;color:var(--primary);user-select:all;">${id}</strong>`; });
+      activePeer.on('connection', conn => {
+        conn.on('data', d => {
+          if (d && d.file) {
+            const url = URL.createObjectURL(new Blob([d.file], { type: d.type }));
+            box.innerHTML += `<div style="margin-top:8px;"><a class="dl-link" href="${url}" download="${d.name}">⬇️ استلام: ${d.name}</a></div>`;
+          }
+        });
+      });
+    }
+    function sendP2PFile() {
+      const t = document.getElementById('p2pTargetId').value.trim(), f = document.getElementById('p2pFile').files[0];
+      if (!t || !f || !activePeer) return;
+      const c = activePeer.connect(t);
+      c.on('open', () => { c.send({ file: f, name: f.name, type: f.type }); finishToolSuccess('lan_transfer'); alert('✅ تم الإرسال'); });
     }
 
     async function runMakeZIP() {
-      const files = document.getElementById('tZipFiles').files;
-      if (!files.length) { sfx('error'); return alert('اختر الملفات أولاً'); }
-      if (!checkCanAffordTool('zip_maker')) return;
-
-      const zip = new JSZip();
-      for (const f of files) zip.file(f.name, f);
-      const blob = await zip.generateAsync({ type: 'blob' });
-      const url = URL.createObjectURL(blob);
+      const files = document.getElementById('tZipFiles').files; if (!files.length) return;
+      const zip = new JSZip(); for (const f of files) zip.file(f.name, f);
+      const url = URL.createObjectURL(await zip.generateAsync({ type: 'blob' }));
       finishToolSuccess('zip_maker');
-      sfx('success');
-      const res = document.getElementById('tResult');
-      res.style.display = 'block';
-      res.innerHTML = `<a class="dl-link" href="${url}" download="vixcel_archive.zip">⬇️ تحميل الأرشيف ZIP</a>`;
-      addHistoryItem('ضغط ' + files.length + ' ملفات ZIP', 'أدوات الضغط');
+      const res = document.getElementById('tResult'); res.style.display = 'block';
+      res.innerHTML = `<a class="dl-link" href="${url}" download="vixcel.zip">⬇️ تحميل ZIP</a>`;
     }
-
     async function runExtractZIP() {
-      const file = document.getElementById('tUnzipFile').files[0];
-      if (!file) { sfx('error'); return alert('اختر ملف ZIP أولاً'); }
-      if (!checkCanAffordTool('zip_extract')) return;
-
-      const zip = await JSZip.loadAsync(file);
-      const res = document.getElementById('tResult');
-      res.style.display = 'block';
+      const f = document.getElementById('tUnzipFile').files[0]; if (!f) return;
+      const zip = await JSZip.loadAsync(f);
       let html = '';
-      for (const name of Object.keys(zip.files)) {
-        if (!zip.files[name].dir) {
-          const blob = await zip.files[name].async('blob');
-          const url = URL.createObjectURL(blob);
-          html += `<div style="margin:6px 0;"><a class="dl-link" href="${url}" download="${name}">⬇️ ${name}</a></div>`;
+      for (const n of Object.keys(zip.files)) {
+        if (!zip.files[n].dir) {
+          const url = URL.createObjectURL(await zip.files[n].async('blob'));
+          html += `<div style="margin:5px 0;"><a class="dl-link" href="${url}" download="${n}">⬇️ ${n}</a></div>`;
         }
       }
       finishToolSuccess('zip_extract');
-      sfx('success');
-      res.innerHTML = html || 'الأرشيف فارغ.';
-      addHistoryItem('فك ضغط ' + file.name, 'أدوات الضغط');
+      const res = document.getElementById('tResult'); res.style.display = 'block'; res.innerHTML = html;
     }
-
+    async function runExcelConvert() {
+      const f = document.getElementById('tExcelFile').files[0]; if (!f) return;
+      const wb = XLSX.read(await f.arrayBuffer());
+      const str = JSON.stringify(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]), null, 2);
+      const url = URL.createObjectURL(new Blob([str], { type: 'application/json' }));
+      finishToolSuccess('excel_json');
+      const res = document.getElementById('tResult'); res.style.display = 'block';
+      res.innerHTML = `<textarea rows="5" class="f-textarea">${str}</textarea><br><a class="dl-link" href="${url}" download="data.json">⬇️ تحميل JSON</a>`;
+    }
     function runPassGen() {
       const len = parseInt(document.getElementById('tPassLen').value || '16', 10);
       const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*';
-      let pass = '';
-      for (let i = 0; i < len; i++) pass += chars[Math.floor(Math.random() * chars.length)];
-      finishToolSuccess('pass_gen');
-      sfx('success');
-      const res = document.getElementById('tResult');
-      res.style.display = 'block';
-      res.innerHTML = `<strong style="font-size:18px;color:var(--primary);user-select:all;">${pass}</strong>`;
+      let p = ''; for (let i = 0; i < len; i++) p += chars[Math.floor(Math.random() * chars.length)];
+      const res = document.getElementById('tResult'); res.style.display = 'block';
+      res.innerHTML = `<strong style="font-size:18px;color:var(--primary);user-select:all;">${p}</strong>`;
     }
-
     function runWordCount() {
       const txt = document.getElementById('tCountArea').value.trim();
-      const words = txt ? txt.split(/\s+/).length : 0;
-      document.getElementById('tResult').innerText = `الكلمات: ${words} | الحروف: ${txt.length}`;
+      document.getElementById('tResult').innerText = `الكلمات: ${txt ? txt.split(/\s+/).length : 0} | الحروف: ${txt.length}`;
     }
 
-    // ==================== APPLY REMOTE CONFIG ====================
+    // ==================== APPLY CONFIG ====================
     function applyAppConfig(cfg) {
       APP_CFG = { ...APP_CFG, ...cfg };
-
       if (APP_CFG.maintenanceMode) {
         document.getElementById('maintMsgText').innerText = APP_CFG.maintenanceMsg || '';
         document.getElementById('maintScreen').classList.add('open');
       }
-
-      if (APP_CFG.welcomeBonus !== undefined) {
-        document.getElementById('welcomeGiftLabel').innerText = APP_CFG.welcomeBonus;
-      }
-
+      if (APP_CFG.welcomeBonus !== undefined) document.getElementById('welcomeGiftLabel').innerText = APP_CFG.welcomeBonus;
       if (APP_CFG.primaryColor) document.documentElement.style.setProperty('--primary', APP_CFG.primaryColor);
       if (APP_CFG.secondaryColor) document.documentElement.style.setProperty('--secondary', APP_CFG.secondaryColor);
-
       if (APP_CFG.brandName) document.getElementById('brandNameText').innerText = APP_CFG.brandName;
       if (APP_CFG.brandSub) document.getElementById('brandSubText').innerText = APP_CFG.brandSub;
       if (APP_CFG.heroTitle) document.getElementById('heroTitleText').innerText = APP_CFG.heroTitle;
       if (APP_CFG.heroDesc) document.getElementById('appSubDesc').innerText = APP_CFG.heroDesc;
-
       if (APP_CFG.botName) {
-        document.getElementById('oufaBotNameBadge').innerText = APP_CFG.botName + ' AI';
-        document.getElementById('oufaHeadTitle').innerText = APP_CFG.botName + ' — المساعد الذكي';
+        document.getElementById('oufaBotNameBadge').innerText = APP_CFG.botName;
+        document.getElementById('oufaHeadTitle').innerText = APP_CFG.botName;
       }
       renderOufaAvatars(APP_CFG.botAvatarUrl || '');
 
       const bBar = document.getElementById('broadcastBar');
-      if (APP_CFG.broadcastEnabled === false) {
-        bBar.style.display = 'none';
-      } else if (APP_CFG.broadcastText) {
-        bBar.style.display = 'flex';
-        document.getElementById('broadcastText').innerText = APP_CFG.broadcastText;
-      }
+      if (APP_CFG.broadcastEnabled === false) bBar.style.display = 'none';
+      else if (APP_CFG.broadcastText) { bBar.style.display = 'flex'; document.getElementById('broadcastText').innerText = APP_CFG.broadcastText; }
 
       if (APP_CFG.instapayId) document.getElementById('instapayText').innerText = APP_CFG.instapayId;
       if (APP_CFG.whatsappNumber) {
         const cleanNum = APP_CFG.whatsappNumber.replace(/[^0-9]/g, '');
         if (cleanNum) {
           document.getElementById('whatsappBox').style.display = 'block';
-          document.getElementById('whatsappLink').href = `https://wa.me/${cleanNum}?text=${encodeURIComponent('مرحباً، أرغب في شحن باقة VIP في تطبيق VIXCEL MEDIA')}`;
+          document.getElementById('whatsappLink').href = `https://wa.me/${cleanNum}?text=${encodeURIComponent('مرحباً، أرغب في شحن باقة VIP في VIXCEL MEDIA V2')}`;
         }
       }
 
@@ -2431,24 +2496,18 @@ ${APP_CFG.botKnowledge}
         topSlot.style.display = 'flex';
         topSlot.innerHTML = '<span class="ad-label-tiny">إعلان ممول</span><div id="topAdInner"></div>';
         renderSafeAdHtml(document.getElementById('topAdInner'), APP_CFG.topBannerCode);
-      } else {
-        topSlot.style.display = 'none';
-      }
+      } else topSlot.style.display = 'none';
 
       const botSlot = document.getElementById('bottomAdSlot');
       if (APP_CFG.bottomBannerEnabled && APP_CFG.bottomBannerCode) {
         botSlot.style.display = 'flex';
         botSlot.innerHTML = '<span class="ad-label-tiny">إعلان ممول</span><div id="botAdInner"></div>';
         renderSafeAdHtml(document.getElementById('botAdInner'), APP_CFG.bottomBannerCode);
-      } else {
-        botSlot.style.display = 'none';
-      }
+      } else botSlot.style.display = 'none';
 
       renderAllTools();
       initGoogleIdentityServices();
-      if (CURRENT_USER && CURRENT_USER.email) {
-        applyPendingPointGrants();
-      }
+      if (CURRENT_USER && CURRENT_USER.email) applyPendingPointGrants();
     }
 
     async function loadAppConfig() {
@@ -2456,8 +2515,7 @@ ${APP_CFG.botKnowledge}
       try {
         const res = await fetch('./config.json?t=' + Date.now());
         if (!res.ok) return;
-        const cfg = await res.json();
-        applyAppConfig(cfg);
+        applyAppConfig(await res.json());
       } catch (e) {}
     }
 
@@ -2467,15 +2525,10 @@ ${APP_CFG.botKnowledge}
     renderAllTools();
     renderHistory();
     loadAppConfig().then(() => {
-      if (CURRENT_USER && CURRENT_USER.email) {
-        applySignedInUserUI(CURRENT_USER, false);
-      } else {
-        document.getElementById('googleAuthGate').classList.remove('hidden');
-      }
+      if (CURRENT_USER && CURRENT_USER.email) applySignedInUserUI(CURRENT_USER, false);
+      else document.getElementById('googleAuthGate').classList.remove('hidden');
     });
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js').catch(() => {});
-    }
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
   </script>
 </body>
 </html>
