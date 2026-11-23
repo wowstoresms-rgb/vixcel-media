@@ -8,6 +8,8 @@
   <link rel="manifest" href="./manifest.json" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Google Identity Services (One-Click Account Picker) -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <!-- Real Functional Libraries (Zero Server Needed) -->
   <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -44,7 +46,6 @@
       overflow-x: hidden;
     }
 
-    /* Keyframe Animations */
     @keyframes floatSlow {
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-5px); }
@@ -63,7 +64,29 @@
       100% { left: 200%; }
     }
 
-    /* Broadcast Top Bar */
+    /* Google Login Onboarding Gate */
+    .auth-gate {
+      position: fixed; inset: 0;
+      background: radial-gradient(circle at top right, #1E1B4B 0%, #0F172A 65%, #1E293B 100%);
+      z-index: 9990; display: flex; align-items: center; justify-content: center; padding: 20px;
+    }
+    .auth-gate.hidden { display: none; }
+    .auth-card {
+      background: rgba(15, 23, 42, 0.95); border: 1.5px solid #38BDF8;
+      border-radius: 26px; padding: 28px 22px; width: 100%; max-width: 420px;
+      text-align: center; color: #fff; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
+      animation: popIn 0.35s ease;
+    }
+    .google-btn-custom {
+      width: 100%; background: #FFFFFF; color: #0F172A; border: none;
+      padding: 13px 16px; border-radius: 14px; font-size: 15px; font-weight: 900;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15);
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .google-btn-custom:hover { transform: scale(1.03); }
+    .google-btn-custom:active { transform: scale(0.96); }
+
     .broadcast-bar {
       background: linear-gradient(90deg, #1E1B4B, #1D4ED8);
       color: #fff;
@@ -76,7 +99,6 @@
     }
     .broadcast-bar button { background: none; border: none; color: inherit; font-weight: 900; cursor: pointer; font-size: 16px; }
 
-    /* App Header (Glassmorphism) */
     .app-header {
       background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(14px);
@@ -120,7 +142,6 @@
     .icon-btn:hover { transform: translateY(-2px) scale(1.06); border-color: var(--primary); box-shadow: 0 4px 10px rgba(37,99,235,0.15); }
     .icon-btn:active { transform: scale(0.92); }
 
-    /* Search Drawer */
     .search-box {
       padding: 10px 16px; background: rgba(255,255,255,0.95); border-bottom: 1px solid var(--border);
       display: none; animation: popIn 0.2s ease;
@@ -132,7 +153,6 @@
     }
     .search-box input:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
 
-    /* Hero Promo Banner */
     .container { max-width: 960px; margin: 0 auto; padding: 14px; }
     .hero-banner {
       background: linear-gradient(125deg, #1E1B4B 0%, #312E81 45%, #1D4ED8 100%);
@@ -166,7 +186,6 @@
     .hero-cta:hover { transform: scale(1.06); }
     .hero-cta:active { transform: scale(0.94); }
 
-    /* Horizontal Category Filter Bar */
     .cat-tabs {
       display: flex; gap: 10px; overflow-x: auto; padding: 6px 2px 12px;
       margin-bottom: 10px; scrollbar-width: none;
@@ -184,7 +203,6 @@
       box-shadow: 0 4px 12px rgba(37,99,235,0.28);
     }
 
-    /* Section Card & Tool Grid with Spring Motion */
     .section-card {
       background: var(--surface);
       backdrop-filter: blur(10px);
@@ -246,7 +264,6 @@
     }
     .tool-name { font-size: 12px; font-weight: 800; color: #334155; line-height: 1.3; }
 
-    /* ==================== BACKGROUND AUDIO PLAYER BAR ==================== */
     .bg-audio-bar {
       position: fixed; bottom: 72px; left: 12px; right: 12px; max-width: 620px; margin: 0 auto;
       background: rgba(15, 23, 42, 0.94); backdrop-filter: blur(12px); color: #fff;
@@ -258,7 +275,6 @@
     .bg-audio-bar.open { display: flex; }
     .bg-audio-bar audio { height: 32px; flex: 1; max-width: 240px; }
 
-    /* ==================== FLOATING AI BOT (OUFA) ==================== */
     .oufa-fab {
       position: fixed; bottom: 80px; left: 16px; z-index: 80;
       display: flex; align-items: center; gap: 8px;
@@ -280,7 +296,6 @@
     .oufa-fab-label strong { display: block; font-size: 13px; font-weight: 900; color: #38BDF8; }
     .oufa-fab-label span { font-size: 10px; color: #E2E8F0; font-weight: 700; }
 
-    /* Oufa Chat Window */
     .oufa-chat-window {
       position: fixed; bottom: 140px; left: 16px; width: calc(100vw - 32px); max-width: 390px;
       height: 470px; max-height: 70vh; background: #0F172A; color: #F8FAFC;
@@ -313,7 +328,7 @@
     }
     .bot-action-chip {
       display: inline-block; margin-top: 7px; background: #FACC15; color: #0F172A;
-      padding: 5px 11px; border-radius: 9px; font-size: 11px; font-weight: 900;
+      padding: 6px 12px; border-radius: 9px; font-size: 11px; font-weight: 900;
       border: none; cursor: pointer;
     }
     .oufa-chat-input {
@@ -329,7 +344,6 @@
       border-radius: 12px; font-weight: 900; cursor: pointer;
     }
 
-    /* Bottom Navigation Bar */
     .bottom-nav {
       position: fixed; bottom: 0; left: 0; right: 0; height: 66px;
       background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(12px);
@@ -346,11 +360,9 @@
     .nav-btn.active { color: var(--primary); font-weight: 900; transform: scale(1.06); }
     .nav-btn svg { width: 22px; height: 22px; }
 
-    /* Views */
     .view-pane { display: none; }
     .view-pane.active { display: block; }
 
-    /* Workspace Modal */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(15,23,42,0.7); backdrop-filter: blur(5px);
       z-index: 100; display: none; align-items: flex-end; justify-content: center;
@@ -376,7 +388,6 @@
     }
     .close-btn:hover { transform: rotate(90deg) scale(1.1); background: #FEE2E2; color: #DC2626; }
 
-    /* Form Controls inside Tool Modal */
     .f-label { display: block; font-size: 13px; font-weight: 800; margin: 10px 0 6px; color: #1E293B; }
     .f-input, .f-select, .f-textarea {
       width: 100%; padding: 11px 12px; border: 1.5px solid #CBD5E1; border-radius: 13px;
@@ -421,13 +432,11 @@
     .dl-link.purple { background: #7C3AED; }
     .dl-link.dark { background: #0F172A; }
 
-    /* Saved Files List */
     .file-card {
       background: #fff; border: 1px solid var(--border); border-radius: 14px;
       padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
     }
 
-    /* Ad Box */
     .ad-banner-slot {
       margin: 10px 0 14px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,0.92);
       border: 1px solid #E2E8F0; min-height: 60px; display: flex; flex-direction: column;
@@ -435,7 +444,6 @@
     }
     .ad-label-tiny { font-size: 9px; color: #94A3B8; font-weight: 700; margin-bottom: 2px; }
 
-    /* Maintenance Overlay */
     .maint-screen {
       position: fixed; inset: 0; background: #0F172A; color: #fff; z-index: 9999;
       display: none; flex-direction: column; align-items: center; justify-content: center;
@@ -445,6 +453,37 @@
   </style>
 </head>
 <body>
+
+  <!-- ==================== GOOGLE LOGIN ONBOARDING GATE ==================== -->
+  <div class="auth-gate" id="googleAuthGate">
+    <div class="auth-card">
+      <div style="width:68px;height:68px;border-radius:20px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 12px;box-shadow:0 10px 25px rgba(37,99,235,0.4);">⚡</div>
+      <h2 style="font-size:21px;font-weight:900;margin-bottom:6px;">مرحباً بك في VIXCEL MEDIA</h2>
+      <p style="font-size:13px;color:#CBD5E1;line-height:1.6;margin-bottom:16px;">
+        سجّل الدخول بحساب جوجل في ثانية واحدة للحصول على <strong style="color:#FACC15;">مكافأة ترحيبية مجانية (+<span id="welcomeGiftLabel">30</span> نقطة)</strong> لأول مرة والبدء فوراً!
+      </p>
+
+      <!-- Official Google GSI Button Container -->
+      <div id="g_id_signin_box" style="display:flex;justify-content:center;margin-bottom:12px;"></div>
+
+      <!-- One-Click Google Account Picker Button -->
+      <button class="google-btn-custom" id="customGoogleBtn" onclick="triggerGoogleAccountPicker()">
+        <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        <span>اختيار حساب Google والمتابعة</span>
+      </button>
+
+      <!-- Quick Gmail Account Selector Box -->
+      <div id="quickGmailBox" style="display:none;margin-top:14px;text-align:right;background:#1E293B;padding:12px;border-radius:14px;border:1px solid #334155;">
+        <label style="font-size:12px;color:#38BDF8;font-weight:800;display:block;margin-bottom:6px;">اختر أو أدخل بريدك الإلكتروني (Gmail) لربط محفظتك:</label>
+        <input type="email" id="manualGmailInput" placeholder="example@gmail.com" style="width:100%;padding:10px;border-radius:10px;border:1px solid #475569;background:#0F172A;color:#fff;margin-bottom:8px;direction:ltr;" />
+        <button class="btn-primary" style="margin-top:0;padding:10px;" onclick="completeManualGoogleLogin()">✅ تأكيد الحساب واستلام المكافأة</button>
+      </div>
+
+      <p style="font-size:11px;color:#94A3B8;margin-top:14px;line-height:1.5;">
+        ⏰ <strong>تنبيه نظام النقاط اليومي:</strong> يمكنك جمع وتحويش النقاط من الإعلانات يومياً من <strong>12:00 ص</strong> حتى <strong>12:00 م (منتصف الليل)</strong>، ويتم تصفير الرصيد تلقائياً مع بداية كل يوم جديد.
+      </p>
+    </div>
+  </div>
 
   <!-- Maintenance Mode Screen -->
   <div class="maint-screen" id="maintScreen">
@@ -479,7 +518,7 @@
     </div>
 
     <div class="header-actions">
-      <div class="pill-badge" onclick="sfx('click'); openWalletModal()">⚡ <span id="creditCount">30</span> نقطة</div>
+      <div class="pill-badge" onclick="sfx('click'); openWalletModal()" title="الرصيد يتجدد يومياً الساعة 12:00 ص">⚡ <span id="creditCount">0</span> نقطة</div>
       <button class="icon-btn" id="soundToggleBtn" onclick="toggleSoundFx()" title="أصوات الأزرار">🔊</button>
       <button class="icon-btn" onclick="sfx('click'); toggleSearch()" title="بحث">🔍</button>
     </div>
@@ -525,8 +564,8 @@
       <div class="tools-grid" id="homeQuickGrid"></div>
     </div>
     <div class="section-card">
-      <div class="section-title"><span>مكافآت وإعلانات يومية</span></div>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">شاهد إعلاناً قصيراً واحصل على نقاط مجانية لاستخدام الأدوات المدفوعة.</p>
+      <div class="section-title"><span>تجميع النقاط اليومي (12:00 ص — 12:00 م)</span></div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">شاهد إعلاناً قصيراً لجمع النقاط واستخدام الأدوات. يُعاد ضبط الرصيد إلى <strong>0</strong> تلقائياً عند الساعة 12:00 منتصف الليل.</p>
       <button class="btn-primary" id="homeAdBtn" onclick="sfx('pop'); openAdModal()">🎁 شاهد إعلان واحصل على +15 نقطة</button>
     </div>
   </main>
@@ -547,14 +586,20 @@
   <!-- ==================== VIEW 4: ME / ACCOUNT ==================== -->
   <main class="container view-pane" id="view-me">
     <div class="section-card" style="text-align:center;padding:24px 16px;">
-      <div style="width:74px;height:74px;border-radius:50%;overflow:hidden;border:3px solid var(--primary);margin:0 auto 10px;" id="meDevAvatar"></div>
-      <h3 style="font-weight:900;">حساب مستخدم VIXCEL MEDIA</h3>
-      <p style="font-size:12px;color:var(--secondary);font-weight:800;margin-top:3px;">تطوير وتصميم: محمد رؤوف (Oufa) • النسخة التجريبية 1</p>
-      <p style="font-size:13px;color:var(--muted);margin:6px 0 14px;">الرصيد المتاح: <strong id="meCredits" style="color:var(--primary);">30</strong> نقطة</p>
+      <div style="width:74px;height:74px;border-radius:50%;overflow:hidden;border:3px solid var(--primary);margin:0 auto 10px;" id="userAccountAvatar"></div>
+      <div id="superAdminBadge" style="display:none;margin-bottom:6px;">
+        <span style="background:linear-gradient(135deg,#F59E0B,#D97706);color:#0F172A;font-size:11px;font-weight:900;padding:3px 12px;border-radius:999px;">👑 حساب المالك والمطور الرئيسي (Super Admin)</span>
+      </div>
+      <h3 style="font-weight:900;" id="userAccountName">مستخدم VIXCEL MEDIA</h3>
+      <p style="font-size:12px;color:var(--muted);font-weight:700;margin-top:2px;" id="userAccountEmail">غير مسجل</p>
+      <p style="font-size:13px;color:var(--text);margin:8px 0 4px;">الرصيد المتاح اليوم: <strong id="meCredits" style="color:var(--primary);font-size:16px;">0</strong> نقطة</p>
+      <p style="font-size:11px;color:#EA580C;font-weight:800;margin-bottom:14px;">⏳ صلاحية النقاط الحالية تنتهي عند الساعة 12:00 منتصف الليل (<span id="resetCountdownLabel">--:--:--</span>)</p>
       <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
         <button class="btn-primary" style="width:auto;padding:10px 18px;" onclick="sfx('pop'); openAdModal()">+ شحن مجاني (إعلان)</button>
         <button class="btn-outline" onclick="sfx('click'); openWalletModal()">كود شحن / VIP</button>
         <button class="btn-outline" onclick="sfx('pop'); toggleOufaChat(true)">🤖 اسأل المطور Oufa</button>
+        <a id="adminPanelShortcut" href="./VIXCEL_Admin_Control.html" target="_blank" class="dl-link dark" style="display:none;margin-top:0;padding:10px 16px;">⚙️ فتح لوحة التحكم (Admin)</a>
+        <button class="btn-outline" style="border-color:#DC2626;color:#DC2626;" onclick="switchGoogleAccount()">🔄 تبديل حساب Google</button>
       </div>
     </div>
   </main>
@@ -616,7 +661,7 @@
     </button>
     <button class="nav-btn" onclick="sfx('click'); switchView('me', this)">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/></svg>
-      <span>أنا</span>
+      <span>حسابي</span>
     </button>
   </nav>
 
@@ -651,8 +696,12 @@
   <div class="modal-overlay" id="walletModal">
     <div class="modal-sheet">
       <div class="modal-head">
-        <h3>محفظة النقاط وشحن VIP</h3>
+        <h3>محفظة النقاط اليومية وشحن VIP</h3>
         <button class="close-btn" onclick="sfx('click'); document.getElementById('walletModal').classList.remove('open')">×</button>
+      </div>
+      <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:12px;padding:10px;font-size:12px;color:#1E40AF;font-weight:700;margin-bottom:10px;">
+        ⏰ فترة تجميع النقاط اليومية: من <strong>12:00 ص</strong> حتى <strong>12:00 م (منتصف الليل)</strong>.<br>
+        يعود الرصيد إلى <strong>0 نقطة</strong> تلقائياً مع بداية كل يوم جديد.
       </div>
       <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">
         للشحن المباشر عبر InstaPay: <strong id="instapayText" style="color:var(--primary);">vixcel@instapay</strong>
@@ -674,7 +723,37 @@
       pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     }
 
-    // ==================== SYNTHESIZED UI SOUND EFFECTS (WEB AUDIO) ====================
+    const OWNER_ADMIN_EMAIL = 'mado6mohamed@gmail.com';
+
+    // ==================== LIVE ANALYTICS TRACKER ====================
+    const ANALYTICS_NS = 'vixcel-media-wowstoresm-rgb-v1';
+    function pingMetric(key) {
+      try {
+        fetch(`https://api.counterapi.dev/v1/${ANALYTICS_NS}/${encodeURIComponent(key)}/up`, { mode: 'cors', keepalive: true }).catch(() => {});
+      } catch (e) {}
+    }
+
+    function trackSiteVisit() {
+      const todayKey = 'visits_' + new Date().toISOString().slice(0, 10).replace(/-/g, '_');
+      pingMetric('total_page_views');
+      pingMetric(todayKey);
+      if (!localStorage.getItem('vix_unique_visitor_counted')) {
+        localStorage.setItem('vix_unique_visitor_counted', '1');
+        pingMetric('unique_visitors');
+      }
+    }
+
+    function trackToolOpen(toolId) {
+      pingMetric('tool_open_' + toolId);
+      pingMetric('total_tool_opens');
+    }
+
+    function trackToolCompleted(toolId) {
+      pingMetric('tool_done_' + toolId);
+      pingMetric('total_tasks_done');
+    }
+
+    // ==================== SYNTHESIZED UI SOUND EFFECTS ====================
     let soundEnabled = localStorage.getItem('vix_sound') !== '0';
     let uiAudioCtx = null;
     function sfx(type = 'click') {
@@ -745,23 +824,18 @@
           </linearGradient>
         </defs>
         <rect width="120" height="120" fill="url(#bgCyber)"/>
-        <!-- Tuxedo Shoulders -->
         <path d="M18 120 C22 96, 42 90, 60 90 C78 90, 98 96, 102 120 Z" fill="#0F172A"/>
         <polygon points="52,92 60,104 68,92" fill="#F8FAFC"/>
         <polygon points="54,95 60,99 54,103" fill="#1E293B"/>
         <polygon points="66,95 60,99 66,103" fill="#1E293B"/>
-        <!-- Face Base (Left Human / Right Gold Cyborg) -->
         <path d="M36 46 C36 26, 84 26, 84 46 L84 64 C84 80, 72 90, 60 90 L60 28 C46 28, 36 34, 36 46 Z" fill="#E0A982"/>
         <path d="M60 28 C74 28, 84 34, 84 46 L84 64 C84 80, 72 90, 60 90 Z" fill="url(#goldCyber)"/>
-        <!-- Hair & Cyber Crown -->
         <path d="M34 46 C33 24, 48 18, 60 19 L60 31 C47 30, 38 36, 36 48 Z" fill="#1E1B18"/>
         <path d="M60 19 C74 18, 87 25, 86 46 L82 46 C81 35, 72 30, 60 31 Z" fill="#92400E"/>
         <rect x="73" y="16" width="5" height="14" rx="2" transform="rotate(22 73 16)" fill="#FACC15"/>
-        <!-- Left Human Eye & Smile -->
         <ellipse cx="48" cy="52" rx="4" ry="2.6" fill="#1E1B18"/>
         <circle cx="49" cy="51.5" r="1" fill="#fff"/>
         <path d="M47 70 Q54 75 60 73" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <!-- Right Glowing Cyber Eye & Circuit Lines -->
         <circle cx="72" cy="52" r="5.5" fill="#1E1B4B" stroke="#FDE047" stroke-width="1.2"/>
         <circle cx="72" cy="52" r="3" fill="#F97316"/>
         <circle cx="72" cy="52" r="1.3" fill="#FEF08A"/>
@@ -773,16 +847,21 @@
       const html = customUrl
         ? `<img src="${customUrl}" style="width:100%;height:100%;object-fit:cover;" alt="Oufa" />`
         : DEFAULT_OUFA_AVATAR_SVG;
-      ['oufaFabAvatar', 'oufaHeadAvatar', 'meDevAvatar'].forEach(id => {
+      ['oufaFabAvatar', 'oufaHeadAvatar'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.innerHTML = html;
       });
     }
 
-    // ==================== ANTI-CHEAT LEDGER SYSTEM ====================
-    const AC_SALT = 'VIXCEL_OUFA_BETA1_GUARD_2026';
-    function computeLedgerSig(credits, nonce, usedPromosStr) {
-      const raw = `${AC_SALT}|${credits}|${nonce}|${usedPromosStr}`;
+    // ==================== GOOGLE SIGN-IN + ADMIN GRANTS + 24H MIDNIGHT RESET ====================
+    const AC_SALT = 'VIXCEL_OUFA_24H_WALLET_2026';
+    function getLocalDayStamp() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function computeAccountSig(email, credits, nonce, dayStamp, welcomed, usedPromosStr, claimedGrantsStr) {
+      const raw = `${AC_SALT}|${email}|${credits}|${nonce}|${dayStamp}|${welcomed}|${usedPromosStr}|${claimedGrantsStr}`;
       let h = 2166136261;
       for (let i = 0; i < raw.length; i++) {
         h ^= raw.charCodeAt(i);
@@ -791,70 +870,275 @@
       return (h >>> 0).toString(16);
     }
 
-    function loadSecureWallet(defaultInitial = 30) {
-      const raw = localStorage.getItem('vixcel_wallet_v2');
+    let CURRENT_USER = JSON.parse(localStorage.getItem('vixcel_active_user') || 'null');
+    let WALLET = null;
+
+    function loadUserWallet(userObj) {
+      if (!userObj || !userObj.email) return null;
+      const email = userObj.email.toLowerCase().trim();
+      const storageKey = 'vix_acct_' + btoa(unescape(encodeURIComponent(email)));
+      const today = getLocalDayStamp();
+      const welcomeBonus = Number(APP_CFG.welcomeBonus || 30);
+
+      const raw = localStorage.getItem(storageKey);
       if (!raw) {
-        const initState = { credits: defaultInitial, nonce: 1, usedPromos: [], dailyAds: 0, dayKey: new Date().toDateString() };
-        saveSecureWallet(initState);
-        return initState;
+        const newAcct = {
+          email,
+          name: userObj.name || email.split('@')[0],
+          picture: userObj.picture || '',
+          credits: welcomeBonus,
+          welcomed: true,
+          dayStamp: today,
+          dailyAds: 0,
+          usedPromos: [],
+          claimedGrants: [],
+          nonce: 1
+        };
+        saveUserWallet(newAcct);
+        pingMetric('google_new_users');
+        return newAcct;
       }
+
       try {
-        const parsed = JSON.parse(raw);
-        const expectedSig = computeLedgerSig(parsed.credits, parsed.nonce, JSON.stringify(parsed.usedPromos || []));
-        if (parsed.sig !== expectedSig || isNaN(parsed.credits) || parsed.credits < 0) {
-          // تم اكتشاف تلاعب بالرصيد في المتصفح -> إعادة ضبط آمنة
-          const resetState = { credits: 10, nonce: 99, usedPromos: parsed.usedPromos || [], dailyAds: 0, dayKey: new Date().toDateString() };
-          saveSecureWallet(resetState);
-          return resetState;
+        const acct = JSON.parse(raw);
+        const expectedSig = computeAccountSig(
+          acct.email, acct.credits, acct.nonce, acct.dayStamp, acct.welcomed,
+          JSON.stringify(acct.usedPromos || []), JSON.stringify(acct.claimedGrants || [])
+        );
+        if (acct.sig !== expectedSig || isNaN(acct.credits) || acct.credits < 0) {
+          acct.credits = 0;
+          acct.dayStamp = today;
+          saveUserWallet(acct);
+          return acct;
         }
-        if (parsed.dayKey !== new Date().toDateString()) {
-          parsed.dailyAds = 0;
-          parsed.dayKey = new Date().toDateString();
-          saveSecureWallet(parsed);
+        // نظام الـ 24 ساعة: من 12:00 ص لـ 12:00 م -> يرجع الرصيد 0 مع بداية كل يوم جديد
+        if (acct.dayStamp !== today) {
+          acct.credits = 0;
+          acct.dailyAds = 0;
+          acct.dayStamp = today;
+          saveUserWallet(acct);
         }
-        return parsed;
+        return acct;
       } catch (e) {
-        const fallback = { credits: defaultInitial, nonce: 1, usedPromos: [], dailyAds: 0, dayKey: new Date().toDateString() };
-        saveSecureWallet(fallback);
-        return fallback;
+        const resetAcct = {
+          email, name: userObj.name || email.split('@')[0], picture: userObj.picture || '',
+          credits: 0, welcomed: true, dayStamp: today, dailyAds: 0, usedPromos: [], claimedGrants: [], nonce: 1
+        };
+        saveUserWallet(resetAcct);
+        return resetAcct;
       }
     }
 
-    function saveSecureWallet(state) {
-      state.nonce = (state.nonce || 1) + 1;
-      state.sig = computeLedgerSig(state.credits, state.nonce, JSON.stringify(state.usedPromos || []));
-      localStorage.setItem('vixcel_wallet_v2', JSON.stringify(state));
+    function saveUserWallet(acct) {
+      if (!acct || !acct.email) return;
+      const storageKey = 'vix_acct_' + btoa(unescape(encodeURIComponent(acct.email)));
+      acct.nonce = (acct.nonce || 1) + 1;
+      acct.sig = computeAccountSig(
+        acct.email, acct.credits, acct.nonce, acct.dayStamp, acct.welcomed,
+        JSON.stringify(acct.usedPromos || []), JSON.stringify(acct.claimedGrants || [])
+      );
+      localStorage.setItem(storageKey, JSON.stringify(acct));
     }
-
-    let WALLET = loadSecureWallet(30);
 
     function refreshCredits() {
-      saveSecureWallet(WALLET);
+      if (!CURRENT_USER) return;
+      WALLET = loadUserWallet(CURRENT_USER);
+      saveUserWallet(WALLET);
       const c1 = document.getElementById('creditCount');
       const c2 = document.getElementById('meCredits');
       if (c1) c1.innerText = WALLET.credits;
       if (c2) c2.innerText = WALLET.credits;
     }
 
-    // خصم النقاط بعد إتمام المهمة بنجاح فقط
+    // استلام النقاط المرسلة من لوحة تحكم الأدمن (Mado6mohamed@gmail.com) لأي حساب أو لنفسه
+    function applyPendingPointGrants() {
+      if (!CURRENT_USER || !CURRENT_USER.email || !Array.isArray(APP_CFG.pointGrants)) return;
+      WALLET = loadUserWallet(CURRENT_USER);
+      const myEmail = CURRENT_USER.email.toLowerCase().trim();
+      const claimed = WALLET.claimedGrants || [];
+      let totalAdded = 0;
+
+      APP_CFG.pointGrants.forEach(g => {
+        if (g && g.id && g.email && g.email.toLowerCase().trim() === myEmail && !claimed.includes(g.id)) {
+          const pts = Number(g.points || 0);
+          if (pts > 0) {
+            WALLET.credits += pts;
+            claimed.push(g.id);
+            totalAdded += pts;
+          }
+        }
+      });
+
+      if (totalAdded > 0) {
+        WALLET.claimedGrants = claimed;
+        refreshCredits();
+        sfx('success');
+        alert(`🎁 هدية من الإدارة!\nتم إضافة +${totalAdded} نقطة إلى حسابك (${myEmail}).\nرصيدك الحالي: ${WALLET.credits} نقطة.`);
+      }
+    }
+
+    setInterval(() => {
+      const now = new Date();
+      const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
+      const diff = Math.max(0, Math.floor((midnight - now) / 1000));
+      const hh = String(Math.floor(diff / 3600)).padStart(2, '0');
+      const mm = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+      const ss = String(diff % 60).padStart(2, '0');
+      const lbl = document.getElementById('resetCountdownLabel');
+      if (lbl) lbl.innerText = `${hh}:${mm}:${ss}`;
+
+      if (CURRENT_USER && WALLET && WALLET.dayStamp !== getLocalDayStamp()) {
+        refreshCredits();
+      }
+    }, 1000);
+
+    function applySignedInUserUI(userObj, isFirstTime = false) {
+      CURRENT_USER = userObj;
+      localStorage.setItem('vixcel_active_user', JSON.stringify(userObj));
+      WALLET = loadUserWallet(userObj);
+      refreshCredits();
+
+      const emailLower = userObj.email.toLowerCase().trim();
+      const isOwnerAdmin = (emailLower === OWNER_ADMIN_EMAIL);
+
+      document.getElementById('googleAuthGate').classList.add('hidden');
+      document.getElementById('userAccountName').innerText = userObj.name || userObj.email;
+      document.getElementById('userAccountEmail').innerText = userObj.email;
+      document.getElementById('superAdminBadge').style.display = isOwnerAdmin ? 'block' : 'none';
+      document.getElementById('adminPanelShortcut').style.display = isOwnerAdmin ? 'inline-flex' : 'none';
+
+      const avBox = document.getElementById('userAccountAvatar');
+      if (userObj.picture) {
+        avBox.innerHTML = `<img src="${userObj.picture}" style="width:100%;height:100%;object-fit:cover;" />`;
+      } else {
+        const letter = (userObj.name || userObj.email || 'V')[0].toUpperCase();
+        avBox.innerHTML = `<div style="width:100%;height:100%;background:var(--grad);color:#fff;font-size:30px;font-weight:900;display:flex;align-items:center;justify-content:center;">${letter}</div>`;
+      }
+
+      applyPendingPointGrants();
+
+      if (isFirstTime) {
+        sfx('success');
+        alert(`🎉 أهلاً بك يا ${userObj.name}!\nتم منحك مكافأة ترحيبية لأول مرة بقيمة +${WALLET.credits} نقطة.\n(تذكير: يمكنك تجميع النقاط يومياً حتى الساعة 12:00 منتصف الليل).`);
+      }
+    }
+
+    function decodeJwtPayload(token) {
+      try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+        return JSON.parse(jsonPayload);
+      } catch (e) { return null; }
+    }
+
+    function handleGoogleCredentialResponse(response) {
+      const payload = decodeJwtPayload(response.credential);
+      if (!payload || !payload.email) return;
+      const storageKey = 'vix_acct_' + btoa(unescape(encodeURIComponent(payload.email.toLowerCase().trim())));
+      const isNew = !localStorage.getItem(storageKey);
+      applySignedInUserUI({
+        email: payload.email,
+        name: payload.name || payload.email.split('@')[0],
+        picture: payload.picture || ''
+      }, isNew);
+    }
+
+    function initGoogleIdentityServices() {
+      const clientId = (APP_CFG.googleClientId || '').trim();
+      if (clientId && window.google && google.accounts && google.accounts.id) {
+        google.accounts.id.initialize({
+          client_id: clientId,
+          callback: handleGoogleCredentialResponse,
+          auto_select: false
+        });
+        google.accounts.id.renderButton(
+          document.getElementById('g_id_signin_box'),
+          { theme: 'outline', size: 'large', width: 320, text: 'signin_with', shape: 'pill' }
+        );
+        document.getElementById('customGoogleBtn').style.display = 'none';
+      }
+    }
+
+    function triggerGoogleAccountPicker() {
+      sfx('pop');
+      const clientId = (APP_CFG.googleClientId || '').trim();
+      if (clientId && window.google && google.accounts && google.accounts.id) {
+        google.accounts.id.prompt();
+      } else {
+        document.getElementById('quickGmailBox').style.display = 'block';
+        document.getElementById('manualGmailInput').focus();
+      }
+    }
+
+    function completeManualGoogleLogin() {
+      const email = document.getElementById('manualGmailInput').value.trim().toLowerCase();
+      if (!email || !email.includes('@') || !email.includes('.')) {
+        sfx('error');
+        return alert('⚠️ يرجى إدخال بريد إلكتروني صحيح (مثال: name@gmail.com)');
+      }
+      const storageKey = 'vix_acct_' + btoa(unescape(encodeURIComponent(email)));
+      const isNew = !localStorage.getItem(storageKey);
+      applySignedInUserUI({
+        email,
+        name: email.split('@')[0],
+        picture: ''
+      }, isNew);
+    }
+
+    function switchGoogleAccount() {
+      sfx('click');
+      localStorage.removeItem('vixcel_active_user');
+      CURRENT_USER = null;
+      document.getElementById('googleAuthGate').classList.remove('hidden');
+      initGoogleIdentityServices();
+    }
+
+    // ==================== POINTS DEDUCTION & OUT-OF-CREDITS BOT PROMPT ====================
+    function promptBotForLowCredits(neededCost) {
+      sfx('error');
+      const pts = Number(APP_CFG.rewardPoints || 15);
+      toggleOufaChat(true);
+      appendOufaMsg(
+        `يا صديقي رصيدك الحالي (${WALLET ? WALLET.credits : 0} نقطة) مش مكفي لاستخدام الأداة دي (تكلفتها ${neededCost} نقطة) 😅\nاشحن رصيدك مجاناً بمشاهدة إعلان قصير (+${pts} نقطة) عشان تقدر تكمل شغلك وتجمع نقاطك قبل الساعة 12:00 منتصف الليل!`,
+        'bot',
+        [{ label: `🎬 اشحن +${pts} نقطة بالإعلان الآن`, action: 'open_ad' }]
+      );
+    }
+
     function checkCanAffordTool(toolId) {
+      if (!CURRENT_USER) {
+        document.getElementById('googleAuthGate').classList.remove('hidden');
+        return false;
+      }
+      refreshCredits();
       const meta = getToolMetaById(toolId);
       if (!meta || !meta.cost || meta.cost <= 0) return true;
       if (WALLET.credits < meta.cost) {
-        sfx('error');
-        alert(`⚠️ هذه الأداة تتطلب ${meta.cost} نقطة بعد إتمام المعالجة.\nرصيدك الحالي: ${WALLET.credits} نقطة — شاهد إعلاناً قصيراً للشحن مجاناً!`);
-        openAdModal();
+        promptBotForLowCredits(meta.cost);
         return false;
       }
       return true;
     }
 
-    function deductCreditsAfterTask(toolId) {
+    function finishToolSuccess(toolId) {
+      trackToolCompleted(toolId);
       const meta = getToolMetaById(toolId);
       if (!meta || !meta.cost || meta.cost <= 0) return;
-      WALLET = loadSecureWallet(30);
+      WALLET = loadUserWallet(CURRENT_USER);
       WALLET.credits = Math.max(0, WALLET.credits - Number(meta.cost));
       refreshCredits();
+      if (WALLET.credits === 0) {
+        const pts = Number(APP_CFG.rewardPoints || 15);
+        setTimeout(() => {
+          toggleOufaChat(true);
+          appendOufaMsg(
+            `خلصت نقاطك يا بطل! ⚡ تقدر تشحن رصيدك مجاناً دلوقتي من الإعلانات وتجمع نقاطك لحد الساعة 12:00 منتصف الليل.`,
+            'bot',
+            [{ label: `🎁 اجمع +${pts} نقطة الآن`, action: 'open_ad' }]
+          );
+        }, 700);
+      }
     }
 
     // ==================== SMART AD RENDERER ====================
@@ -891,6 +1175,8 @@
       maintenanceMsg: 'نقوم بإضافة أدوات وتحسينات جديدة في VIXCEL MEDIA. سنعود للعمل خلال دقائق!',
       primaryColor: '#2563EB',
       secondaryColor: '#5B21B6',
+      googleClientId: '',
+      welcomeBonus: 30,
       topBannerEnabled: true,
       topBannerCode: DEFAULT_ADSTERRA,
       bottomBannerEnabled: false,
@@ -898,11 +1184,11 @@
       rewardedAdCode: DEFAULT_ADSTERRA,
       rewardSeconds: 15,
       rewardPoints: 15,
-      maxDailyAds: 15,
-      initialCredits: 30,
+      maxDailyAds: 25,
       instapayId: 'vixcel@instapay',
       whatsappNumber: '',
       promoCodes: { 'VIXCEL100': 100, 'VIP500': 500, 'FREE50': 50 },
+      pointGrants: [],
       botName: 'Oufa',
       botAvatarUrl: '',
       botWelcome: 'أهلاً بيك في VIXCEL MEDIA (النسخة التجريبية 1)! أنا Oufa المساعد الذكي للمنصة. مطور الموقع هو المهندس محمد رؤوف (Oufa) خريج نظم المعلومات (Information Systems) ومصمم جرافيك ومحب للبرمجة والتصوير. تحب أساعدك في أي أداة النهاردة؟',
@@ -922,7 +1208,7 @@
         title: 'أدوات الميديا والصوت الذكي',
         badge: 'NEW VOICE AI',
         tools: [
-          { id: 'voice_changer', name: 'تغيير نبرة الصوت', icon: '🎭', color: 'c-purple', tag: 'جديد', cost: 0 },
+          { id: 'voice_changer', name: 'تغيير نبرة الصوت', icon: '🎭', color: 'c-purple', tag: 'جديد', cost: 5 },
           { id: 'vid_to_mp3', name: 'استخراج صوت MP3', icon: '🎵', color: 'c-blue', tag: 'سريع', cost: 0 },
           { id: 'img_convert', name: 'تحويل صيغ الصور', icon: '🖼️', color: 'c-indigo', cost: 0 },
           { id: 'img_compress', name: 'ضغط حجم الصور', icon: '🗜️', color: 'c-teal', cost: 0 },
@@ -934,9 +1220,9 @@
         id: 'sec-scan',
         title: 'المسح الضوئي والتفريغ (PNG / PDF)',
         tools: [
-          { id: 'bg_remove', name: 'تفريغ خلفية الصورة', icon: '✂️', color: 'c-teal', tag: 'PNG', cost: 0 },
+          { id: 'bg_remove', name: 'تفريغ خلفية الصورة', icon: '✂️', color: 'c-teal', tag: 'PNG', cost: 5 },
           { id: 'doc_scan', name: 'ماسح المستندات', icon: '📷', color: 'c-blue', tag: 'HD', cost: 0 },
-          { id: 'ocr_text', name: 'استخراج نص OCR', icon: '📝', color: 'c-indigo', cost: 0 },
+          { id: 'ocr_text', name: 'استخراج نص OCR', icon: '📝', color: 'c-indigo', cost: 5 },
           { id: 'qr_scan', name: 'صانع باركود QR', icon: '📱', color: 'c-purple', cost: 0 }
         ]
       },
@@ -1121,7 +1407,7 @@
       bar.classList.remove('open');
     }
 
-    // ==================== MULTI-FORMAT EXPORT HELPER (PNG / TRANSPARENT PNG / PDF) ====================
+    // ==================== MULTI-FORMAT EXPORT HELPER ====================
     function buildImageExportButtons(canvas, baseName = 'vixcel_export') {
       const jpgUrl = canvas.toDataURL('image/jpeg', 0.92);
       const pngUrl = canvas.toDataURL('image/png');
@@ -1147,15 +1433,12 @@
       ctx.drawImage(srcCanvas, 0, 0);
       const imgData = ctx.getImageData(0, 0, c.width, c.height);
       const d = imgData.data;
-      // أخذ لون زاوية الصورة كخلفية وتفريغها بذكاء
       const bgR = d[0], bgG = d[1], bgB = d[2];
       for (let i = 0; i < d.length; i += 4) {
         const r = d[i], g = d[i + 1], b = d[i + 2];
         const distCorner = Math.hypot(r - bgR, g - bgG, b - bgB);
         const isWhite = (r > 232 && g > 232 && b > 232);
-        if (distCorner < 46 || isWhite) {
-          d[i + 3] = 0;
-        }
+        if (distCorner < 46 || isWhite) d[i + 3] = 0;
       }
       ctx.putImageData(imgData, 0, 0);
       const url = c.toDataURL('image/png');
@@ -1179,11 +1462,15 @@
 
     // ==================== REWARDED AD MODAL WITH ANTI-CHEAT ====================
     function openAdModal() {
-      WALLET = loadSecureWallet(30);
-      const maxDaily = Number(APP_CFG.maxDailyAds || 15);
+      if (!CURRENT_USER) {
+        document.getElementById('googleAuthGate').classList.remove('hidden');
+        return;
+      }
+      WALLET = loadUserWallet(CURRENT_USER);
+      const maxDaily = Number(APP_CFG.maxDailyAds || 25);
       if (WALLET.dailyAds >= maxDaily) {
         sfx('error');
-        alert(`⚠️ لقد وصلت للحد الأقصى لمشاهدة الإعلانات اليوم (${maxDaily} إعلانات). عد غداً للمزيد!`);
+        alert(`⚠️ لقد وصلت للحد الأقصى لمشاهدة الإعلانات اليوم (${maxDaily} إعلانات). يتجدد العدّاد الساعة 12:00 منتصف الليل!`);
         return;
       }
 
@@ -1246,13 +1533,14 @@
       }
       activeAdSessionToken = null;
       const pts = Number(APP_CFG.rewardPoints || 15);
-      WALLET = loadSecureWallet(30);
+      WALLET = loadUserWallet(CURRENT_USER);
       WALLET.credits += pts;
       WALLET.dailyAds = (WALLET.dailyAds || 0) + 1;
       refreshCredits();
+      pingMetric('ads_completed');
       closeAdModal();
       sfx('success');
-      alert(`🎉 مبروك! تم إضافة +${pts} نقطة إلى رصيدك.`);
+      alert(`🎉 مبروك! تم إضافة +${pts} نقطة إلى رصيدك اليومي (رصيدك الآن: ${WALLET.credits} نقطة).`);
     }
 
     // ==================== WALLET & SINGLE-USE PROMO CODES ====================
@@ -1261,16 +1549,17 @@
     }
 
     function applyPromoCode() {
+      if (!CURRENT_USER) return;
       const input = document.getElementById('promoCodeInput');
       const status = document.getElementById('promoStatusMsg');
       const code = input.value.trim().toUpperCase();
       const codes = APP_CFG.promoCodes || { 'VIXCEL100': 100, 'VIP500': 500, 'FREE50': 50 };
 
-      WALLET = loadSecureWallet(30);
+      WALLET = loadUserWallet(CURRENT_USER);
       if ((WALLET.usedPromos || []).includes(code)) {
         sfx('error');
         status.style.color = '#DC2626';
-        status.innerText = '⚠️ لقد قمت باستخدام هذا الكود من قبل!';
+        status.innerText = '⚠️ لقد قمت باستخدام هذا الكود من قبل في هذا الحساب!';
         return;
       }
 
@@ -1296,13 +1585,16 @@
       const willOpen = forceState !== undefined ? forceState : !win.classList.contains('open');
       win.classList.toggle('open', willOpen);
       const box = document.getElementById('oufaMsgsBox');
-      if (willOpen && box.children.length === 0) {
-        appendOufaMsg(APP_CFG.botWelcome, 'bot', [
-          { label: '🎭 جرب تغيير الصوت', tool: 'voice_changer' },
-          { label: '✂️ تفريغ صورة PNG', tool: 'bg_remove' }
-        ]);
+      if (willOpen) {
+        pingMetric('bot_oufa_opens');
+        if (box.children.length === 0) {
+          appendOufaMsg(APP_CFG.botWelcome, 'bot', [
+            { label: '🎭 جرب تغيير الصوت', tool: 'voice_changer' },
+            { label: '✂️ تفريغ صورة PNG', tool: 'bg_remove' }
+          ]);
+        }
+        document.getElementById('oufaInput').focus();
       }
-      if (willOpen) document.getElementById('oufaInput').focus();
     }
 
     function appendOufaMsg(text, sender = 'bot', actions = []) {
@@ -1317,7 +1609,15 @@
           b.className = 'bot-action-chip';
           b.innerText = a.label;
           b.style.marginLeft = '6px';
-          b.onclick = () => { sfx('pop'); toggleOufaChat(false); openTool(a.tool); };
+          b.onclick = () => {
+            sfx('pop');
+            toggleOufaChat(false);
+            if (a.action === 'open_ad') {
+              openAdModal();
+            } else if (a.tool) {
+              openTool(a.tool);
+            }
+          };
           wrap.appendChild(b);
         });
         div.appendChild(wrap);
@@ -1329,6 +1629,7 @@
 
     function detectSuggestedTool(q) {
       const s = q.toLowerCase();
+      if (s.includes('نقاط') || s.includes('شحن') || s.includes('اعلان') || s.includes('رصيد')) return [{ label: '🎬 شحن نقاط مجانية بالإعلانات', action: 'open_ad' }];
       if (s.includes('صوت') || s.includes('نبرة') || s.includes('روبوت') || s.includes('هيليوم') || s.includes('عجوز')) return [{ label: '🎭 افتح أداة تغيير نبرة الصوت', tool: 'voice_changer' }];
       if (s.includes('خلفية') || s.includes('مفرغ') || s.includes('تفريغ')) return [{ label: '✂️ افتح أداة تفريغ الصور', tool: 'bg_remove' }];
       if (s.includes('دمج') && s.includes('pdf')) return [{ label: '🔗 افتح أداة دمج PDF', tool: 'pdf_merge' }];
@@ -1344,6 +1645,7 @@
       inp.value = '';
       sfx('click');
       appendOufaMsg(q, 'user');
+      pingMetric('bot_oufa_messages');
 
       const typingEl = appendOufaMsg('Oufa يكتب الآن...', 'bot');
       const suggested = detectSuggestedTool(q);
@@ -1352,7 +1654,7 @@
 تتحدث باللهجة المصرية الودودة والذكية بطلاقة واحترافية.
 معلومات المبرمج ومطور الموقع التي يجب أن تفتخر بها عند السؤال عنه أو عن الموقع:
 ${APP_CFG.botKnowledge}
-أدوات الموقع المتاحة مجاناً في المتصفح: تغيير نبرة الصوت (روبوت، عجوز، امرأة، طفل، هيليوم، شرير، فضائي)، تفريغ خلفية الصور PNG، تحويل الصور والـ PDF، دمج وتقسيم PDF، استخراج النصوص OCR، نقل الملفات السريع P2P، وضغط ZIP.
+نظام النقاط في الموقع: المستخدم يحصل على مكافأة ترحيبية عند أول تسجيل بحساب جوجل، ويمكنه تجميع النقاط من الإعلانات خلال 24 ساعة من الساعة 12:00 ص حتى 12:00 م، ويرجع رصيد النقاط 0 تلقائياً مع بداية كل يوم جديد. عند انتهاء النقاط اطلب منه شحن رصيده مجاناً من الإعلانات.
 أجب بإيجاز ووضوح ومساعدة عملية.`;
 
       oufaHistory.push({ role: 'user', content: q });
@@ -1377,7 +1679,7 @@ ${APP_CFG.botKnowledge}
       } catch (e) {
         typingEl.remove();
         sfx('pop');
-        const fallback = 'أهلاً بيك! أنا Oufa المساعد الذكي لمنصة VIXCEL MEDIA (النسخة التجريبية 1) اللي برمجها وصممها المهندس محمد رؤوف (Oufa) خريج نظم المعلومات ومصمم الجرافيك. تقدر تستخدم كل أدوات الصوت والصور والـ PDF مباشرة من الواجهة!';
+        const fallback = 'أهلاً بيك! أنا Oufa المساعد الذكي لمنصة VIXCEL MEDIA (النسخة التجريبية 1) اللي برمجها وصممها المهندس محمد رؤوف (Oufa) خريج نظم المعلومات ومصمم الجرافيك. تقدر تجمع نقاطك من الإعلانات وتستخدم كل الأدوات مباشرة!';
         appendOufaMsg(fallback, 'bot', suggested);
       }
     }
@@ -1392,12 +1694,14 @@ ${APP_CFG.botKnowledge}
 
     function openTool(id) {
       if (!checkCanAffordTool(id)) return;
+      trackToolOpen(id);
 
       const modal = document.getElementById('toolModal');
       const titleEl = document.getElementById('modalToolTitle');
       const body = document.getElementById('modalToolBody');
       const toolObj = getToolMetaById(id);
-      titleEl.innerText = toolObj ? `${toolObj.icon} ${toolObj.name}` : 'أداة VIXCEL';
+      const costBadge = toolObj && toolObj.cost > 0 ? ` (التكلفة: ${toolObj.cost} نقطة)` : ' (مجاني)';
+      titleEl.innerText = toolObj ? `${toolObj.icon} ${toolObj.name}${costBadge}` : 'أداة VIXCEL';
 
       if (id === 'voice_changer') {
         body.innerHTML = `
@@ -1614,9 +1918,9 @@ ${APP_CFG.botKnowledge}
       const writeStr = (off, s) => { for (let i = 0; i < s.length; i++) view.setUint8(off + i, s.charCodeAt(i)); };
       writeStr(0, 'RIFF');
       view.setUint32(4, 36 + dataLength, true);
+      view.setUint32(16, 16, true);
       writeStr(8, 'WAVE');
       writeStr(12, 'fmt ');
-      view.setUint32(16, 16, true);
       view.setUint16(20, 1, true);
       view.setUint16(22, numChannels, true);
       view.setUint32(24, sampleRate, true);
@@ -1647,15 +1951,7 @@ ${APP_CFG.botKnowledge}
         const tmpCtx = new (window.AudioContext || window.webkitAudioContext)();
         const decoded = await tmpCtx.decodeAudioData(arrayBuf);
 
-        const rates = {
-          robot: 1.0,
-          oldman: 0.80,
-          woman: 1.26,
-          child: 1.46,
-          helium: 1.72,
-          villain: 0.66,
-          alien: 1.15
-        };
+        const rates = { robot: 1.0, oldman: 0.80, woman: 1.26, child: 1.46, helium: 1.72, villain: 0.66, alien: 1.15 };
         const rate = rates[effect] || 1.0;
         const outLen = Math.ceil(decoded.length / rate) + Math.floor(decoded.sampleRate * 0.25);
         const offline = new OfflineAudioContext(1, outLen, decoded.sampleRate);
@@ -1664,79 +1960,36 @@ ${APP_CFG.botKnowledge}
         src.buffer = decoded;
         src.playbackRate.value = rate;
 
-        let lastNode = src;
-
         if (effect === 'robot') {
           const bp = offline.createBiquadFilter();
-          bp.type = 'bandpass';
-          bp.frequency.value = 1100;
-          bp.Q.value = 3.5;
-
-          const delay = offline.createDelay();
-          delay.delayTime.value = 0.018;
-          const fb = offline.createGain();
-          fb.gain.value = 0.65;
-          delay.connect(fb);
-          fb.connect(delay);
-
-          lastNode.connect(bp);
-          bp.connect(delay);
-          bp.connect(offline.destination);
-          delay.connect(offline.destination);
+          bp.type = 'bandpass'; bp.frequency.value = 1100; bp.Q.value = 3.5;
+          const delay = offline.createDelay(); delay.delayTime.value = 0.018;
+          const fb = offline.createGain(); fb.gain.value = 0.65;
+          delay.connect(fb); fb.connect(delay);
+          src.connect(bp); bp.connect(delay); bp.connect(offline.destination); delay.connect(offline.destination);
         } else if (effect === 'oldman') {
-          const lp = offline.createBiquadFilter();
-          lp.type = 'lowpass';
-          lp.frequency.value = 1850;
+          const lp = offline.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1850;
           const tremolo = offline.createGain();
-          const lfo = offline.createOscillator();
-          lfo.frequency.value = 6.5;
-          const lfoGain = offline.createGain();
-          lfoGain.gain.value = 0.18;
-          lfo.connect(lfoGain);
-          lfoGain.connect(tremolo.gain);
-          lfo.start(0);
-          lastNode.connect(lp);
-          lp.connect(tremolo);
-          tremolo.connect(offline.destination);
+          const lfo = offline.createOscillator(); lfo.frequency.value = 6.5;
+          const lfoGain = offline.createGain(); lfoGain.gain.value = 0.18;
+          lfo.connect(lfoGain); lfoGain.connect(tremolo.gain); lfo.start(0);
+          src.connect(lp); lp.connect(tremolo); tremolo.connect(offline.destination);
         } else if (effect === 'woman' || effect === 'child' || effect === 'helium') {
-          const hp = offline.createBiquadFilter();
-          hp.type = 'highshelf';
-          hp.frequency.value = 2400;
-          hp.gain.value = 7;
-          lastNode.connect(hp);
-          hp.connect(offline.destination);
+          const hp = offline.createBiquadFilter(); hp.type = 'highshelf'; hp.frequency.value = 2400; hp.gain.value = 7;
+          src.connect(hp); hp.connect(offline.destination);
         } else if (effect === 'villain') {
-          const bass = offline.createBiquadFilter();
-          bass.type = 'lowshelf';
-          bass.frequency.value = 280;
-          bass.gain.value = 12;
-          const echo = offline.createDelay();
-          echo.delayTime.value = 0.11;
-          const echoGain = offline.createGain();
-          echoGain.gain.value = 0.35;
-          lastNode.connect(bass);
-          bass.connect(echo);
-          echo.connect(echoGain);
-          bass.connect(offline.destination);
-          echoGain.connect(offline.destination);
+          const bass = offline.createBiquadFilter(); bass.type = 'lowshelf'; bass.frequency.value = 280; bass.gain.value = 12;
+          const echo = offline.createDelay(); echo.delayTime.value = 0.11;
+          const echoGain = offline.createGain(); echoGain.gain.value = 0.35;
+          src.connect(bass); bass.connect(echo); echo.connect(echoGain); bass.connect(offline.destination); echoGain.connect(offline.destination);
         } else if (effect === 'alien') {
-          const lfo = offline.createOscillator();
-          lfo.frequency.value = 9;
-          const lfoGain = offline.createGain();
-          lfoGain.gain.value = 0.22;
-          lfo.connect(lfoGain);
-          lfoGain.connect(src.playbackRate);
-          lfo.start(0);
-
-          const delay = offline.createDelay();
-          delay.delayTime.value = 0.045;
-          const fb = offline.createGain();
-          fb.gain.value = 0.55;
-          delay.connect(fb);
-          fb.connect(delay);
-          lastNode.connect(delay);
-          lastNode.connect(offline.destination);
-          delay.connect(offline.destination);
+          const lfo = offline.createOscillator(); lfo.frequency.value = 9;
+          const lfoGain = offline.createGain(); lfoGain.gain.value = 0.22;
+          lfo.connect(lfoGain); lfoGain.connect(src.playbackRate); lfo.start(0);
+          const delay = offline.createDelay(); delay.delayTime.value = 0.045;
+          const fb = offline.createGain(); fb.gain.value = 0.55;
+          delay.connect(fb); fb.connect(delay);
+          src.connect(delay); src.connect(offline.destination); delay.connect(offline.destination);
         }
 
         src.start(0);
@@ -1744,13 +1997,10 @@ ${APP_CFG.botKnowledge}
         const wavBlob = audioBufferToWavBlob(rendered);
         const wavUrl = URL.createObjectURL(wavBlob);
 
-        const labels = {
-          robot: 'إنسان آلي', oldman: 'رجل عجوز', woman: 'امرأة',
-          child: 'طفل', helium: 'هيليوم', villain: 'شرير', alien: 'فضائي'
-        };
+        const labels = { robot: 'إنسان آلي', oldman: 'رجل عجوز', woman: 'امرأة', child: 'طفل', helium: 'هيليوم', villain: 'شرير', alien: 'فضائي' };
         const label = labels[effect] || effect;
 
-        deductCreditsAfterTask('voice_changer');
+        finishToolSuccess('voice_changer');
         addHistoryItem(`تغيير الصوت (${label})`, 'ستوديو الصوت');
         sfx('success');
 
@@ -1797,15 +2047,12 @@ ${APP_CFG.botKnowledge}
         }
 
         const previewUrl = canvas.toDataURL('image/png');
-        deductCreditsAfterTask(mode);
+        finishToolSuccess(mode);
         addHistoryItem(file.name, 'معالجة الصور');
         sfx('success');
 
         res.style.display = 'block';
-        res.innerHTML = `
-          <img src="${previewUrl}" />
-          ${buildImageExportButtons(canvas, 'vixcel_' + mode)}
-        `;
+        res.innerHTML = `<img src="${previewUrl}" />${buildImageExportButtons(canvas, 'vixcel_' + mode)}`;
       };
       img.src = URL.createObjectURL(file);
     }
@@ -1816,7 +2063,7 @@ ${APP_CFG.botKnowledge}
       if (!checkCanAffordTool('vid_to_mp3')) return;
 
       const url = URL.createObjectURL(file);
-      deductCreditsAfterTask('vid_to_mp3');
+      finishToolSuccess('vid_to_mp3');
       addHistoryItem(file.name + ' → MP3', 'تحويل الميديا');
       sfx('success');
 
@@ -1861,7 +2108,7 @@ ${APP_CFG.botKnowledge}
       const conn = activePeer.connect(target);
       conn.on('open', () => {
         conn.send({ file, name: file.name, type: file.type });
-        deductCreditsAfterTask('lan_transfer');
+        finishToolSuccess('lan_transfer');
         sfx('success');
         alert('✅ تم إرسال الملف بنجاح!');
         addHistoryItem(file.name, 'نقل P2P');
@@ -1878,7 +2125,7 @@ ${APP_CFG.botKnowledge}
         mediaRec.onstop = () => {
           const blob = new Blob(recChunks, { type: 'audio/webm' });
           const url = URL.createObjectURL(blob);
-          deductCreditsAfterTask('voice_rec');
+          finishToolSuccess('voice_rec');
           addHistoryItem('تسجيل صوتي جديد', 'مسجل الصوت');
           sfx('success');
           const res = document.getElementById('tResult');
@@ -1913,7 +2160,7 @@ ${APP_CFG.botKnowledge}
       res.style.display = 'block';
       res.innerText = 'جاري قراءة النص بالذكاء الاصطناعي...';
       const out = await Tesseract.recognize(file, lang);
-      deductCreditsAfterTask('ocr_text');
+      finishToolSuccess('ocr_text');
       sfx('success');
       res.innerHTML = `<textarea rows="6" class="f-textarea">${out.data.text}</textarea>`;
       addHistoryItem('استخراج نص OCR', 'المسح الضوئي');
@@ -1932,7 +2179,7 @@ ${APP_CFG.botKnowledge}
         const c = document.querySelector('#qrCanvasBox canvas');
         if (c) res.innerHTML += buildImageExportButtons(c, 'vixcel_qr');
       }, 150);
-      deductCreditsAfterTask('qr_scan');
+      finishToolSuccess('qr_scan');
       sfx('success');
       addHistoryItem('توليد QR Code', 'أدوات QR');
     }
@@ -1954,7 +2201,7 @@ ${APP_CFG.botKnowledge}
         doc.addImage(dataUrl, 'JPEG', 10, 10, 190, 260);
       }
       const blobUrl = doc.output('bloburl');
-      deductCreditsAfterTask('img_to_pdf');
+      finishToolSuccess('img_to_pdf');
       sfx('success');
       const res = document.getElementById('tResult');
       res.style.display = 'block';
@@ -1983,7 +2230,7 @@ ${APP_CFG.botKnowledge}
         const url = canvas.toDataURL('image/png');
         html += `<div style="margin-bottom:14px;"><img src="${url}" />${buildImageExportButtons(canvas, 'page_' + p)}</div>`;
       }
-      deductCreditsAfterTask('pdf_to_img');
+      finishToolSuccess('pdf_to_img');
       sfx('success');
       res.innerHTML = html;
       addHistoryItem(file.name + ' → صور', 'محول PDF');
@@ -1999,7 +2246,7 @@ ${APP_CFG.botKnowledge}
       const lines = doc.splitTextToSize(txt, 180);
       doc.text(lines, 15, 20);
       const url = doc.output('bloburl');
-      deductCreditsAfterTask('txt_to_pdf');
+      finishToolSuccess('txt_to_pdf');
       sfx('success');
       const res = document.getElementById('tResult');
       res.style.display = 'block';
@@ -2018,7 +2265,7 @@ ${APP_CFG.botKnowledge}
       const str = JSON.stringify(json, null, 2);
       const blob = new Blob([str], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
-      deductCreditsAfterTask('excel_json');
+      finishToolSuccess('excel_json');
       sfx('success');
       const res = document.getElementById('tResult');
       res.style.display = 'block';
@@ -2039,7 +2286,7 @@ ${APP_CFG.botKnowledge}
       }
       const bytes = await merged.save();
       const url = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
-      deductCreditsAfterTask('pdf_merge');
+      finishToolSuccess('pdf_merge');
       sfx('success');
       const res = document.getElementById('tResult');
       res.style.display = 'block';
@@ -2067,7 +2314,7 @@ ${APP_CFG.botKnowledge}
       }
       const bytes = await outDoc.save();
       const url = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
-      deductCreditsAfterTask(mode);
+      finishToolSuccess(mode);
       sfx('success');
       const res = document.getElementById('tResult');
       res.style.display = 'block';
@@ -2084,7 +2331,7 @@ ${APP_CFG.botKnowledge}
       for (const f of files) zip.file(f.name, f);
       const blob = await zip.generateAsync({ type: 'blob' });
       const url = URL.createObjectURL(blob);
-      deductCreditsAfterTask('zip_maker');
+      finishToolSuccess('zip_maker');
       sfx('success');
       const res = document.getElementById('tResult');
       res.style.display = 'block';
@@ -2108,7 +2355,7 @@ ${APP_CFG.botKnowledge}
           html += `<div style="margin:6px 0;"><a class="dl-link" href="${url}" download="${name}">⬇️ ${name}</a></div>`;
         }
       }
-      deductCreditsAfterTask('zip_extract');
+      finishToolSuccess('zip_extract');
       sfx('success');
       res.innerHTML = html || 'الأرشيف فارغ.';
       addHistoryItem('فك ضغط ' + file.name, 'أدوات الضغط');
@@ -2119,6 +2366,7 @@ ${APP_CFG.botKnowledge}
       const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*';
       let pass = '';
       for (let i = 0; i < len; i++) pass += chars[Math.floor(Math.random() * chars.length)];
+      finishToolSuccess('pass_gen');
       sfx('success');
       const res = document.getElementById('tResult');
       res.style.display = 'block';
@@ -2138,6 +2386,10 @@ ${APP_CFG.botKnowledge}
       if (APP_CFG.maintenanceMode) {
         document.getElementById('maintMsgText').innerText = APP_CFG.maintenanceMsg || '';
         document.getElementById('maintScreen').classList.add('open');
+      }
+
+      if (APP_CFG.welcomeBonus !== undefined) {
+        document.getElementById('welcomeGiftLabel').innerText = APP_CFG.welcomeBonus;
       }
 
       if (APP_CFG.primaryColor) document.documentElement.style.setProperty('--primary', APP_CFG.primaryColor);
@@ -2193,6 +2445,10 @@ ${APP_CFG.botKnowledge}
       }
 
       renderAllTools();
+      initGoogleIdentityServices();
+      if (CURRENT_USER && CURRENT_USER.email) {
+        applyPendingPointGrants();
+      }
     }
 
     async function loadAppConfig() {
@@ -2206,11 +2462,17 @@ ${APP_CFG.botKnowledge}
     }
 
     // ==================== INIT ====================
-    refreshCredits();
+    trackSiteVisit();
     renderOufaAvatars('');
     renderAllTools();
     renderHistory();
-    loadAppConfig();
+    loadAppConfig().then(() => {
+      if (CURRENT_USER && CURRENT_USER.email) {
+        applySignedInUserUI(CURRENT_USER, false);
+      } else {
+        document.getElementById('googleAuthGate').classList.remove('hidden');
+      }
+    });
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js').catch(() => {});
     }
