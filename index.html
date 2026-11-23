@@ -21,7 +21,7 @@
     :root {
       --primary: #2563EB;
       --secondary: #5B21B6;
-      --grad: linear-gradient(135deg, #5B21B6 0%, #2563EB 100%);
+      --grad: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
       --bg: #F8FAFC;
       --surface: #FFFFFF;
       --text: #0F172A;
@@ -175,6 +175,10 @@
       position: absolute; top: -3px; left: -5px; background: var(--grad); color: #fff;
       font-size: 9px; font-weight: 800; padding: 1px 5px; border-radius: 6px;
     }
+    .tool-cost-tag {
+      position: absolute; bottom: -3px; right: -5px; background: #0F172A; color: #FACC15;
+      font-size: 8px; font-weight: 800; padding: 1px 4px; border-radius: 5px;
+    }
     .tool-name { font-size: 12px; font-weight: 700; color: #334155; line-height: 1.3; }
 
     /* Bottom Navigation Bar */
@@ -255,12 +259,31 @@
 
     /* Ad Box */
     .ad-banner-slot {
-      margin: 10px 0; border-radius: 12px; overflow: hidden; background: #F1F5F9;
-      border: 1px dashed #CBD5E1; min-height: 60px; display: flex; align-items: center; justify-content: center;
+      margin: 10px 0 14px; border-radius: 14px; overflow: hidden; background: #FFFFFF;
+      border: 1px solid #E2E8F0; min-height: 60px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 6px; position: relative;
     }
+    .ad-label-tiny {
+      font-size: 9px; color: #94A3B8; font-weight: 700; margin-bottom: 2px; letter-spacing: 0.5px;
+    }
+
+    /* Maintenance Overlay */
+    .maint-screen {
+      position: fixed; inset: 0; background: #0F172A; color: #fff; z-index: 9999;
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 24px;
+    }
+    .maint-screen.open { display: flex; }
   </style>
 </head>
 <body>
+
+  <!-- Maintenance Mode Screen -->
+  <div class="maint-screen" id="maintScreen">
+    <div style="font-size:52px;margin-bottom:12px;">🛠️</div>
+    <h2 style="font-size:22px;font-weight:900;margin-bottom:8px;">التطبيق قيد التحديث حالياً</h2>
+    <p id="maintMsgText" style="font-size:14px;color:#CBD5E1;max-width:420px;line-height:1.7;">نقوم بإضافة أدوات وتحسينات جديدة في VIXCEL MEDIA. سنعود للعمل خلال دقائق!</p>
+  </div>
 
   <!-- Dynamic Admin Broadcast Banner -->
   <div class="broadcast-bar" id="broadcastBar">
@@ -302,12 +325,13 @@
   <main class="container view-pane active" id="view-tools">
     <div class="hero-banner">
       <div>
-        <h2>VIXCEL AI & MEDIA PRO</h2>
+        <h2 id="heroTitleText">VIXCEL AI & MEDIA PRO</h2>
         <p id="appSubDesc">تحميل فيديو • تحويل صيغ • نقل ملفات سريع • مسح ضوئي</p>
       </div>
       <button class="hero-cta" onclick="openTool('lan_transfer')">⚡ نقل ملفات سريع</button>
     </div>
 
+    <!-- Top Ad Banner Slot (Supports Raw Adsterra Script OR Iframe Automatically) -->
     <div class="ad-banner-slot" id="topAdSlot" style="display:none;"></div>
 
     <div class="cat-tabs" id="catTabs">
@@ -320,6 +344,9 @@
     </div>
 
     <div id="toolsContainer"></div>
+
+    <!-- Bottom Ad Banner Slot -->
+    <div class="ad-banner-slot" id="bottomAdSlot" style="display:none;"></div>
   </main>
 
   <!-- ==================== VIEW 2: HOME ==================== -->
@@ -331,7 +358,7 @@
     <div class="section-card">
       <div class="section-title"><span>مكافآت وإعلانات يومية</span></div>
       <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">شاهد إعلاناً قصيراً واحصل على نقاط مجانية لاستخدام أدوات الذكاء الاصطناعي.</p>
-      <button class="btn-primary" onclick="openAdModal()">🎁 شاهد إعلان واحصل على +15 نقطة</button>
+      <button class="btn-primary" id="homeAdBtn" onclick="openAdModal()">🎁 شاهد إعلان واحصل على +15 نقطة</button>
     </div>
   </main>
 
@@ -392,11 +419,11 @@
     </div>
   </div>
 
-  <!-- ==================== REWARDED AD MODAL (ADSTERRA 300x250 READY) ==================== -->
+  <!-- ==================== REWARDED AD MODAL ==================== -->
   <div class="modal-overlay" id="adModal">
     <div class="modal-sheet" style="text-align:center;">
       <div class="modal-head">
-        <h3>مكافأة مشاهدة إعلان (+15 نقطة)</h3>
+        <h3 id="adModalTitle">مكافأة مشاهدة إعلان (+15 نقطة)</h3>
         <button class="close-btn" onclick="closeAdModal()">×</button>
       </div>
       <div id="rewardedAdContainer" style="min-height:270px;background:#F8FAFC;border:1px dashed #CBD5E1;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px;margin:10px 0;">
@@ -417,6 +444,9 @@
       <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">
         للشحن المباشر عبر InstaPay: <strong id="instapayText" style="color:var(--primary);">vixcel@instapay</strong>
       </p>
+      <div id="whatsappBox" style="display:none;margin-bottom:10px;">
+        <a id="whatsappLink" href="#" target="_blank" class="dl-link" style="background:#16A34A;width:100%;text-align:center;">💬 تواصل عبر واتساب لتفعيل VIP</a>
+      </div>
       <label class="f-label">أدخل كود الشحن (Promo Code)</label>
       <div style="display:flex;gap:8px;">
         <input type="text" class="f-input" id="promoCodeInput" placeholder="مثال: VIXCEL100" />
@@ -431,14 +461,59 @@
       pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     }
 
-    // ==================== STATE & STORAGE ====================
+    // ==================== SMART AD RENDERER (FIXES <script> INJECTION) ====================
+    function renderSafeAdHtml(container, rawCode) {
+      if (!container || !rawCode) return;
+      let clean = rawCode.trim().replace(/^<<iframe/i, '<iframe');
+      // إذا كان الكود يحتوي على <script> خام بدون iframe، نغلفه تلقائياً داخل iframe آمن ليعمل فوراً
+      if (clean.toLowerCase().includes('<script') && !clean.toLowerCase().includes('<iframe')) {
+        const wMatch = clean.match(/['"]?width['"]?\s*:\s*(\d+)/i);
+        const hMatch = clean.match(/['"]?height['"]?\s*:\s*(\d+)/i);
+        const w = wMatch ? wMatch[1] : '300';
+        const h = hMatch ? hMatch[1] : '250';
+        const iframe = document.createElement('iframe');
+        iframe.style.cssText = `width:${w}px;max-width:100%;height:${h}px;border:0;overflow:hidden;display:block;margin:0 auto;border-radius:10px;`;
+        iframe.scrolling = 'no';
+        iframe.srcdoc = `<!DOCTYPE html><html><body style="margin:0;padding:0;background:transparent;display:flex;justify-content:center;align-items:center;">${clean}</body></html>`;
+        container.innerHTML = '';
+        container.appendChild(iframe);
+      } else {
+        container.innerHTML = clean;
+      }
+    }
+
+    // ==================== STATE & DEFAULT CONFIG ====================
+    const DEFAULT_ADSTERRA = '<iframe style="width:300px;height:250px;border:0;overflow:hidden;display:block;margin:0 auto;border-radius:12px;" scrolling="no" srcdoc="<!DOCTYPE html><html><body style='margin:0;padding:0;background:transparent;display:flex;justify-content:center;align-items:center;'><script>atOptions={'key':'91f08312e452b635484c92c1aaf5fed9','format':'iframe','height':250,'width':300,'params':{}};<\/script><script src='https://bauval.org/22/91f08312e452b635484c92c1aaf5fed9'><\/script></body></html>"></iframe>';
+
+    let APP_CFG = {
+      brandName: 'VIXCEL',
+      brandSub: 'MEDIA',
+      heroTitle: 'VIXCEL AI & MEDIA PRO',
+      heroDesc: 'تحميل فيديو • تحويل صيغ • نقل ملفات سريع • مسح ضوئي',
+      broadcastEnabled: true,
+      broadcastText: 'مرحباً بك في VIXCEL MEDIA — جميع أدوات المستندات والميديا ونقل الملفات السريع في مكان واحد!',
+      maintenanceMode: false,
+      maintenanceMsg: 'نقوم بإضافة أدوات وتحسينات جديدة في VIXCEL MEDIA. سنعود للعمل خلال دقائق!',
+      primaryColor: '#2563EB',
+      secondaryColor: '#5B21B6',
+      topBannerEnabled: true,
+      topBannerCode: DEFAULT_ADSTERRA,
+      bottomBannerEnabled: false,
+      bottomBannerCode: '',
+      rewardedAdCode: DEFAULT_ADSTERRA,
+      rewardSeconds: 15,
+      rewardPoints: 15,
+      initialCredits: 30,
+      instapayId: 'vixcel@instapay',
+      whatsappNumber: '',
+      promoCodes: { 'VIXCEL100': 100, 'VIP500': 500, 'FREE50': 50 },
+      toolsOverride: {}
+    };
+
     let userCredits = parseInt(localStorage.getItem('vixcel_credits') || '30', 10);
     let savedHistory = JSON.parse(localStorage.getItem('vixcel_history') || '[]');
     let adTimerInterval = null;
     let activePeer = null;
-
-    // ==================== ADSTERRA 300x250 BANNER CONFIG ====================
-    const ADSTERRA_IFRAME_HTML = '<iframe style="width:300px;height:250px;border:0;overflow:hidden;display:block;margin:0 auto;border-radius:12px;" scrolling="no" srcdoc="<!DOCTYPE html><html><body style=\'margin:0;padding:0;background:transparent;display:flex;justify-content:center;align-items:center;\'><script>atOptions={\'key\':\'91f08312e452b635484c92c1aaf5fed9\',\'format\':\'iframe\',\'height\':250,\'width\':300,\'params\':{}};<\/script><script src=\'https://bauval.org/22/91f08312e452b635484c92c1aaf5fed9\'><\/script></body></html>"></iframe>';
 
     const SECTIONS = [
       {
@@ -446,55 +521,67 @@
         title: 'أدوات الميديا والنقل السريع',
         badge: 'VIXCEL EXCLUSIVE',
         tools: [
-          { id: 'vid_to_mp3', name: 'استخراج صوت MP3', icon: '🎵', color: 'c-purple', tag: 'سريع' },
-          { id: 'img_convert', name: 'تحويل صيغ الصور', icon: '🖼️', color: 'c-blue' },
-          { id: 'vid_compress', name: 'قص وضغط فيديو', icon: '🎬', color: 'c-indigo' },
-          { id: 'img_compress', name: 'ضغط حجم الصور', icon: '🗜️', color: 'c-teal' },
-          { id: 'lan_transfer', name: 'نقل ملفات P2P', icon: '⚡', color: 'c-orange', tag: 'مجاني' },
-          { id: 'voice_rec', name: 'مسجل صوت ذكي', icon: '🎙️', color: 'c-purple' }
+          { id: 'vid_to_mp3', name: 'استخراج صوت MP3', icon: '🎵', color: 'c-purple', tag: 'سريع', cost: 0 },
+          { id: 'img_convert', name: 'تحويل صيغ الصور', icon: '🖼️', color: 'c-blue', cost: 0 },
+          { id: 'vid_compress', name: 'قص وضغط فيديو', icon: '🎬', color: 'c-indigo', cost: 0 },
+          { id: 'img_compress', name: 'ضغط حجم الصور', icon: '🗜️', color: 'c-teal', cost: 0 },
+          { id: 'lan_transfer', name: 'نقل ملفات P2P', icon: '⚡', color: 'c-orange', tag: 'مجاني', cost: 0 },
+          { id: 'voice_rec', name: 'مسجل صوت ذكي', icon: '🎙️', color: 'c-purple', cost: 0 }
         ]
       },
       {
         id: 'sec-scan',
         title: 'المسح الضوئي واستخراج النصوص',
         tools: [
-          { id: 'doc_scan', name: 'ماسح المستندات', icon: '📷', color: 'c-blue', tag: 'HD' },
-          { id: 'ocr_text', name: 'استخراج نص OCR', icon: '📝', color: 'c-teal' },
-          { id: 'id_scan', name: 'مسح البطاقة والهوية', icon: '🪪', color: 'c-indigo' },
-          { id: 'qr_scan', name: 'صانع باركود QR', icon: '📱', color: 'c-purple' }
+          { id: 'doc_scan', name: 'ماسح المستندات', icon: '📷', color: 'c-blue', tag: 'HD', cost: 0 },
+          { id: 'ocr_text', name: 'استخراج نص OCR', icon: '📝', color: 'c-teal', cost: 0 },
+          { id: 'id_scan', name: 'مسح البطاقة والهوية', icon: '🪪', color: 'c-indigo', cost: 0 },
+          { id: 'qr_scan', name: 'صانع باركود QR', icon: '📱', color: 'c-purple', cost: 0 }
         ]
       },
       {
         id: 'sec-convert',
         title: 'محوّل الصيغ الشامل',
         tools: [
-          { id: 'img_to_pdf', name: 'صور إلى PDF', icon: '📄', color: 'c-orange' },
-          { id: 'pdf_to_img', name: 'PDF إلى صور', icon: '🖼️', color: 'c-blue' },
-          { id: 'txt_to_pdf', name: 'نص إلى PDF', icon: '✍️', color: 'c-purple' },
-          { id: 'excel_json', name: 'Excel إلى JSON/CSV', icon: '📊', color: 'c-teal' }
+          { id: 'img_to_pdf', name: 'صور إلى PDF', icon: '📄', color: 'c-orange', cost: 0 },
+          { id: 'pdf_to_img', name: 'PDF إلى صور', icon: '🖼️', color: 'c-blue', cost: 0 },
+          { id: 'txt_to_pdf', name: 'نص إلى PDF', icon: '✍️', color: 'c-purple', cost: 0 },
+          { id: 'excel_json', name: 'Excel إلى JSON/CSV', icon: '📊', color: 'c-teal', cost: 0 }
         ]
       },
       {
         id: 'sec-edit',
         title: 'تحرير وإدارة ملفات PDF',
         tools: [
-          { id: 'pdf_merge', name: 'دمج ملفات PDF', icon: '🔗', color: 'c-blue' },
-          { id: 'pdf_split', name: 'تقسيم صفحات PDF', icon: '✂️', color: 'c-orange' },
-          { id: 'pdf_watermark', name: 'علامة مائية PDF', icon: '💧', color: 'c-indigo' },
-          { id: 'pdf_rotate', name: 'تدوير صفحات PDF', icon: '🔄', color: 'c-teal' }
+          { id: 'pdf_merge', name: 'دمج ملفات PDF', icon: '🔗', color: 'c-blue', cost: 0 },
+          { id: 'pdf_split', name: 'تقسيم صفحات PDF', icon: '✂️', color: 'c-orange', cost: 0 },
+          { id: 'pdf_watermark', name: 'علامة مائية PDF', icon: '💧', color: 'c-indigo', cost: 0 },
+          { id: 'pdf_rotate', name: 'تدوير صفحات PDF', icon: '🔄', color: 'c-teal', cost: 0 }
         ]
       },
       {
         id: 'sec-utils',
         title: 'الأدوات المساعدة والضغط',
         tools: [
-          { id: 'zip_maker', name: 'ضغط ملفات ZIP', icon: '📦', color: 'c-purple' },
-          { id: 'zip_extract', name: 'فك ضغط ZIP', icon: '📂', color: 'c-blue' },
-          { id: 'pass_gen', name: 'مولد كلمات مرور', icon: '🔐', color: 'c-teal' },
-          { id: 'word_count', name: 'عداد الكلمات والنصوص', icon: '🔢', color: 'c-orange' }
+          { id: 'zip_maker', name: 'ضغط ملفات ZIP', icon: '📦', color: 'c-purple', cost: 0 },
+          { id: 'zip_extract', name: 'فك ضغط ZIP', icon: '📂', color: 'c-blue', cost: 0 },
+          { id: 'pass_gen', name: 'مولد كلمات مرور', icon: '🔐', color: 'c-teal', cost: 0 },
+          { id: 'word_count', name: 'عداد الكلمات والنصوص', icon: '🔢', color: 'c-orange', cost: 0 }
         ]
       }
     ];
+
+    function getToolMeta(t) {
+      const ov = (APP_CFG.toolsOverride && APP_CFG.toolsOverride[t.id]) || {};
+      return {
+        ...t,
+        name: ov.name || t.name,
+        icon: ov.icon || t.icon,
+        tag: ov.tag !== undefined ? ov.tag : t.tag,
+        cost: ov.cost !== undefined ? Number(ov.cost) : (t.cost || 0),
+        enabled: ov.enabled !== undefined ? ov.enabled : true
+      };
+    }
 
     function refreshCredits() {
       localStorage.setItem('vixcel_credits', String(userCredits));
@@ -546,12 +633,18 @@
       let html = '';
 
       SECTIONS.forEach(sec => {
-        const filtered = sec.tools.filter(t => !q || t.name.toLowerCase().includes(q));
+        const secOv = (APP_CFG.sectionsOverride && APP_CFG.sectionsOverride[sec.id]) || {};
+        if (secOv.enabled === false) return;
+
+        const filtered = sec.tools
+          .map(getToolMeta)
+          .filter(t => t.enabled && (!q || t.name.toLowerCase().includes(q)));
         if (!filtered.length) return;
+
         html += `
           <div class="section-card" id="${sec.id}">
             <div class="section-title">
-              <span>${sec.title}</span>
+              <span>${secOv.title || sec.title}</span>
               ${sec.badge ? `<span class="section-badge">${sec.badge}</span>` : ''}
             </div>
             <div class="tools-grid">
@@ -559,6 +652,7 @@
                 <div class="tool-item" onclick="openTool('${t.id}')">
                   <div class="tool-circle ${t.color}">
                     ${t.tag ? `<span class="tool-new-tag">${t.tag}</span>` : ''}
+                    ${t.cost > 0 ? `<span class="tool-cost-tag">⚡${t.cost}</span>` : ''}
                     <span>${t.icon}</span>
                   </div>
                   <div class="tool-name">${t.name}</div>
@@ -576,7 +670,8 @@
           SECTIONS[0].tools[0], SECTIONS[0].tools[1], SECTIONS[0].tools[4],
           SECTIONS[1].tools[0], SECTIONS[1].tools[1], SECTIONS[2].tools[0],
           SECTIONS[3].tools[0], SECTIONS[4].tools[0]
-        ];
+        ].map(getToolMeta).filter(t => t.enabled);
+
         homeGrid.innerHTML = quick.map(t => `
           <div class="tool-item" onclick="openTool('${t.id}')">
             <div class="tool-circle ${t.color}"><span>${t.icon}</span></div>
@@ -589,9 +684,7 @@
     function toggleSearch() {
       const box = document.getElementById('searchBox');
       box.classList.toggle('open');
-      if (box.classList.contains('open')) {
-        document.getElementById('toolSearchInput').focus();
-      }
+      if (box.classList.contains('open')) document.getElementById('toolSearchInput').focus();
     }
 
     function filterToolsBySearch() {
@@ -601,10 +694,7 @@
     function scrollToCat(secId, btn) {
       document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
       if (btn) btn.classList.add('active');
-      if (secId === 'all') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        return;
-      }
+      if (secId === 'all') { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
       const el = document.getElementById(secId);
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -618,16 +708,18 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // ==================== REWARDED AD MODAL (ADSTERRA) ====================
+    // ==================== REWARDED AD MODAL ====================
     function openAdModal() {
       const modal = document.getElementById('adModal');
       const adSlot = document.getElementById('adCustomCode');
       const countEl = document.getElementById('adCountdownText');
       const btn = document.getElementById('claimAdBtn');
+      const pts = Number(APP_CFG.rewardPoints || 15);
+      let sec = Number(APP_CFG.rewardSeconds || 15);
 
-      adSlot.innerHTML = ADSTERRA_IFRAME_HTML;
+      document.getElementById('adModalTitle').innerText = `مكافأة مشاهدة إعلان (+${pts} نقطة)`;
+      renderSafeAdHtml(adSlot, APP_CFG.rewardedAdCode || DEFAULT_ADSTERRA);
 
-      let sec = 15;
       countEl.innerText = sec;
       btn.disabled = true;
       btn.innerText = `انتظر انتهاء الإعلان (${sec}ث)...`;
@@ -643,7 +735,7 @@
           clearInterval(adTimerInterval);
           countEl.innerText = '✅ جاهز للاستلام';
           btn.disabled = false;
-          btn.innerText = 'استلم +15 نقطة الآن';
+          btn.innerText = `استلم +${pts} نقطة الآن`;
         }
       }, 1000);
     }
@@ -655,10 +747,11 @@
     }
 
     function claimReward() {
-      userCredits += 15;
+      const pts = Number(APP_CFG.rewardPoints || 15);
+      userCredits += pts;
       refreshCredits();
       closeAdModal();
-      alert('🎉 مبروك! تم إضافة +15 نقطة إلى رصيدك.');
+      alert(`🎉 مبروك! تم إضافة +${pts} نقطة إلى رصيدك.`);
     }
 
     // ==================== WALLET & PROMO ====================
@@ -670,9 +763,9 @@
       const input = document.getElementById('promoCodeInput');
       const status = document.getElementById('promoStatusMsg');
       const code = input.value.trim().toUpperCase();
-      const codes = { 'VIXCEL100': 100, 'VIP500': 500, 'FREE50': 50 };
+      const codes = APP_CFG.promoCodes || { 'VIXCEL100': 100, 'VIP500': 500, 'FREE50': 50 };
       if (codes[code]) {
-        userCredits += codes[code];
+        userCredits += Number(codes[code]);
         refreshCredits();
         status.style.color = '#059669';
         status.innerText = `تم شحن +${codes[code]} نقطة بنجاح!`;
@@ -691,11 +784,22 @@
     }
 
     function openTool(id) {
+      const allTools = SECTIONS.flatMap(s => s.tools).map(getToolMeta);
+      const toolObj = allTools.find(t => t.id === id);
+
+      if (toolObj && toolObj.cost > 0) {
+        if (userCredits < toolObj.cost) {
+          alert(`⚠️ هذه الأداة تتطلب ${toolObj.cost} نقطة. رصيدك الحالي ${userCredits} نقطة — شاهد إعلاناً قصيراً للشحن مجاناً!`);
+          openAdModal();
+          return;
+        }
+        userCredits -= toolObj.cost;
+        refreshCredits();
+      }
+
       const modal = document.getElementById('toolModal');
       const titleEl = document.getElementById('modalToolTitle');
       const body = document.getElementById('modalToolBody');
-      const allTools = SECTIONS.flatMap(s => s.tools);
-      const toolObj = allTools.find(t => t.id === id);
       titleEl.innerText = toolObj ? `${toolObj.icon} ${toolObj.name}` : 'أداة VIXCEL';
 
       if (id === 'img_convert' || id === 'img_compress' || id === 'doc_scan' || id === 'id_scan') {
@@ -851,9 +955,7 @@
         canvas.width = img.width;
         canvas.height = img.height;
         const ctx = canvas.getContext('2d');
-        if (mode === 'doc_scan' || mode === 'id_scan') {
-          ctx.filter = 'contrast(1.35) brightness(1.06) grayscale(0.2)';
-        }
+        if (mode === 'doc_scan' || mode === 'id_scan') ctx.filter = 'contrast(1.35) brightness(1.06) grayscale(0.2)';
         ctx.drawImage(img, 0, 0);
         let mime = 'image/jpeg';
         let qual = 0.92;
@@ -882,10 +984,7 @@
         `;
         addHistoryItem(file.name + ' → MP3', 'تحويل الميديا');
       } else {
-        res.innerHTML = `
-          <video controls src="${url}"></video><br>
-          <a class="dl-link" href="${url}" download="vixcel_video.mp4">⬇️ حفظ الفيديو</a>
-        `;
+        res.innerHTML = `<video controls src="${url}"></video><br><a class="dl-link" href="${url}" download="vixcel_video.mp4">⬇️ حفظ الفيديو</a>`;
         addHistoryItem(file.name, 'فيديو');
       }
     }
@@ -1130,19 +1229,78 @@
       document.getElementById('tResult').innerText = `الكلمات: ${words} | الحروف: ${txt.length}`;
     }
 
-    // ==================== REMOTE CONFIG SYNC ====================
+    // ==================== APPLY REMOTE CONFIG ====================
+    function applyAppConfig(cfg) {
+      APP_CFG = { ...APP_CFG, ...cfg };
+
+      if (APP_CFG.maintenanceMode) {
+        document.getElementById('maintMsgText').innerText = APP_CFG.maintenanceMsg || '';
+        document.getElementById('maintScreen').classList.add('open');
+      }
+
+      if (APP_CFG.primaryColor) document.documentElement.style.setProperty('--primary', APP_CFG.primaryColor);
+      if (APP_CFG.secondaryColor) document.documentElement.style.setProperty('--secondary', APP_CFG.secondaryColor);
+
+      if (APP_CFG.brandName) document.getElementById('brandNameText').innerText = APP_CFG.brandName;
+      if (APP_CFG.brandSub) document.getElementById('brandSubText').innerText = APP_CFG.brandSub;
+      if (APP_CFG.heroTitle) document.getElementById('heroTitleText').innerText = APP_CFG.heroTitle;
+      if (APP_CFG.heroDesc) document.getElementById('appSubDesc').innerText = APP_CFG.heroDesc;
+
+      const bBar = document.getElementById('broadcastBar');
+      if (APP_CFG.broadcastEnabled === false) {
+        bBar.style.display = 'none';
+      } else if (APP_CFG.broadcastText) {
+        bBar.style.display = 'flex';
+        document.getElementById('broadcastText').innerText = APP_CFG.broadcastText;
+      }
+
+      if (APP_CFG.instapayId) document.getElementById('instapayText').innerText = APP_CFG.instapayId;
+      if (APP_CFG.whatsappNumber) {
+        const cleanNum = APP_CFG.whatsappNumber.replace(/[^0-9]/g, '');
+        if (cleanNum) {
+          document.getElementById('whatsappBox').style.display = 'block';
+          document.getElementById('whatsappLink').href = `https://wa.me/${cleanNum}?text=${encodeURIComponent('مرحباً، أرغب في شحن باقة VIP في تطبيق VIXCEL MEDIA')}`;
+        }
+      }
+
+      const homeAdBtn = document.getElementById('homeAdBtn');
+      if (homeAdBtn) homeAdBtn.innerText = `🎁 شاهد إعلان واحصل على +${APP_CFG.rewardPoints || 15} نقطة`;
+
+      // البنر العلوي
+      const topSlot = document.getElementById('topAdSlot');
+      if (APP_CFG.topBannerEnabled !== false && APP_CFG.topBannerCode) {
+        topSlot.style.display = 'flex';
+        topSlot.innerHTML = '<span class="ad-label-tiny">إعلان ممول</span><div id="topAdInner"></div>';
+        renderSafeAdHtml(document.getElementById('topAdInner'), APP_CFG.topBannerCode);
+      } else {
+        topSlot.style.display = 'none';
+      }
+
+      // البنر السفلي
+      const botSlot = document.getElementById('bottomAdSlot');
+      if (APP_CFG.bottomBannerEnabled && APP_CFG.bottomBannerCode) {
+        botSlot.style.display = 'flex';
+        botSlot.innerHTML = '<span class="ad-label-tiny">إعلان ممول</span><div id="botAdInner"></div>';
+        renderSafeAdHtml(document.getElementById('botAdInner'), APP_CFG.bottomBannerCode);
+      } else {
+        botSlot.style.display = 'none';
+      }
+
+      if (!localStorage.getItem('vixcel_credits') && APP_CFG.initialCredits) {
+        userCredits = Number(APP_CFG.initialCredits);
+        refreshCredits();
+      }
+
+      renderAllTools();
+    }
+
     async function loadAppConfig() {
+      applyAppConfig(APP_CFG);
       try {
         const res = await fetch('./config.json?t=' + Date.now());
         if (!res.ok) return;
         const cfg = await res.json();
-        if (cfg.broadcastText) document.getElementById('broadcastText').innerText = cfg.broadcastText;
-        if (cfg.instapayId) document.getElementById('instapayText').innerText = cfg.instapayId;
-        if (cfg.topBannerCode) {
-          const slot = document.getElementById('topAdSlot');
-          slot.style.display = 'flex';
-          slot.innerHTML = cfg.topBannerCode;
-        }
+        applyAppConfig(cfg);
       } catch (e) {}
     }
 
